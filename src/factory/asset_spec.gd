@@ -1,0 +1,45 @@
+class_name AssetSpec
+## The single source of truth for every generated visual asset.
+##
+## Each entry is a plain Dictionary describing one output the AssetFactory
+## must produce. Generators and the factory both read from this spec, and
+## tests assert the factory can produce every entry — spec-first per the
+## tech stack.
+##
+## Entry fields:
+##   name    String  unique snake_case identifier
+##   kind    String  "tile" | "deco" | "background" | "frame" | "prop"
+##   size    Vector2i  pixel dimensions of the generated image
+##   palette String  "area" (recolors per area palette) or "robot"
+##
+## Tiles are 16x16 and rendered with nearest-neighbor filtering, so they
+## scale crisply at any zoom. The robot is 32x32 for chunky readability.
+
+const TILE_SIZE := Vector2i(16, 16)
+const ROBOT_FRAME_SIZE := Vector2i(32, 32)
+
+const SPEC: Array = [
+	# --- world tiles (8) ---
+	{"name": "tile_solid", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
+	{"name": "tile_grass_top", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
+	{"name": "tile_platform", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
+	{"name": "tile_trampoline", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_grass_tuft", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_rock", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_flower", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "sky_strip", "kind": "background", "size": TILE_SIZE, "palette": "area"},
+	# --- robot animation frames (8): idle x2, walk x4, jump, land-squash ---
+	{"name": "robot_idle_0", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
+	{"name": "robot_idle_1", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
+	{"name": "robot_walk_0", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
+	{"name": "robot_walk_1", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
+	{"name": "robot_walk_2", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
+	{"name": "robot_walk_3", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
+	{"name": "robot_jump", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
+	{"name": "robot_land", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
+	# --- interactive props ---
+	{"name": "gem", "kind": "prop", "size": TILE_SIZE, "palette": "area"},
+	{"name": "key", "kind": "prop", "size": TILE_SIZE, "palette": "area"},
+	{"name": "door_locked", "kind": "prop", "size": Vector2i(32, 48), "palette": "area"},
+	{"name": "door_open", "kind": "prop", "size": Vector2i(32, 48), "palette": "area"},
+]
