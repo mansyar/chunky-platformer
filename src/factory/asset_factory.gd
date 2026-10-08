@@ -12,6 +12,23 @@ extends Node
 
 const ATLAS_COLUMNS := 4
 
+# HUD digits: the canonical 3x5 pixel font, one string per row. Each cell is
+# expanded to a DIGIT_CELL square, so the glyph fills 6x10 of the 8x12 canvas.
+const DIGIT_CELL := 2
+const DIGIT_ORIGIN := Vector2i(1, 1)
+const DIGIT_FONT := {
+	0: ["111", "101", "101", "101", "111"],
+	1: ["010", "110", "010", "010", "111"],
+	2: ["111", "001", "111", "100", "111"],
+	3: ["111", "001", "111", "001", "111"],
+	4: ["101", "101", "111", "001", "001"],
+	5: ["111", "100", "111", "001", "111"],
+	6: ["111", "100", "111", "101", "111"],
+	7: ["111", "001", "001", "001", "001"],
+	8: ["111", "101", "111", "101", "111"],
+	9: ["111", "101", "111", "001", "111"],
+}
+
 ## Robot frame geometry: "frames as data". Each entry positions the shared
 ## body parts for one animation frame; _draw_robot_frame renders them.
 const ROBOT_FRAMES := {
@@ -252,8 +269,11 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 	var gd: Color = p.get("ground_dark", p.get("body_dark", Color.BLACK))
 	var gr: Color = p.get("grass", p.get("accent", Color.BLACK))
 	var ac: Color = p.get("accent", Color.BLACK)
-	var ink: Color = p.get("body_dark", Color.BLACK)
 	var ops: Array = []
+	# Digits come from the shared 3x5 font table instead of ten hand-drawn
+	# op lists: the bar-segment approach made 5/6/8/9 confusable at a glance.
+	if asset_name.begins_with("digit_"):
+		return _digit_ops(asset_name.trim_prefix("digit_").to_int(), p)
 	match asset_name:
 		"tile_solid":
 			ops = [
@@ -351,71 +371,33 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				ops.append(
 					_rect(Rect2i(11 - i, 8 + i * 2, 2 + i * 2, 2), p.get("eye", Color.WHITE))
 				)
-		"digit_0":
-			ops = [
-				_outline(Rect2i(0, 0, 8, 12), ink),
-				_outline(Rect2i(1, 1, 6, 10), ink),
-			]
-		"digit_1":
-			ops = [_rect(Rect2i(5, 0, 3, 12), ink)]
-		"digit_2":
-			ops = [
-				_rect(Rect2i(0, 0, 8, 2), ink),
-				_rect(Rect2i(6, 2, 2, 4), ink),
-				_rect(Rect2i(0, 6, 8, 2), ink),
-				_rect(Rect2i(0, 8, 2, 2), ink),
-				_rect(Rect2i(0, 10, 8, 2), ink),
-			]
-		"digit_3":
-			ops = [
-				_rect(Rect2i(0, 0, 8, 2), ink),
-				_rect(Rect2i(6, 2, 2, 8), ink),
-				_rect(Rect2i(0, 6, 6, 2), ink),
-				_rect(Rect2i(0, 10, 8, 2), ink),
-			]
-		"digit_4":
-			ops = [
-				_rect(Rect2i(0, 0, 2, 6), ink),
-				_rect(Rect2i(0, 4, 8, 2), ink),
-				_rect(Rect2i(6, 0, 2, 12), ink),
-			]
-		"digit_5":
-			ops = [
-				_rect(Rect2i(0, 0, 8, 2), ink),
-				_rect(Rect2i(0, 2, 2, 4), ink),
-				_rect(Rect2i(0, 6, 8, 2), ink),
-				_rect(Rect2i(6, 8, 2, 2), ink),
-				_rect(Rect2i(0, 10, 8, 2), ink),
-			]
-		"digit_6":
-			ops = [
-				_rect(Rect2i(0, 0, 8, 2), ink),
-				_rect(Rect2i(0, 2, 2, 8), ink),
-				_rect(Rect2i(0, 6, 8, 2), ink),
-				_rect(Rect2i(6, 8, 2, 2), ink),
-				_rect(Rect2i(0, 10, 8, 2), ink),
-			]
-		"digit_7":
-			ops = [
-				_rect(Rect2i(0, 0, 8, 2), ink),
-				_rect(Rect2i(6, 2, 2, 10), ink),
-			]
-		"digit_8":
-			ops = [
-				_outline(Rect2i(0, 0, 8, 12), ink),
-				_outline(Rect2i(1, 1, 6, 10), ink),
-				_rect(Rect2i(0, 5, 8, 2), ink),
-			]
-		"digit_9":
-			ops = [
-				_rect(Rect2i(0, 0, 8, 2), ink),
-				_rect(Rect2i(0, 2, 2, 4), ink),
-				_rect(Rect2i(0, 6, 8, 2), ink),
-				_rect(Rect2i(6, 2, 2, 10), ink),
-				_rect(Rect2i(0, 10, 8, 2), ink),
-			]
 		_:
 			push_warning("AssetFactory: no generator for asset '%s'." % asset_name)
+	return ops
+
+
+## HUD digit glyph: the canonical 3x5 pixel font expanded DIGIT_CELL times per
+## cell, so every stroke is 2px wide and legible at counter zoom. The 1px
+## border keeps neighbouring digits from visually merging.
+static func _digit_ops(digit: int, p: Dictionary) -> Array:
+	var ink: Color = p.get("body_dark", Color.BLACK)
+	var rows: Array = DIGIT_FONT.get(digit, DIGIT_FONT[0])
+	var ops: Array = []
+	for row: int in range(rows.size()):
+		var line: String = rows[row]
+		for col: int in range(line.length()):
+			if line[col] == "1":
+				ops.append(
+					_rect(
+						Rect2i(
+							DIGIT_ORIGIN.x + col * DIGIT_CELL,
+							DIGIT_ORIGIN.y + row * DIGIT_CELL,
+							DIGIT_CELL,
+							DIGIT_CELL
+						),
+						ink
+					)
+				)
 	return ops
 
 

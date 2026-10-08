@@ -144,23 +144,69 @@ func test_digit_glyphs_have_ink_and_size() -> void:
 		assert_gt(clear, 0, "digit_%d keeps some negative space." % i)
 
 
-func test_digit_1_hugs_the_right() -> void:
+func test_digit_1_stem_sits_right_of_center() -> void:
 	var img: Image = get_node("/root/AssetFactory").get_image("digit_1")
-	for y: int in range(12):
-		for x: int in range(3):
-			assert_eq(
-				img.get_pixel(x, y).a,
-				0.0,
-				"digit_1 leaves its left third empty at (%d,%d)." % [x, y]
-			)
+	assert_gt(img.get_pixel(3, 1).a, 0.0, "digit_1's stem starts right of center.")
+	assert_eq(img.get_pixel(1, 1).a, 0.0, "digit_1 leaves its top-left cell empty.")
 
 
 func test_digit_0_and_8_have_counter_holes() -> void:
 	var zero: Image = get_node("/root/AssetFactory").get_image("digit_0")
 	var eight: Image = get_node("/root/AssetFactory").get_image("digit_8")
-	assert_eq(zero.get_pixel(3, 5).a, 0.0, "digit_0 has a see-through center.")
+	assert_eq(zero.get_pixel(3, 3).a, 0.0, "digit_0 has a see-through center.")
 	assert_eq(eight.get_pixel(3, 3).a, 0.0, "digit_8 has an upper hole.")
-	assert_eq(eight.get_pixel(3, 8).a, 0.0, "digit_8 has a lower hole.")
+	assert_eq(eight.get_pixel(3, 7).a, 0.0, "digit_8 has a lower hole.")
+
+
+func test_every_digit_sits_on_the_same_baseline() -> void:
+	# 4 and 7 are open-bottom glyphs by design, so the shared property is the
+	# baseline itself: every digit has ink on the last font row and nothing
+	# below it, so numbers never float or sink in the counter.
+	var factory: Node = get_node("/root/AssetFactory")
+	for i: int in range(10):
+		var img: Image = factory.get_image("digit_%d" % i)
+		var on_baseline := 0
+		for x: int in range(8):
+			if img.get_pixel(x, 9).a > 0.0:
+				on_baseline += 1
+		assert_gt(on_baseline, 0, "digit_%d rests on the baseline row." % i)
+		for x: int in range(8):
+			assert_eq(
+				img.get_pixel(x, 11).a,
+				0.0,
+				"digit_%d has no ink below the baseline at x=%d." % [i, x]
+			)
+
+
+func test_digit_strokes_are_never_one_pixel_wide() -> void:
+	# Thin 1px strokes alias into mush at counter zoom; every ink pixel must
+	# have an ink neighbour, which only 2x-expanded font cells guarantee.
+	var factory: Node = get_node("/root/AssetFactory")
+	for i: int in range(10):
+		var img: Image = factory.get_image("digit_%d" % i)
+		for y: int in range(12):
+			for x: int in range(8):
+				if img.get_pixel(x, y).a == 0.0:
+					continue
+				var has_neighbour := false
+				for offset: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+					var nx := x + offset.x
+					var ny := y + offset.y
+					if nx >= 0 and nx < 8 and ny >= 0 and ny < 12:
+						if img.get_pixel(nx, ny).a > 0.0:
+							has_neighbour = true
+				assert_true(has_neighbour, "digit_%d has a lone ink pixel at (%d,%d)." % [i, x, y])
+
+
+func test_all_ten_digits_are_distinct_shapes() -> void:
+	# Confusable pairs (5/6/8/9, 0/8) are exactly what made the first hand-drawn
+	# bar glyphs unreadable; no two digits may share a bitmap.
+	var factory: Node = get_node("/root/AssetFactory")
+	var seen: Dictionary = {}
+	for i: int in range(10):
+		var key: PackedByteArray = factory.get_image("digit_%d" % i).get_data()
+		assert_false(seen.has(key), "digit_%d duplicates digit_%d." % [i, seen.get(key, -1)])
+		seen[key] = i
 
 
 func test_digit_glyphs_are_deterministic() -> void:
