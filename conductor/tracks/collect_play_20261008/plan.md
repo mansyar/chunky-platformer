@@ -18,10 +18,10 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 
 ## Phase 3: Collection Juice Effects
 
-- [ ] Task: Write failing tests — pop effect (expanding ring + sparkles) spawns on collect and self-frees after its lifetime; effect node touches no physics bodies; `Robot.celebrate()` is visual-only (velocity unchanged, squash applied to sprite)
-- [ ] Task: Implement `src/fx/pop_effect.gd` + robot squash celebration
-- [ ] Task: Full gate run
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Write failing tests — pop effect (expanding ring + sparkles) spawns on collect and self-frees after its lifetime; effect node touches no physics bodies; `Robot.celebrate()` is visual-only (velocity unchanged, squash applied to sprite) [61a13a8]
+- [x] Task: Implement `src/fx/pop_effect.gd` + robot squash celebration [61a13a8]
+- [x] Task: Full gate run [61a13a8]
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [61a13a8]
 
 ## Phase 4: HUD Counter
 
