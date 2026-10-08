@@ -15,7 +15,7 @@
     && gd-tools lint clean
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 2: Pixel-Drawing DSL
+## Phase 2: Pixel-Drawing DSL [checkpoint: 34a9c8]
 
 - [x] Task: Write failing unit tests for DSL primitives [b758f7f]
   - rect, disc, outline, shade produce correct pixels on small test buffers
