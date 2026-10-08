@@ -7,11 +7,11 @@ class_name Palettes
 ## product guidelines for young children.
 
 const PALETTE_ROBOT := {
-	"body": Color("9fd8e8"),
-	"body_dark": Color("5a8fa8"),
+	"body": Color("f25c54"),
+	"body_dark": Color("b23e37"),
 	"eye": Color("ffffff"),
 	"eye_glow": Color("ffe066"),
-	"accent": Color("ff6b6b"),
+	"accent": Color("ffd93d"),
 }
 
 const AREA_PALETTES := {
