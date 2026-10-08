@@ -25,6 +25,9 @@ const LEVEL_SIZE := Rect2(0, 0, 640, 544)
 # be divided by the parent scale, silently quartering every speed and jump.
 const CAMERA_ZOOM := 4.0
 const TILE := 16
+# The area's palette name. Every generated asset in this level asks for it,
+# so the next area is a one-line change here rather than a hunt for literals.
+const PALETTE_NAME := "meadow"
 const ROBOT_HALF_HEIGHT := 14.0  # collider half-height (slim 28px box)
 
 # Key surfaces (world y of the walkable tops).
@@ -71,6 +74,7 @@ func _ready() -> void:
 	_build_camera(world, _robot)
 	_build_gems(world)
 	_counter = GemCounter.new()
+	_counter.palette = PALETTE_NAME
 	add_child(_counter)
 	add_child(TouchControls.new())
 
@@ -82,7 +86,7 @@ func _build_sky() -> void:
 	layer.layer = -1
 	add_child(layer)
 	var sky := Sprite2D.new()
-	sky.texture = AssetFactory.get_texture("sky_strip", "meadow")
+	sky.texture = AssetFactory.get_texture("sky_strip", PALETTE_NAME)
 	sky.centered = false
 	sky.region_enabled = true
 	sky.region_rect = Rect2(0, 0, 1280, 720)
@@ -150,12 +154,12 @@ func _build_tile_set() -> TileSet:
 	tile_set.tile_size = Vector2i(TILE, TILE)
 	tile_set.add_physics_layer()  # terrain tiles collide on the default layer
 	var source := TileSetAtlasSource.new()
-	source.texture = AssetFactory.get_tile_atlas("meadow")
+	source.texture = AssetFactory.get_tile_atlas(PALETTE_NAME)
 	source.texture_region_size = Vector2i(TILE, TILE)
 	for entry: Dictionary in AssetSpec.SPEC:
 		var kind: String = entry.get("kind", "")
 		if kind == "tile" or kind == "deco":
-			source.create_tile(AssetFactory.get_tile_atlas_coords(entry["name"], "meadow"))
+			source.create_tile(AssetFactory.get_tile_atlas_coords(entry["name"], PALETTE_NAME))
 	# Attach before touching TileData: collision layers only sync once
 	# the source belongs to the TileSet.
 	tile_set.add_source(source, 0)
@@ -182,7 +186,7 @@ func _build_tile_set() -> TileSet:
 
 
 func _coords(asset_name: String) -> Vector2i:
-	return AssetFactory.get_tile_atlas_coords(asset_name, "meadow")
+	return AssetFactory.get_tile_atlas_coords(asset_name, PALETTE_NAME)
 
 
 func _build_interactives(world: Node2D) -> void:
@@ -218,6 +222,7 @@ func _build_gems(world: Node2D) -> void:
 	for spot: Vector2 in GEM_SPOTS:
 		var gem := Gem.new()
 		gem.position = spot
+		gem.palette = PALETTE_NAME
 		gem.collected.connect(_on_gem_collected)
 		gem.respawned.connect(_on_gem_respawned)
 		world.add_child(gem)
@@ -237,12 +242,12 @@ func _on_gem_respawned(gem: Gem) -> void:
 
 
 func _gem_color() -> Color:
-	return Palettes.AREA_PALETTES["meadow"]["accent"]
+	return Palettes.AREA_PALETTES[PALETTE_NAME]["accent"]
 
 
 func _spawn_prop(asset_name: String, at: Vector2, world: Node2D) -> void:
 	var sprite := Sprite2D.new()
-	sprite.texture = AssetFactory.get_texture(asset_name, "meadow")
+	sprite.texture = AssetFactory.get_texture(asset_name, PALETTE_NAME)
 	sprite.position = at
 	world.add_child(sprite)
 

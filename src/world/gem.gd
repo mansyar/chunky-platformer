@@ -9,9 +9,15 @@ extends Area2D
 signal collected(gem: Gem)
 signal respawned(gem: Gem)
 
-## Seconds a collected gem stays hidden. Injectable so tests run fast;
-## production uses Tuning.GEM_RESPAWN_TIME.
+## Seconds a collected gem stays hidden. Passed to Timer.start() at both
+## call sites; injectable so tests run fast, production uses
+## Tuning.GEM_RESPAWN_TIME.
 var respawn_delay := Tuning.GEM_RESPAWN_TIME
+
+## Area palette, set by the level before the gem enters the tree. Gems tint
+## themselves to their own area - the cave's purple gems must not be meadow
+## yellow.
+var palette := "meadow"
 
 var _sprite: Sprite2D
 var _bob_time := 0.0
@@ -21,20 +27,19 @@ var _is_collected := false
 func _ready() -> void:
 	_sprite = Sprite2D.new()
 	_sprite.name = "Sprite"
-	_sprite.texture = AssetFactory.get_texture("gem", "meadow")
+	_sprite.texture = AssetFactory.get_texture("gem", palette)
 	add_child(_sprite)
 
 	var shape := CollisionShape2D.new()
 	shape.name = "Shape"
 	var circle := CircleShape2D.new()
-	circle.radius = 10.0
+	circle.radius = Tuning.GEM_PICKUP_RADIUS
 	shape.shape = circle
 	add_child(shape)
 
 	var timer := Timer.new()
 	timer.name = "RespawnTimer"
 	timer.one_shot = true
-	timer.wait_time = respawn_delay
 	timer.timeout.connect(_on_respawn_timer_timeout)
 	add_child(timer)
 

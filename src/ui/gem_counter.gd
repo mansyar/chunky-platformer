@@ -10,6 +10,10 @@ extends CanvasLayer
 const DIGIT_SIZE := Vector2(8.0, 12.0)
 const DIGIT_GAP := 8.0
 
+## Area palette, set by the level before the counter enters the tree so the
+## HUD icon matches the gems it is counting.
+var palette := "meadow"
+
 var _count := 0
 var _panel: Control
 var _icon: Sprite2D
@@ -26,7 +30,7 @@ func _ready() -> void:
 
 	_icon = Sprite2D.new()
 	_icon.name = "Icon"
-	_icon.texture = AssetFactory.get_texture("gem", "meadow")
+	_icon.texture = AssetFactory.get_texture("gem", palette)
 	_icon.scale = Vector2.ONE * Tuning.COUNTER_SCALE
 	_icon.position = Vector2(
 		Tuning.COUNTER_MARGIN.x + _icon_size().x / 2.0,
@@ -89,8 +93,8 @@ func _render_digits() -> void:
 			Tuning.COUNTER_MARGIN.x + icon_w + DIGIT_GAP + i * digit_w + digit_w / 2.0,
 			Tuning.COUNTER_MARGIN.y + _baseline() - digit_h / 2.0
 		)
-	for i: int in range(digits.length(), _digit_pool.size()):
-		_digit_pool[i].visible = false
+	# No shrink path: set_count() is monotonic, so the pool never holds more
+	# sprites than the current count shows.
 
 
 func _digit_sprite(index: int) -> Sprite2D:

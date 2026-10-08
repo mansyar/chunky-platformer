@@ -36,6 +36,30 @@ func test_gem_builds_sprite_and_sensor() -> void:
 	assert_true(gem.monitoring, "gem watches for bodies.")
 
 
+func test_gem_tints_itself_to_its_area() -> void:
+	# product.md promises three areas with distinct palettes; a cave gem must
+	# not be meadow yellow.
+	var gem: Area2D = load(GEM_SCRIPT).new()
+	gem.palette = "cave"
+	add_child(gem)
+	var sprite := gem.find_child("Sprite", true, false) as Sprite2D
+	assert_eq(
+		sprite.texture,
+		AssetFactory.get_texture("gem", "cave"),
+		"the gem uses the palette its area asked for."
+	)
+
+
+func test_gem_pickup_radius_comes_from_tuning() -> void:
+	var gem := _gem()
+	var circle := (gem.find_child("Shape", true, false) as CollisionShape2D).shape as CircleShape2D
+	assert_eq(
+		circle.radius,
+		Tuning.GEM_PICKUP_RADIUS,
+		"pickup size is tuned in one place, not hardcoded in the entity."
+	)
+
+
 func test_bob_math_is_a_bounded_sine() -> void:
 	assert_almost_eq(Gem.bob_offset(0.0), 0.0, 0.001, "bob starts at rest.")
 	var amp: float = Tuning.GEM_BOB_AMPLITUDE

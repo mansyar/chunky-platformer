@@ -55,6 +55,18 @@ func test_counter_uses_generated_art() -> void:
 	)
 
 
+func test_icon_tints_itself_to_its_area() -> void:
+	# The HUD icon must match the gems it counts in every area.
+	var counter: GemCounter = load("res://src/ui/gem_counter.gd").new()
+	counter.palette = "sunset"
+	add_child(counter)
+	assert_eq(
+		_icon(counter).texture,
+		AssetFactory.get_texture("gem", "sunset"),
+		"the icon uses the palette its area asked for."
+	)
+
+
 func test_increment_bump_scales_the_panel() -> void:
 	var counter := _counter()
 	var panel := _panel(counter)

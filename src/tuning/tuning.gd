@@ -45,6 +45,8 @@ const GEM_RESPAWN_TIME := 10.0  # seconds a collected gem stays hidden
 const GEM_BOB_AMPLITUDE := 3.0  # idle bob height in pixels
 # Idle bob angular speed in rad/s (~2 second period).
 const GEM_BOB_SPEED := 3.0
+# Generous: a toddler should never walk past a gem without collecting it.
+const GEM_PICKUP_RADIUS := 10.0
 # Collection juice (collect_play_20261008): pop ring + sparkle burst.
 const POP_LIFETIME := 0.45  # seconds the pop effect lives
 const POP_START_RADIUS := 4.0  # ring radius at birth
