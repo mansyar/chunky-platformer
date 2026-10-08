@@ -20,13 +20,13 @@ const GRAVITY := 600.0  # gentler than Godot's 980 for floaty toddler arcs
 const FALL_SPEED_CAP := 220.0  # terminal fall speed so drops never feel scary
 
 ## Trampoline
-const BOUNCE_IMPULSE := 400.0
+const BOUNCE_IMPULSE := 400.0  # ~6.7-tile arc: clears the bridge; higher than a jump
 # Toddler step assist: walking into a low ledge while holding a direction
 # gives an automatic hop onto it, so staircases need zero jump precision.
 # The boost rises ~44px (clears a 2-tile ledge with margin); the ledge
 # window is >2 tiles (32px) but well under 3 tiles (48px).
 const STEP_UP_BOOST := 230.0
-const STEP_UP_MAX_LEDGE := 34.0  # ~6.7-tile arc: clears the bridge; higher than a jump
+const STEP_UP_MAX_LEDGE := 34.0  # just over 2 tiles: the auto-hop ledge window
 
 ## Grace timers
 const COYOTE_TIME := 0.1  # seconds of forgiveness after walking off an edge

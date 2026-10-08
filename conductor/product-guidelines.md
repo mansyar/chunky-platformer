@@ -43,8 +43,9 @@ rules, or text comprehension, it is wrong for this product.
 - **Rendering:** All sprites drawn in code (Polygon2D / `_draw()` /
   procedurally generated textures). Shared art pipeline with palette
   parameters so area theming is a config change, not a rewrite.
-- **Animation:** Procedural (code-driven tweens and squash/stretch), no
-  frame-by-frame sprite sheets.
+- **Animation:** Multi-frame generated textures (idle/walk/jump/land) driven
+  by code — squash-and-stretch feel comes from authored frames, not runtime
+  tweens.
 
 ## Audio Style (Code-Generated)
 

@@ -1,9 +1,10 @@
 class_name FollowCamera
 extends Camera2D
-## Smooth two-axis follow camera clamped to the level bounds. Lives inside
-## the scaled world node, so its coordinates are world pixels and the view
-## covers view_half * 2 of them. The clamp uses the same bounds as the
-## invisible edge walls: the viewport edge never leaves the world.
+## Smooth two-axis follow camera clamped to the level bounds. The world is
+## built 1:1 (physics-safe — see the tech-stack scaling rule); the chunky
+## look comes from Camera2D.zoom, so its coordinates are world pixels and
+## the view covers view_half * 2 of them. The clamp uses the same bounds as
+## the invisible edge walls: the viewport edge never leaves the world.
 
 var target: Node2D
 var view_half := Vector2(160, 90)

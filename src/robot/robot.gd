@@ -1,11 +1,12 @@
 class_name Robot
 extends CharacterBody2D
 ## Robo, the toddler-safe explorer. Code-assembled per the Foundation
-## pattern (no hand-authored scenes). Phase 1 delivers horizontal movement
-## and facing state; jump/gravity arrive in Phase 2, the sprite in Phase 3.
+## pattern (no hand-authored scenes).
 ##
-## move_axis() is the pure ramp math (unit-tested without physics frames);
-## _physics_process only wires input to it and applies collisions.
+## move_axis()/update_jump()/update_gravity() are pure ramp math (unit-tested
+## without physics frames); _physics_process only wires input to them and
+## applies collisions. The step-assist hop makes low ledges climbable
+## hands-free (toddler anti-frustration rule).
 
 var facing := 1
 var _coyote_left := 0.0

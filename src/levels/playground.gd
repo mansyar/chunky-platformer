@@ -3,22 +3,22 @@ extends Node2D
 ##
 ## Topology (world pixels, tiles are 16px):
 ##   - Ground floor spans the full width (top at y=512).
-##   - A low hill on the left (top at y=448, cols 0-15).
-##   - A tall hill on the right (top at y=384, cols 24-39).
-##   - A valley shaft between them (cols 16-23): falling off either hill
+##   - A low hill on the left: staircase face cols 12-13 (top y=480), then a
+##     plateau (top y=448, cols 0-11).
+##   - A tall hill on the right: staircase faces at cols 24-25 (480),
+##     26-27 (448), 28-29 (416), then a plateau (top y=384, cols 30-39).
+##   - A valley shaft between them (cols 14-23): falling off either hill
 ##     lands safely on the ground floor.
 ##   - A one-way bridge (y=400) floats over the valley. A trampoline under
 ##     the bridge is an elevator: bouncing passes up through the one-way
-##     platform and Robo lands on top of it. From the bridge a single jump
-##     reaches the tall hill. A second trampoline on the low hill bounces
-##     Robo up to the bridge the same way.
+##     platform and Robo lands on top of it. The low-hill trampoline bounces
+##     Robo up onto the bridge the same way.
 ##
-## Layer steps are 64px and the bounce arc is ~85px, so every hop has a
-## comfortable margin. No hazards anywhere; walls close both ends and the
-## camera clamps to the same bounds.
+## Every height change is 2 tiles (32px) — a jump, or hands-free with the
+## step-assist hop; the bounce arc (~133px) clears the bridge. No hazards
+## anywhere; walls close both ends and the camera clamps to the same bounds.
 
 const LEVEL_COLS := 40
-const LEVEL_ROWS := 34
 const LEVEL_SIZE := Rect2(0, 0, 640, 544)
 # The world is built 1:1 (16px tiles) and the CAMERA zooms 4x for the chunky
 # look. Never scale a parent of physics bodies: move_and_slide motion would

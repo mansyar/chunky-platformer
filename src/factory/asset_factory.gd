@@ -335,15 +335,21 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 		"touch_left":
 			ops = [_disc(Vector2i(12, 12), 11, ac)]
 			for i: int in range(4):
-				ops.append(_rect(Rect2i(6 + i * 2, 11 - i, 2, 3 + i * 2), p["eye"]))
+				ops.append(
+					_rect(Rect2i(6 + i * 2, 11 - i, 2, 3 + i * 2), p.get("eye", Color.WHITE))
+				)
 		"touch_right":
 			ops = [_disc(Vector2i(12, 12), 11, ac)]
 			for i: int in range(4):
-				ops.append(_rect(Rect2i(15 - i * 2, 11 - i, 2, 3 + i * 2), p["eye"]))
+				ops.append(
+					_rect(Rect2i(15 - i * 2, 11 - i, 2, 3 + i * 2), p.get("eye", Color.WHITE))
+				)
 		"touch_jump":
 			ops = [_disc(Vector2i(12, 12), 11, ac)]
 			for i: int in range(4):
-				ops.append(_rect(Rect2i(11 - i, 8 + i * 2, 2 + i * 2, 2), p["eye"]))
+				ops.append(
+					_rect(Rect2i(11 - i, 8 + i * 2, 2 + i * 2, 2), p.get("eye", Color.WHITE))
+				)
 		_:
 			push_warning("AssetFactory: no generator for asset '%s'." % asset_name)
 	return ops
