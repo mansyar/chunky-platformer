@@ -60,7 +60,7 @@ func test_robot_frames_share_one_generation() -> void:
 func test_tile_atlas_geometry() -> void:
 	var atlas: Image = _factory().get_tile_atlas("meadow").get_image()
 	assert_eq(atlas.get_width(), 64, "atlas is 4 tiles wide.")
-	assert_eq(atlas.get_height(), 32, "atlas is 2 tiles tall for 8 entries.")
+	assert_eq(atlas.get_height(), 32, "atlas is 2 tiles tall for 7 world tiles.")
 	assert_eq(
 		_factory().get_tile_atlas_coords("tile_solid", "meadow"),
 		Vector2i(0, 0),
@@ -68,8 +68,8 @@ func test_tile_atlas_geometry() -> void:
 	)
 	assert_eq(
 		_factory().get_tile_atlas_coords("sky_strip", "meadow"),
-		Vector2i(3, 1),
-		"last atlas entry maps to the second row."
+		Vector2i(-1, -1),
+		"background assets are not packed into the tile atlas."
 	)
 
 

@@ -7,7 +7,7 @@ extends Node2D
 ## viewport shows a 320x180 chunk of world with chunky, toddler-sized art.
 
 const TILE: Vector2i = Vector2i(16, 16)
-const VIEW: Vector2i = Vector2i(320, 192)
+const VIEW: Vector2i = Vector2i(320, 180)
 const WORLD_SCALE := 4.0
 const GROUND_ROW := 10
 const ROBOT_GROUND_Y := 160.0
@@ -44,7 +44,7 @@ func _build_tiles(world: Node2D) -> void:
 	source.texture = AssetFactory.get_tile_atlas("meadow")
 	source.texture_region_size = TILE
 	for entry: Dictionary in AssetSpec.SPEC:
-		if entry["kind"] in ["tile", "deco", "background"]:
+		if entry["kind"] in ["tile", "deco"]:
 			source.create_tile(AssetFactory.get_tile_atlas_coords(entry["name"], "meadow"))
 	tile_set.add_source(source, 0)
 	var layer := TileMapLayer.new()

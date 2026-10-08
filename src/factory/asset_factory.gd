@@ -141,30 +141,38 @@ func warm_all() -> void:
 
 
 func get_image(asset_name: String, palette_name: String = "meadow") -> Image:
-	var entry: Dictionary = _spec_by_name.get(asset_name, {})
-	if entry.is_empty():
-		push_warning("AssetFactory: unknown asset '%s'." % asset_name)
+	var resolved := _resolve_palette(asset_name, palette_name)
+	if resolved.is_empty():
 		return null
-	var resolved := "robot" if entry["palette"] == "robot" else palette_name
 	var key := "%s|%s" % [asset_name, resolved]
 	if not _images.has(key):
 		var palette: Dictionary = (
 			Palettes.PALETTE_ROBOT if resolved == "robot" else Palettes.AREA_PALETTES[resolved]
 		)
-		_images[key] = _generate_image(entry, palette)
+		_images[key] = _generate_image(_spec_by_name[asset_name], palette)
 	return _images[key]
 
 
 func get_texture(asset_name: String, palette_name: String = "meadow") -> Texture2D:
-	var entry: Dictionary = _spec_by_name.get(asset_name, {})
-	if entry.is_empty():
-		push_warning("AssetFactory: unknown asset '%s'." % asset_name)
+	var resolved := _resolve_palette(asset_name, palette_name)
+	if resolved.is_empty():
 		return null
-	var resolved := "robot" if entry["palette"] == "robot" else palette_name
 	var key := "%s|%s" % [asset_name, resolved]
 	if not _textures.has(key):
 		_textures[key] = ImageTexture.create_from_image(get_image(asset_name, palette_name))
 	return _textures[key]
+
+
+## Resolves the palette actually used for an asset: robot frames always use
+## the fixed robot palette regardless of the area palette argument. Returns
+## an empty string for unknown assets (after warning), which callers treat
+## as a null result.
+func _resolve_palette(asset_name: String, palette_name: String) -> String:
+	var entry: Dictionary = _spec_by_name.get(asset_name, {})
+	if entry.is_empty():
+		push_warning("AssetFactory: unknown asset '%s'." % asset_name)
+		return ""
+	return "robot" if entry["palette"] == "robot" else palette_name
 
 
 ## Returns the packed atlas texture for all world tiles in one palette.
@@ -192,9 +200,11 @@ func get_tile_atlas_coords(asset_name: String, palette_name: String = "meadow") 
 
 
 func _atlas_entries() -> Array:
+	# Only tileable world art is packed into the atlas; background assets
+	# (the full-height sky strip) are consumed as standalone textures.
 	var out := []
 	for entry: Dictionary in AssetSpec.SPEC:
-		if entry["kind"] in ["tile", "deco", "background"]:
+		if entry["kind"] in ["tile", "deco"]:
 			out.append(entry)
 	return out
 
