@@ -12,6 +12,7 @@ config/features=PackedStringArray("4.7")
 [autoload]
 
 AssetFactory="*res://src/factory/asset_factory.gd"
+AudioFactory="*res://src/factory/audio_factory.gd"
 
 [display]
 
