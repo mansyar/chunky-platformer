@@ -24,7 +24,7 @@
 - [x] Task: Refactor DSL API for ergonomics (data-driven op lists), rerun tests [34a9c8]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 3: Palettes & Asset Spec
+## Phase 3: Palettes & Asset Spec [checkpoint: f8a9fd]
 
 - [x] Task: Write failing test for asset-spec completeness contract [f8a9fd]
   - Every spec entry must yield a factory output (name, dimensions, palette)
