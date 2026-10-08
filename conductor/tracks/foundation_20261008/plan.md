@@ -54,7 +54,7 @@
 
 ## Phase 5: Proof Scene
 
-- [ ] Task: Build proof scene
+- [~] Task: Build proof scene
   - Ground + platform + sky + decorations from generated tiles; robot idle
     frame standing on ground; set as main scene
 - [ ] Task: Full gate run: gd-tools format --check && gd-tools lint &&
