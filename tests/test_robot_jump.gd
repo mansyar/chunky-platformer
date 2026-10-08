@@ -103,12 +103,10 @@ func test_gravity_rests_on_floor() -> void:
 
 
 func test_jump_reaches_three_tiles() -> void:
-	# h = v^2 / (2g) — the analytic apex promised by Tuning's comment.
-	# Generously above 3 tiles so 2-tile steps clear with margin, but below
-	# 4 tiles so plateaus (4 tiles up) still require the stairs or a bounce.
+	# h = v^2 / (2g) — the analytic apex promised by Tuning's comment:
+	# 3 tiles high, enough to clear 2-tile steps but not 4-tile plateaus.
 	var height := Tuning.JUMP_IMPULSE * Tuning.JUMP_IMPULSE / (2.0 * Tuning.GRAVITY)
-	assert_gt(height, 3.0 * AssetSpec.TILE_SIZE.y, "jump apex clears 3 tiles.")
-	assert_lt(height, 4.0 * AssetSpec.TILE_SIZE.y, "jump apex cannot skip a 4-tile plateau.")
+	assert_almost_eq(height, 3.0 * AssetSpec.TILE_SIZE.y, 0.5, "jump apex is about 3 tiles high.")
 
 
 # --- physics integration (real floor) ---

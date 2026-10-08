@@ -15,7 +15,7 @@ const WALK_SPEED := 40.0  # 2.5 tiles/s
 const ACCEL_TIME := 0.1  # seconds to reach target speed (start and stop)
 
 ## Jump & gravity
-const JUMP_IMPULSE := 260.0  # apex ~56px (3.5 tiles): clears 2-tile steps generously
+const JUMP_IMPULSE := 240.0  # apex 48px = 3 tiles: clears 2-tile steps with margin
 const GRAVITY := 600.0  # gentler than Godot's 980 for floaty toddler arcs
 const FALL_SPEED_CAP := 220.0  # terminal fall speed so drops never feel scary
 
