@@ -17,7 +17,7 @@
 
 ## Phase 2: Pixel-Drawing DSL
 
-- [ ] Task: Write failing unit tests for DSL primitives
+- [~] Task: Write failing unit tests for DSL primitives
   - rect, disc, outline, shade produce correct pixels on small test buffers
     (edge cases: out-of-bounds, alpha, blend behavior)
 - [ ] Task: Implement DSL helpers to pass tests
