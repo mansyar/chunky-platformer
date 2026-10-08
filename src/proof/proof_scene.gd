@@ -89,7 +89,7 @@ func _build_tiles(world: Node2D) -> void:
 
 
 func _build_props(world: Node2D) -> void:
-	_add_prop(world, "gem", Vector2(16 * 16 + 8, 7 * 16 + 8))
+	_add_prop(world, "gem", Vector2(88.0, 120.0))
 	_add_prop(world, "key", Vector2(11 * 16 + 8, 6 * 16 - 8))
 	_add_prop(world, "door_locked", Vector2(280.0, ROBOT_GROUND_Y - 24.0))
 
