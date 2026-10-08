@@ -15,12 +15,18 @@ const WALK_SPEED := 40.0  # 2.5 tiles/s
 const ACCEL_TIME := 0.1  # seconds to reach target speed (start and stop)
 
 ## Jump & gravity
-const JUMP_IMPULSE := 240.0  # reaches 3 tiles high
+const JUMP_IMPULSE := 260.0  # apex ~56px (3.5 tiles): clears 2-tile steps generously
 const GRAVITY := 600.0  # gentler than Godot's 980 for floaty toddler arcs
 const FALL_SPEED_CAP := 220.0  # terminal fall speed so drops never feel scary
 
 ## Trampoline
-const BOUNCE_IMPULSE := 400.0  # ~6.7-tile arc: clears the bridge; higher than a jump
+const BOUNCE_IMPULSE := 400.0
+# Toddler step assist: walking into a low ledge while holding a direction
+# gives an automatic hop onto it, so staircases need zero jump precision.
+# The boost rises ~44px (clears a 2-tile ledge with margin); the ledge
+# window is >2 tiles (32px) but well under 3 tiles (48px).
+const STEP_UP_BOOST := 230.0
+const STEP_UP_MAX_LEDGE := 34.0  # ~6.7-tile arc: clears the bridge; higher than a jump
 
 ## Grace timers
 const COYOTE_TIME := 0.1  # seconds of forgiveness after walking off an edge

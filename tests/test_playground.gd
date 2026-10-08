@@ -112,6 +112,37 @@ func test_robot_spawns_on_valley_floor() -> void:
 	level.free()
 
 
+func test_trampoline_pads_have_visible_tiles() -> void:
+	var level: Node2D = _level()
+	var tiles: Node = _find_first(level, func(n: Node) -> bool: return n is TileMapLayer)
+	var layer := tiles as TileMapLayer
+	var pad_cells := [Vector2i(20, 31), Vector2i(11, 27)]
+	for cell: Vector2i in pad_cells:
+		assert_eq(
+			layer.get_cell_source_id(cell) != -1,
+			true,
+			"trampoline pad cell %s has visible art." % cell
+		)
+		assert_eq(
+			layer.get_cell_atlas_coords(cell),
+			AssetFactory.get_tile_atlas_coords("tile_trampoline", "meadow"),
+			"pad cell %s shows the trampoline tile." % cell
+		)
+	level.free()
+
+
+func test_trampoline_pads_match_their_areas() -> void:
+	var level: Node2D = _level()
+	var trampolines: Array = []
+	_find_all(level, func(n: Node) -> bool: return n is Trampoline, trampolines)
+	var tops: Array = []
+	for trampoline: Node in trampolines:
+		tops.append((trampoline as Node2D).position.y)
+	assert_true(tops.has(512.0), "a pad sits on the valley floor.")
+	assert_true(tops.has(448.0), "a pad sits on the low hill plateau.")
+	level.free()
+
+
 func test_physics_smoke_robot_lands_and_camera_follows() -> void:
 	var level: Node2D = _level()
 	var robot: Node = _find_first(level, func(n: Node) -> bool: return n is Robot)

@@ -101,10 +101,34 @@ func update_jump(delta: float, on_floor: bool, jump_just_pressed: bool) -> void:
 func update_gravity(delta: float, on_floor: bool) -> void:
 	# Gentler-than-default gravity with a terminal cap: long falls stay
 	# floaty and never feel scary (toddler anti-frustration rule).
-	if on_floor:
+	# A negative velocity.y (step-assist hop) must survive the floor zeroing
+	# on its launch frame, so only resting/falling bodies are zeroed.
+	if on_floor and velocity.y >= 0.0:
 		velocity.y = 0.0
 		return
 	velocity.y = minf(velocity.y + Tuning.GRAVITY * delta, Tuning.FALL_SPEED_CAP)
+
+
+func _try_step_assist(direction: float) -> void:
+	# Walking into a low ledge (up to ~2 tiles) while holding a direction
+	# hops Robo onto it automatically: staircases need zero jump precision.
+	if direction == 0.0 or not is_on_floor():
+		return
+	var hit_wall := false
+	for i: int in get_slide_collision_count():
+		if absf(get_slide_collision(i).get_normal().x) > 0.7:
+			hit_wall = true
+			break
+	if not hit_wall:
+		return
+	# Probe the space a ledge-height above Robo: if that spot is free and
+	# moving forward there is unobstructed, the ledge is low enough to hop.
+	var lifted := global_transform.translated(Vector2(0, -Tuning.STEP_UP_MAX_LEDGE))
+	if test_move(lifted, Vector2(0, -2.0)):
+		return  # no headroom above
+	if test_move(lifted, Vector2(direction * 6.0, 0.0)):
+		return  # the ledge is too tall
+	velocity.y = -Tuning.STEP_UP_BOOST
 
 
 func _physics_process(delta: float) -> void:
@@ -112,10 +136,14 @@ func _physics_process(delta: float) -> void:
 	# guard until then so headless tests never touch missing actions.
 	if not InputMap.has_action("move_left") or not InputMap.has_action("move_right"):
 		return
+	var axis := Input.get_axis("move_left", "move_right")
+	# Step assist probes LAST frame's slide collisions and may launch a hop;
+	# it must run before gravity so the boost is not zeroed on the floor.
+	_try_step_assist(axis)
 	var on_floor := is_on_floor()
 	var jump_pressed := InputMap.has_action("jump") and Input.is_action_just_pressed("jump")
 	update_gravity(delta, on_floor)
 	update_jump(delta, on_floor, jump_pressed)
-	move_axis(Input.get_axis("move_left", "move_right"), delta)
+	move_axis(axis, delta)
 	update_animation(delta, on_floor, absf(velocity.x) > 1.0)
 	move_and_slide()

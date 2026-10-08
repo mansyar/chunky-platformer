@@ -88,6 +88,9 @@ func _build_tiles(world: Node2D) -> void:
 		tile_map.set_cell(Vector2i(x, 30), 0, _coords("tile_grass_top"))
 		tile_map.set_cell(Vector2i(x, 31), 0, _coords("tile_solid"))
 	_place_deco(tile_map)
+	# Visible pads under each trampoline area (the Area2D itself is invisible).
+	tile_map.set_cell(Vector2i(20, 31), 0, _coords("tile_trampoline"))
+	tile_map.set_cell(Vector2i(11, 27), 0, _coords("tile_trampoline"))
 
 
 func _fill_ground(tile_map: TileMapLayer) -> void:
