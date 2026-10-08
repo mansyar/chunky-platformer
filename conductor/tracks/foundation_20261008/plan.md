@@ -63,3 +63,6 @@
   [18a1411]
   - Manual verification: fresh-clone run via editor, robot visible on
     generated world, no external assets loaded
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (conductor-review 2026-10-08: .godot/ ignored, .uid files tracked, project.godot restored, accessor dedup, atlas excludes background kind, VIEW comment fix) [c21fefe]
