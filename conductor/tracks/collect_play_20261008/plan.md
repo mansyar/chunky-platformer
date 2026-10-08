@@ -11,10 +11,10 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 
 ## Phase 2: Gem Entity & Collection State Machine
 
-- [ ] Task: Write failing tests — body overlap collects, gem hidden while collected, respawn after `Tuning.GEM_RESPAWN_TIME` with sparkle signal, endless collect/respawn cycles, pure bob math (sine), `collected`/`respawned` signals emitted
-- [ ] Task: Implement `src/world/gem.gd` (code-assembled Area2D, sine bob, timer-driven respawn)
-- [ ] Task: Full gate run
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Write failing tests — body overlap collects, gem hidden while collected, respawn after `Tuning.GEM_RESPAWN_TIME` with sparkle signal, endless collect/respawn cycles, pure bob math (sine), `collected`/`respawned` signals emitted [33c2713]
+- [x] Task: Implement `src/world/gem.gd` (code-assembled Area2D, sine bob, timer-driven respawn) [33c2713]
+- [x] Task: Full gate run [33c2713]
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [33c2713]
 
 ## Phase 3: Collection Juice Effects
 
