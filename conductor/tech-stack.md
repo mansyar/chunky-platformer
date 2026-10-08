@@ -6,6 +6,10 @@
 - **Language:** GDScript (typed where practical; no C#/GDExtension for v1)
 - **Scene model:** Node/scene composition; gameplay via `CharacterBody2D`,
   interactables via `Area2D`, world via `TileMapLayer`, UI via `CanvasLayer`
+- **Physics scaling rule:** physics bodies never live under a scaled parent:
+  `move_and_slide` motion is divided by the parent scale, silently quartering
+  speeds and jumps. The chunky look comes from `Camera2D.zoom` (4×) instead;
+  screen-space art (sky) lives on a `CanvasLayer` unaffected by zoom.
 
 ## Asset Generation (No External Assets) — All Pixel Art
 

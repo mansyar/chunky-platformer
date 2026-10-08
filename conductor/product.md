@@ -33,7 +33,9 @@ One full area takes a 4-year-old roughly 5–10 minutes.
 
 - **Movement:** CharacterBody2D with simplified gravity. Fixed walking speed
   (no acceleration curves), one-button jump with generous coyote time and
-  jump buffering. No precise timing is ever required.
+  jump buffering. Walking into a low ledge (up to two tiles) triggers an
+  automatic hop onto it — stairs and steps need zero jump precision. No
+  precise timing is ever required.
 - **Trampolines:** Area2D-based; landing applies a fixed upward impulse
   automatically — no input, no skill. They are the "reward" for falling.
 - **Safe falling:** The world is multi-layered (3–4 vertical layers). Every
