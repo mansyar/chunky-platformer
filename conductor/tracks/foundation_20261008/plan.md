@@ -40,7 +40,7 @@
 
 ## Phase 4: AssetFactory
 
-- [ ] Task: Write failing unit tests for factory logic
+- [~] Task: Write failing unit tests for factory logic
   - Generates every spec'd asset; caches by palette; typed accessors;
     repeated calls return cached objects
 - [ ] Task: Implement AssetFactory autoload (visual generation + cache +
