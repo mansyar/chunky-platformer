@@ -20,7 +20,7 @@ const GRAVITY := 600.0  # gentler than Godot's 980 for floaty toddler arcs
 const FALL_SPEED_CAP := 220.0  # terminal fall speed so drops never feel scary
 
 ## Trampoline
-const BOUNCE_IMPULSE := 320.0  # clearly higher than a normal jump
+const BOUNCE_IMPULSE := 400.0  # ~6.7-tile arc: clears the bridge; higher than a jump
 
 ## Grace timers
 const COYOTE_TIME := 0.1  # seconds of forgiveness after walking off an edge

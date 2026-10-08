@@ -60,16 +60,33 @@ func _build_tiles(world: Node2D) -> void:
 	tile_map.tile_set = _build_tile_set()
 	world.add_child(tile_map)
 	_fill_ground(tile_map)
-	# Low hill: sits flush on the ground floor.
-	for x: int in range(0, 16):
+	# Low hill with a jumpable staircase face: plateau cols 0-11 (top row 28),
+	# step cols 12-13 (top row 30). No sheer walls anywhere: a toddler walking
+	# along the ground can always hop up.
+	for x: int in range(0, 12):
 		tile_map.set_cell(Vector2i(x, 28), 0, _coords("tile_grass_top"))
 		for y: int in range(29, 32):
 			tile_map.set_cell(Vector2i(x, y), 0, _coords("tile_solid"))
-	# Tall hill: sits flush on the ground floor.
-	for x: int in range(24, LEVEL_COLS):
+	for x: int in range(12, 14):
+		tile_map.set_cell(Vector2i(x, 30), 0, _coords("tile_grass_top"))
+		tile_map.set_cell(Vector2i(x, 31), 0, _coords("tile_solid"))
+	# Tall hill with a 2-tile staircase: plateau cols 30-39 (top row 24),
+	# steps at cols 28-29 (row 26), 26-27 (row 28), 24-25 (row 30).
+	for x: int in range(30, LEVEL_COLS):
 		tile_map.set_cell(Vector2i(x, 24), 0, _coords("tile_grass_top"))
 		for y: int in range(25, 32):
 			tile_map.set_cell(Vector2i(x, y), 0, _coords("tile_solid"))
+	for x: int in range(28, 30):
+		tile_map.set_cell(Vector2i(x, 26), 0, _coords("tile_grass_top"))
+		for y: int in range(27, 32):
+			tile_map.set_cell(Vector2i(x, y), 0, _coords("tile_solid"))
+	for x: int in range(26, 28):
+		tile_map.set_cell(Vector2i(x, 28), 0, _coords("tile_grass_top"))
+		for y: int in range(29, 32):
+			tile_map.set_cell(Vector2i(x, y), 0, _coords("tile_solid"))
+	for x: int in range(24, 26):
+		tile_map.set_cell(Vector2i(x, 30), 0, _coords("tile_grass_top"))
+		tile_map.set_cell(Vector2i(x, 31), 0, _coords("tile_solid"))
 	_place_deco(tile_map)
 
 
@@ -81,9 +98,9 @@ func _fill_ground(tile_map: TileMapLayer) -> void:
 
 func _place_deco(tile_map: TileMapLayer) -> void:
 	var deco := {
-		"deco_grass_tuft": [Vector2i(3, 27), Vector2i(26, 23), Vector2i(17, 31)],
-		"deco_flower": [Vector2i(8, 27), Vector2i(30, 23), Vector2i(20, 31)],
-		"deco_rock": [Vector2i(12, 27), Vector2i(35, 23), Vector2i(22, 31)],
+		"deco_grass_tuft": [Vector2i(3, 27), Vector2i(32, 23), Vector2i(17, 31)],
+		"deco_flower": [Vector2i(8, 27), Vector2i(35, 23), Vector2i(20, 31)],
+		"deco_rock": [Vector2i(10, 27), Vector2i(37, 23), Vector2i(22, 31)],
 	}
 	for asset_name: String in deco:
 		for cell: Vector2i in deco[asset_name]:
@@ -133,10 +150,10 @@ func _coords(asset_name: String) -> Vector2i:
 func _build_interactives(world: Node2D) -> void:
 	# Elevator trampoline under the bridge + a bouncy pad on the low hill.
 	_spawn_trampoline(Vector2(328, GROUND_TOP), world)
-	_spawn_trampoline(Vector2(248, LOW_HILL_TOP), world)
-	# One-way bridge over the valley.
-	var bridge: StaticBody2D = LevelParts.one_way_platform(96.0)
-	bridge.position = Vector2(304, BRIDGE_Y)
+	_spawn_trampoline(Vector2(176, LOW_HILL_TOP), world)
+	# One-way bridge over the valley (the elevator pops Robo through it).
+	var bridge: StaticBody2D = LevelParts.one_way_platform(144.0)
+	bridge.position = Vector2(280, BRIDGE_Y)
 	world.add_child(bridge)
 	# Invisible walls close the level ends; the camera clamps to the same
 	# bounds, so the viewport edge never leaves the world.
