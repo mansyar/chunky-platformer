@@ -52,3 +52,6 @@
 - [x] Task: Full gate run [42bcef5]
 - [x] Task: Manual verification plan [42bcef5]
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [42bcef5]
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions [dcf239a] (conductor-review 2026-10-08: stale topology/architecture headers corrected in playground.gd, follow_camera.gd, robot.gd; BOUNCE_IMPULSE comment moved off STEP_UP_MAX_LEDGE; unused LEVEL_ROWS removed; ui generator p["eye"] fallback; product-guidelines.md animation line aligned with the approved multi-frame decision)
