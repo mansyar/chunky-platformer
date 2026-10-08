@@ -240,15 +240,16 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 	var gd: Color = p["ground_dark"]
 	var gr: Color = p["grass"]
 	var ac: Color = p["accent"]
+	var ops: Array = []
 	match asset_name:
 		"tile_solid":
-			return [
+			ops = [
 				_rect(Rect2i(0, 0, 16, 16), g),
 				_rect(Rect2i(0, 13, 16, 3), gd),
 				_outline(Rect2i(0, 0, 16, 16), gd),
 			]
 		"tile_grass_top":
-			return [
+			ops = [
 				_rect(Rect2i(0, 0, 16, 16), g),
 				_rect(Rect2i(0, 0, 16, 4), gr),
 				_rect(Rect2i(3, 0, 2, 2), g),
@@ -257,13 +258,13 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				_outline(Rect2i(0, 0, 16, 16), gd),
 			]
 		"tile_platform":
-			return [
+			ops = [
 				_rect(Rect2i(0, 4, 16, 8), g),
 				_rect(Rect2i(0, 4, 16, 3), gr),
 				_outline(Rect2i(0, 4, 16, 8), gd),
 			]
 		"tile_trampoline":
-			return [
+			ops = [
 				_rect(Rect2i(3, 8, 2, 6), gd),
 				_rect(Rect2i(11, 8, 2, 6), gd),
 				_rect(Rect2i(1, 12, 14, 4), gd),
@@ -271,25 +272,25 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				_shade(Rect2i(0, 6, 16, 2), Color(gd, 0.5)),
 			]
 		"deco_grass_tuft":
-			return [
+			ops = [
 				_rect(Rect2i(7, 7, 2, 9), gr),
 				_rect(Rect2i(4, 10, 2, 6), gr),
 				_rect(Rect2i(10, 10, 2, 6), gr),
 			]
 		"deco_rock":
-			return [
+			ops = [
 				_rect(Rect2i(5, 5, 6, 4), g),
 				_rect(Rect2i(3, 7, 10, 9), g),
 				_shade(Rect2i(3, 12, 10, 4), Color(gd, 0.5)),
 			]
 		"deco_flower":
-			return [
+			ops = [
 				_rect(Rect2i(7, 9, 2, 7), gr),
 				_disc(Vector2i(8, 6), 3, ac),
 				_disc(Vector2i(8, 6), 1, gd),
 			]
 		"gem":
-			return [
+			ops = [
 				_rect(Rect2i(6, 3, 4, 2), ac),
 				_rect(Rect2i(4, 5, 8, 4), ac),
 				_rect(Rect2i(2, 7, 12, 4), ac),
@@ -298,14 +299,14 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				_shade(Rect2i(5, 5, 3, 3), Color(1.0, 1.0, 1.0, 0.5)),
 			]
 		"key":
-			return [
+			ops = [
 				_disc(Vector2i(5, 5), 4, ac),
 				_clear(Rect2i(3, 3, 5, 5)),
 				_rect(Rect2i(9, 6, 6, 2), ac),
 				_rect(Rect2i(12, 8, 2, 3), ac),
 			]
 		"door_locked":
-			return [
+			ops = [
 				_rect(Rect2i(3, 3, 26, 44), g),
 				_shade(Rect2i(8, 3, 2, 44), Color(gd, 0.4)),
 				_shade(Rect2i(16, 3, 2, 44), Color(gd, 0.4)),
@@ -315,13 +316,14 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				_disc(Vector2i(16, 24), 2, gd),
 			]
 		"door_open":
-			return [
+			ops = [
 				_rect(Rect2i(3, 3, 26, 44), p["sky_bottom"]),
 				_shade(Rect2i(3, 3, 26, 44), Color(ac, 0.25)),
 				_outline(Rect2i(1, 1, 30, 46), gd),
 			]
-	push_warning("AssetFactory: no generator for asset '%s'." % asset_name)
-	return []
+		_:
+			push_warning("AssetFactory: no generator for asset '%s'." % asset_name)
+	return ops
 
 
 # --- procedural draws (beyond rect/disc ops) ---------------------------------
