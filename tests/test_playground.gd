@@ -32,6 +32,21 @@ func _find_all(node: Node, callback: Callable, into: Array) -> void:
 # --- scene wiring ---
 
 
+func test_physics_world_is_unscaled_and_camera_zooms() -> void:
+	var level: Node2D = _level()
+	var world: Node2D = level.get_node("World")
+	assert_eq(
+		world.scale, Vector2.ONE, "the world is 1:1 - physics never lives under a scaled parent."
+	)
+	var camera: Node = _find_first(level, func(n: Node) -> bool: return n is Camera2D)
+	assert_eq(
+		(camera as Camera2D).zoom,
+		Vector2(4.0, 4.0),
+		"the camera zooms 4x for the chunky look instead."
+	)
+	level.free()
+
+
 func test_main_scene_is_playground() -> void:
 	assert_eq(
 		ProjectSettings.get_setting("application/run/main_scene", ""),

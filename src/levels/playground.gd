@@ -20,7 +20,10 @@ extends Node2D
 const LEVEL_COLS := 40
 const LEVEL_ROWS := 34
 const LEVEL_SIZE := Rect2(0, 0, 640, 544)
-const WORLD_SCALE := 4.0
+# The world is built 1:1 (16px tiles) and the CAMERA zooms 4x for the chunky
+# look. Never scale a parent of physics bodies: move_and_slide motion would
+# be divided by the parent scale, silently quartering every speed and jump.
+const CAMERA_ZOOM := 4.0
 const TILE := 16
 const ROBOT_HALF_HEIGHT := 14.0  # collider half-height (slim 28px box)
 
@@ -35,7 +38,6 @@ func _ready() -> void:
 	_build_sky()
 	var world := Node2D.new()
 	world.name = "World"
-	world.scale = Vector2.ONE * WORLD_SCALE
 	add_child(world)
 	_build_tiles(world)
 	_build_interactives(world)
@@ -46,13 +48,18 @@ func _ready() -> void:
 
 
 func _build_sky() -> void:
+	# Screen-space sky: a CanvasLayer ignores the camera zoom, so the
+	# gradient keeps one texel per screen row (no banding) at any zoom.
+	var layer := CanvasLayer.new()
+	layer.layer = -1
+	add_child(layer)
 	var sky := Sprite2D.new()
 	sky.texture = AssetFactory.get_texture("sky_strip", "meadow")
 	sky.centered = false
 	sky.region_enabled = true
 	sky.region_rect = Rect2(0, 0, 1280, 720)
 	sky.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	add_child(sky)  # added before the world, so it renders behind it
+	layer.add_child(sky)
 
 
 func _build_tiles(world: Node2D) -> void:
@@ -198,6 +205,7 @@ func _build_robot(world: Node2D) -> Robot:
 func _build_camera(world: Node2D, robot: Robot) -> void:
 	var camera := FollowCamera.new()
 	camera.view_half = Vector2(160, 90)
+	camera.zoom = Vector2.ONE * CAMERA_ZOOM
 	camera.set_bounds(LEVEL_SIZE)
 	camera.target = robot
 	world.add_child(camera)
