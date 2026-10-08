@@ -21,7 +21,7 @@
   - rect, disc, outline, shade produce correct pixels on small test buffers
     (edge cases: out-of-bounds, alpha, blend behavior)
 - [x] Task: Implement DSL helpers to pass tests [b758f7f]
-- [~] Task: Refactor DSL API for ergonomics (data-driven op lists), rerun tests
+- [x] Task: Refactor DSL API for ergonomics (data-driven op lists), rerun tests [34a9c8]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Palettes & Asset Spec
