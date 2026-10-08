@@ -92,6 +92,44 @@ func test_outline_clips_out_of_bounds() -> void:
 	assert_eq(img.get_pixel(0, 0), TRANSPARENT, "clipped outline does not paint interior pixels.")
 
 
+# --- op lists ---------------------------------------------------------------
+
+
+func test_apply_executes_op_list_in_order() -> void:
+	var img := _new_img()
+	var ops: Array = [
+		{"op": "rect", "region": Rect2i(0, 0, 4, 4), "color": BLUE},
+		{"op": "shade", "region": Rect2i(0, 0, 2, 2), "color": HALF_ALPHA_GREEN},
+		{"op": "outline", "region": Rect2i(0, 0, 4, 4), "color": RED},
+	]
+	PixelDsl.apply(img, ops)
+	assert_almost_eq(
+		img.get_pixel(1, 1).g, 0.5, 0.01, "apply shades interior pixel (order: rect then shade)."
+	)
+	assert_eq(img.get_pixel(0, 0), RED, "apply paints outline last (order respected).")
+	assert_eq(img.get_pixel(2, 0), RED, "apply outlines the top edge.")
+
+
+func test_apply_skips_unknown_ops() -> void:
+	var img := _new_img()
+	var ops: Array = [
+		{"op": "blur", "region": Rect2i(0, 0, 4, 4), "color": RED},
+		{"op": "rect", "region": Rect2i(0, 0, 1, 1), "color": RED},
+	]
+	PixelDsl.apply(img, ops)
+	assert_eq(img.get_pixel(0, 0), RED, "apply continues past unknown op entries.")
+
+
+func test_apply_with_disc_op() -> void:
+	var img := _new_img()
+	var ops: Array = [
+		{"op": "disc", "center": Vector2i(1, 1), "radius": 1, "color": BLUE},
+	]
+	PixelDsl.apply(img, ops)
+	assert_eq(img.get_pixel(1, 1), BLUE, "apply dispatches disc ops.")
+	assert_eq(img.get_pixel(0, 0), TRANSPARENT, "apply dispatches disc ops (corner untouched).")
+
+
 # --- shade ------------------------------------------------------------------
 
 

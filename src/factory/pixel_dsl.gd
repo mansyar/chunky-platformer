@@ -62,3 +62,29 @@ static func shade(img: Image, region: Rect2i, color: Color) -> void:
 	for x in range(clipped.position.x, clipped.end.x):
 		for y in range(clipped.position.y, clipped.end.y):
 			img.set_pixel(x, y, img.get_pixel(x, y).blend(color))
+
+
+## Executes a data-driven list of drawing operations, in order.
+##
+## Each entry is a Dictionary with an "op" key naming a primitive plus its
+## arguments, e.g. {"op": "rect", "region": Rect2i(...), "color": Color(...)}.
+## Asset generators build these lists as plain data (easy to construct,
+## serialize, and test) and hand them here for execution. Unknown op names
+## are skipped rather than raising, so op lists can be shared across
+## generator versions.
+static func apply(img: Image, ops: Array) -> void:
+	for op_data: Dictionary in ops:
+		match op_data.get("op", ""):
+			"rect":
+				rect(img, op_data.get("region", Rect2i()), op_data.get("color", Color()))
+			"disc":
+				disc(
+					img,
+					op_data.get("center", Vector2i.ZERO),
+					op_data.get("radius", 0),
+					op_data.get("color", Color()),
+				)
+			"outline":
+				outline(img, op_data.get("region", Rect2i()), op_data.get("color", Color()))
+			"shade":
+				shade(img, op_data.get("region", Rect2i()), op_data.get("color", Color()))
