@@ -6,6 +6,10 @@ extends CanvasLayer
 ## perfectly on-theme at any resolution. The count only ever grows — there is
 ## no total and nothing to read beyond "more is better" (toddler rule).
 
+## Generated glyph canvas, mirroring the digit_* asset spec (8x12).
+const DIGIT_SIZE := Vector2(8.0, 12.0)
+const DIGIT_GAP := 8.0
+
 var _count := 0
 var _panel: Control
 var _icon: Sprite2D
@@ -24,7 +28,10 @@ func _ready() -> void:
 	_icon.name = "Icon"
 	_icon.texture = AssetFactory.get_texture("gem", "meadow")
 	_icon.scale = Vector2.ONE * Tuning.COUNTER_SCALE
-	_icon.position = Tuning.COUNTER_MARGIN
+	_icon.position = Vector2(
+		Tuning.COUNTER_MARGIN.x + _icon_size().x / 2.0,
+		Tuning.COUNTER_MARGIN.y + _baseline() - _icon_size().y / 2.0
+	)
 	_panel.add_child(_icon)
 
 
@@ -55,20 +62,32 @@ func _bump() -> void:
 	_bump_tween.tween_property(_panel, "scale", Vector2.ONE, Tuning.COUNTER_BUMP_TIME * 0.6)
 
 
+## Shared bottom edge for the icon and the digits: the tallest element (the
+## 16px gem) defines it, so the shorter 12px digits sit on the same line
+## instead of hanging below or floating above the icon.
+func _baseline() -> float:
+	return maxf(_icon_size().y, DIGIT_SIZE.y * Tuning.COUNTER_SCALE)
+
+
+func _icon_size() -> Vector2:
+	var texture := AssetFactory.get_texture("gem", "meadow")
+	return Vector2(texture.get_width(), texture.get_height()) * Tuning.COUNTER_SCALE
+
+
 ## Lay out one pooled sprite per digit of the current count, hiding the rest.
 ## Sprite2D positions are centers, so each slot shifts by half its own size.
 func _render_digits() -> void:
 	var digits := str(_count)
-	var icon_w := _icon.texture.get_width() * Tuning.COUNTER_SCALE
-	var digit_w := 8.0 * Tuning.COUNTER_SCALE
-	var digit_h := 12.0 * Tuning.COUNTER_SCALE
+	var icon_w := _icon_size().x
+	var digit_w := DIGIT_SIZE.x * Tuning.COUNTER_SCALE
+	var digit_h := DIGIT_SIZE.y * Tuning.COUNTER_SCALE
 	for i: int in range(digits.length()):
 		var sprite := _digit_sprite(i)
 		sprite.texture = AssetFactory.get_texture("digit_%s" % digits[i])
 		sprite.visible = true
 		sprite.position = Vector2(
-			Tuning.COUNTER_MARGIN.x + icon_w + 8.0 + i * digit_w + digit_w / 2.0,
-			Tuning.COUNTER_MARGIN.y + digit_h / 2.0
+			Tuning.COUNTER_MARGIN.x + icon_w + DIGIT_GAP + i * digit_w + digit_w / 2.0,
+			Tuning.COUNTER_MARGIN.y + _baseline() - digit_h / 2.0
 		)
 	for i: int in range(digits.length(), _digit_pool.size()):
 		_digit_pool[i].visible = false

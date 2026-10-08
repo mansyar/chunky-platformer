@@ -101,6 +101,30 @@ func test_counter_sits_in_the_top_left_corner() -> void:
 	assert_gt(digits[0].global_position.x, icon.global_position.x, "digits follow the icon.")
 
 
+func test_icon_and_digits_are_baseline_aligned() -> void:
+	# The icon and the number must sit on one visual line: a toddler should
+	# read "14 gems", not a gem floating above a number. Digits are 12px tall
+	# and the icon 16px, so alignment is on the shared bottom edge.
+	var counter := _counter()
+	counter.set_count(14)
+	var icon := _icon(counter)
+	var digits := _visible_digits(counter)
+	var icon_bottom: float = icon.global_position.y + _scaled_height(icon) / 2.0
+	var digit_bottom: float = digits[0].global_position.y + _scaled_height(digits[0]) / 2.0
+	assert_almost_eq(
+		icon_bottom,
+		digit_bottom,
+		0.01,
+		"the gem icon's bottom edge lines up with the digits' bottom edge."
+	)
+
+
+## Sprite2D is centered, so its rendered height spans half above and below
+## the node position: bottom edge = y + half height.
+func _scaled_height(sprite: Sprite2D) -> float:
+	return sprite.texture.get_height() * sprite.scale.y
+
+
 func test_bump_retrigger_is_safe() -> void:
 	var counter := _counter()
 	counter.increment()
