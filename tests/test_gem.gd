@@ -70,12 +70,25 @@ func test_walking_into_a_gem_collects_it() -> void:
 	assert_true(gem.is_collected(), "gem reports collected state.")
 
 
-func test_collected_gem_hides_and_stops_watching() -> void:
+func test_collected_gem_hides_its_art() -> void:
 	var gem := _gem()
 	var sprite := gem.find_child("Sprite", true, false) as Sprite2D
 	gem.collect()
 	assert_true(gem.is_collected(), "gem is collected.")
 	assert_false(sprite.visible, "collected gem hides its art.")
+
+
+func test_gem_waits_for_the_body_to_leave_before_respawning() -> void:
+	# A gem must not pop back under the body that just took it.
+	var gem := _gem()
+	gem.respawn_delay = 0.05
+	var body := _body_at(Vector2.ZERO)
+	gem.collect()
+	await get_tree().create_timer(0.2).timeout
+	assert_true(gem.is_collected(), "gem stays hidden while Robo stands on the spot.")
+	body.queue_free()
+	await get_tree().create_timer(0.3).timeout
+	assert_false(gem.is_collected(), "gem returns once the spot is clear.")
 
 
 func test_gem_respawns_after_its_delay() -> void:

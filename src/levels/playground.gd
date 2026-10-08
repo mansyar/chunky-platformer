@@ -33,6 +33,31 @@ const LOW_HILL_TOP := 448.0
 const TALL_HILL_TOP := 384.0
 const BRIDGE_Y := 400.0
 
+# Handcrafted gem spots in world pixels, grouped by how Robo reaches them.
+# Placement is measured against real surfaces: walk gems hover 12px above a
+# surface top, jump gems sit exactly one jump apex (48px) above one, bounce
+# gems ride the trampoline arcs (~133px) and nothing else reaches them.
+const GEM_SPOTS: Array[Vector2] = [
+	# walk tier — plain walking pickups
+	Vector2(60, 436),  # low hill plateau
+	Vector2(140, 436),  # low hill plateau
+	Vector2(240, 500),  # valley floor, left of the elevator trampoline
+	Vector2(380, 500),  # valley floor
+	Vector2(440, 500),  # valley floor, right side
+	Vector2(416, 436),  # middle staircase step of the tall hill
+	Vector2(520, 372),  # tall hill plateau
+	Vector2(600, 372),  # tall hill plateau, far right
+	# jump tier — one clean jump apex above a surface
+	Vector2(270, 464),  # mid-air over the valley floor
+	Vector2(560, 336),  # mid-air over the tall hill plateau
+	# bounce tier — only the trampoline arcs reach this high
+	Vector2(328, 392),  # riding the bridge elevator
+	Vector2(176, 328),  # riding the low-hill trampoline
+]
+
+var _robot: Robot
+var _counter: GemCounter
+
 
 func _ready() -> void:
 	_build_sky()
@@ -42,8 +67,11 @@ func _ready() -> void:
 	_build_tiles(world)
 	_build_interactives(world)
 	_build_props(world)
-	var robot: Robot = _build_robot(world)
-	_build_camera(world, robot)
+	_robot = _build_robot(world)
+	_build_camera(world, _robot)
+	_build_gems(world)
+	_counter = GemCounter.new()
+	add_child(_counter)
 	add_child(TouchControls.new())
 
 
@@ -182,9 +210,34 @@ func _spawn_trampoline(at: Vector2, world: Node2D) -> void:
 
 
 func _build_props(world: Node2D) -> void:
-	_spawn_prop("gem", Vector2(88, 424), world)
 	_spawn_prop("key", Vector2(600, 352), world)
 	_spawn_prop("door_locked", Vector2(520, 360), world)
+
+
+func _build_gems(world: Node2D) -> void:
+	for spot: Vector2 in GEM_SPOTS:
+		var gem := Gem.new()
+		gem.position = spot
+		gem.collected.connect(_on_gem_collected)
+		gem.respawned.connect(_on_gem_respawned)
+		world.add_child(gem)
+
+
+func _on_gem_collected(gem: Gem) -> void:
+	# Juice must never interrupt play: the ring pops, the counter bumps, Robo
+	# squashes — and his velocity is untouched.
+	PopEffect.spawn(gem.get_parent(), gem.global_position, _gem_color())
+	_counter.increment()
+	_robot.celebrate()
+
+
+func _on_gem_respawned(gem: Gem) -> void:
+	# The returning gem announces itself with the same sparkle burst.
+	PopEffect.spawn(gem.get_parent(), gem.global_position, _gem_color())
+
+
+func _gem_color() -> Color:
+	return Palettes.AREA_PALETTES["meadow"]["accent"]
 
 
 func _spawn_prop(asset_name: String, at: Vector2, world: Node2D) -> void:

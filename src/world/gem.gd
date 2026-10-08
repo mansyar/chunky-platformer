@@ -61,23 +61,30 @@ func is_collected() -> bool:
 
 
 ## Collect the gem. Idempotent: repeated calls while hidden do nothing.
-## Monitoring is disabled with set_deferred because collection can arrive
-## from a physics callback (body_entered) where flushing is forbidden.
+## The sensor stays live while hidden so the respawn can check whether
+## Robo has stepped off the spot.
 func collect() -> void:
 	if _is_collected:
 		return
 	_is_collected = true
 	_sprite.visible = false
-	set_deferred("monitoring", false)
 	var timer := get_node("RespawnTimer") as Timer
 	timer.start(respawn_delay)
 	collected.emit(self)
 
 
 func _on_respawn_timer_timeout() -> void:
+	# Wait until the body that took the gem has stepped off: a gem must
+	# never pop back underneath Robo and pop straight off again (free gems
+	# would inflate the counter and the gem would look like it never left).
+	# Only movers count — static geometry such as the bridge above a gem is
+	# irrelevant and would block the respawn forever.
+	for body: Node2D in get_overlapping_bodies():
+		if body is CharacterBody2D:
+			(get_node("RespawnTimer") as Timer).start(respawn_delay)
+			return
 	_is_collected = false
 	_sprite.visible = true
-	set_deferred("monitoring", true)
 	respawned.emit(self)
 
 
