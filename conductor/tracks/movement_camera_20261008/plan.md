@@ -48,7 +48,7 @@
 
 ## Phase 7: Playground Level & Integration
 - [ ] Task: Write failing tests — playground level structure: multi-layer tile terrain (~2 screens × 3 layers), ≥1 trampoline area, one-way platforms, edge walls, Robo spawn, camera limits match level bounds
-- [ ] Task: Implement `src/levels/playground.gd` + minimal `.tscn` root; delete `src/proof/`; set as main scene in `project.godot`
+- [x] Task: Implement `src/levels/playground.gd` + minimal `.tscn` root; delete `src/proof/`; set as main scene in `project.godot` [efb0399]
 - [ ] Task: Full gate run — format, lint, complete suite with coverage ≥80%
 - [ ] Task: Manual verification plan — run the game: walk both directions, jump, bounce on trampoline, fall between layers, camera clamp at edges, touch buttons toggle on keyboard use
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
