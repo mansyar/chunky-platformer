@@ -130,6 +130,25 @@ func test_apply_with_disc_op() -> void:
 	assert_eq(img.get_pixel(0, 0), TRANSPARENT, "apply dispatches disc ops (corner untouched).")
 
 
+func test_clear_resets_region_to_transparent() -> void:
+	var img := _new_img()
+	PixelDsl.rect(img, Rect2i(0, 0, 4, 4), RED)
+	PixelDsl.clear(img, Rect2i(1, 1, 2, 2))
+	assert_eq(img.get_pixel(1, 1), TRANSPARENT, "clear resets covered pixels to transparent.")
+	assert_eq(img.get_pixel(0, 0), RED, "clear does not touch pixels outside the region.")
+
+
+func test_apply_dispatches_clear_op() -> void:
+	var img := _new_img()
+	var ops: Array = [
+		{"op": "rect", "region": Rect2i(0, 0, 4, 4), "color": RED},
+		{"op": "clear", "region": Rect2i(2, 2, 2, 2)},
+	]
+	PixelDsl.apply(img, ops)
+	assert_eq(img.get_pixel(2, 2), TRANSPARENT, "apply dispatches clear ops.")
+	assert_eq(img.get_pixel(0, 0), RED, "clear op leaves the rest intact.")
+
+
 # --- shade ------------------------------------------------------------------
 
 

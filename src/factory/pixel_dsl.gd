@@ -64,6 +64,13 @@ static func shade(img: Image, region: Rect2i, color: Color) -> void:
 			img.set_pixel(x, y, img.get_pixel(x, y).blend(color))
 
 
+static func clear(img: Image, region: Rect2i) -> void:
+	var clipped := region.intersection(Rect2i(Vector2i.ZERO, img.get_size()))
+	for x in range(clipped.position.x, clipped.end.x):
+		for y in range(clipped.position.y, clipped.end.y):
+			img.set_pixel(x, y, Color(0.0, 0.0, 0.0, 0.0))
+
+
 ## Executes a data-driven list of drawing operations, in order.
 ##
 ## Each entry is a Dictionary with an "op" key naming a primitive plus its
@@ -88,3 +95,5 @@ static func apply(img: Image, ops: Array) -> void:
 				outline(img, op_data.get("region", Rect2i()), op_data.get("color", Color()))
 			"shade":
 				shade(img, op_data.get("region", Rect2i()), op_data.get("color", Color()))
+			"clear":
+				clear(img, op_data.get("region", Rect2i()))

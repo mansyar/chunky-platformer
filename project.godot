@@ -9,6 +9,10 @@ config_version=5
 config/name="Robo's Treasure Hunt"
 config/features=PackedStringArray("4.7")
 
+[autoload]
+
+AssetFactory="*res://src/factory/asset_factory.gd"
+
 [display]
 
 window/size/viewport_width=1280
