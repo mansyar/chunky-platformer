@@ -40,15 +40,16 @@
 
 ## Phase 4: AssetFactory
 
-- [~] Task: Write failing unit tests for factory logic
+- [x] Task: Write failing unit tests for factory logic [3e6c711]
   - Generates every spec'd asset; caches by palette; typed accessors;
     repeated calls return cached objects
-- [ ] Task: Implement AssetFactory autoload (visual generation + cache +
-  accessors) to pass tests
-- [ ] Task: Add audio-generation stub interface (no-op implementations)
-- [ ] Task: Pin snapshot tests for key outputs (robot frames, tile atlas,
-  gem, key, door) and lock determinism
-- [ ] Task: Verify startup generation completes in < 1 second
+- [x] Task: Implement AssetFactory autoload (visual generation + cache +
+  accessors) to pass tests [3e6c711]
+- [x] Task: Add audio-generation stub interface (no-op implementations)
+  [9f32956]
+- [x] Task: Pin snapshot tests for key outputs (robot frames, tile atlas,
+  gem, key, door) and lock determinism [34db746]
+- [x] Task: Verify startup generation completes in < 1 second [de34e42]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: Proof Scene
