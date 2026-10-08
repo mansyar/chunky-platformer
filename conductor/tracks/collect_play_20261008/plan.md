@@ -23,7 +23,7 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 - [x] Task: Full gate run [61a13a8]
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [61a13a8]
 
-## Phase 4: HUD Counter
+## Phase 4: HUD Counter [checkpoint: 4e5b124]
 
 - [x] Task: Write failing tests — screen-space CanvasLayer at top-left, gem icon + digit sprites matching current count, count only grows, squash-pulse bump on increment [4e5b124]
 - [x] Task: Implement `src/ui/gem_counter.gd` (code-assembled, AssetFactory textures) [4e5b124]
