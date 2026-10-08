@@ -9,7 +9,7 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 - [x] Task: Full gate run (format, lint, tests, coverage ≥80%) [0a08f23]
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [0a08f23]
 
-## Phase 2: Gem Entity & Collection State Machine
+## Phase 2: Gem Entity & Collection State Machine [checkpoint: 33c2713]
 
 - [x] Task: Write failing tests — body overlap collects, gem hidden while collected, respawn after `Tuning.GEM_RESPAWN_TIME` with sparkle signal, endless collect/respawn cycles, pure bob math (sine), `collected`/`respawned` signals emitted [33c2713]
 - [x] Task: Implement `src/world/gem.gd` (code-assembled Area2D, sine bob, timer-driven respawn) [33c2713]
