@@ -94,3 +94,20 @@ func test_touch_jump_button_structure() -> void:
 	var p: Dictionary = Palettes.PALETTE_ROBOT
 	assert_eq(img.get_pixel(3, 12), p["accent"], "button face is the accent disc.")
 	assert_eq(img.get_pixel(12, 8), p["eye"], "jump arrow points up in eye white.")
+
+
+func test_walk_stride_leads_right() -> void:
+	# The native walk art strides to the RIGHT (flip_h handles left): in each
+	# stride frame the extended leg sits on the right half of the canvas,
+	# even though its leg_l/leg_r label alternates between stride phases.
+	var frames: Dictionary = AssetFactory.ROBOT_FRAMES
+	for frame_name: String in ["robot_walk_0", "robot_walk_2"]:
+		var frame: Dictionary = frames[frame_name]
+		var left: Rect2i = frame["leg_l"]
+		var right: Rect2i = frame["leg_r"]
+		var extended: Rect2i = left if left.size.y > right.size.y else right
+		assert_gt(
+			extended.position.x,
+			16,
+			"%s strides right natively (extended leg on the right half)." % frame_name
+		)
