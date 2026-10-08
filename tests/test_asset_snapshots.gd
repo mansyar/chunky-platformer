@@ -122,3 +122,56 @@ func test_walk_stride_leads_right() -> void:
 			16,
 			"%s strides right natively (extended leg on the right half)." % frame_name
 		)
+
+
+func test_digit_glyphs_have_ink_and_size() -> void:
+	# The HUD counter renders numbers from generated pixel digits (no fonts).
+	# Every glyph must be 8x12 with real ink and real negative space so it
+	# reads as a digit at counter scale.
+	var factory: Node = get_node("/root/AssetFactory")
+	for i: int in range(10):
+		var img: Image = factory.get_image("digit_%d" % i)
+		assert_eq(img.get_size(), Vector2i(8, 12), "digit_%d is an 8x12 glyph." % i)
+		var ink := 0
+		var clear := 0
+		for y: int in range(12):
+			for x: int in range(8):
+				if img.get_pixel(x, y).a > 0.0:
+					ink += 1
+				else:
+					clear += 1
+		assert_gt(ink, 10, "digit_%d has visible ink." % i)
+		assert_gt(clear, 0, "digit_%d keeps some negative space." % i)
+
+
+func test_digit_1_hugs_the_right() -> void:
+	var img: Image = get_node("/root/AssetFactory").get_image("digit_1")
+	for y: int in range(12):
+		for x: int in range(3):
+			assert_eq(
+				img.get_pixel(x, y).a,
+				0.0,
+				"digit_1 leaves its left third empty at (%d,%d)." % [x, y]
+			)
+
+
+func test_digit_0_and_8_have_counter_holes() -> void:
+	var zero: Image = get_node("/root/AssetFactory").get_image("digit_0")
+	var eight: Image = get_node("/root/AssetFactory").get_image("digit_8")
+	assert_eq(zero.get_pixel(3, 5).a, 0.0, "digit_0 has a see-through center.")
+	assert_eq(eight.get_pixel(3, 3).a, 0.0, "digit_8 has an upper hole.")
+	assert_eq(eight.get_pixel(3, 8).a, 0.0, "digit_8 has a lower hole.")
+
+
+func test_digit_glyphs_are_deterministic() -> void:
+	var a := _fresh_factory()
+	var b := _fresh_factory()
+	for asset_name: String in ["digit_0", "digit_7"]:
+		var img_a: Image = a.get_image(asset_name)
+		var img_b: Image = b.get_image(asset_name)
+		assert_true(
+			img_a.get_data() == img_b.get_data(),
+			"%s generates byte-identical output across instances." % asset_name
+		)
+	a.free()
+	b.free()

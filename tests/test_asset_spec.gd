@@ -114,3 +114,18 @@ func test_spec_defines_three_touch_buttons() -> void:
 			Vector2i(24, 24),
 			"%s is a chunky 24px button." % required
 		)
+
+
+func test_spec_defines_ten_digit_glyphs() -> void:
+	for i: int in range(10):
+		var name := "digit_%d" % i
+		var found: Dictionary = {}
+		for entry: Dictionary in AssetSpec.SPEC:
+			if entry.get("name", "") == name:
+				found = entry
+				break
+		assert_eq(
+			found.get("kind", ""), "ui", "%s is a ui asset (code-generated pixel digit)." % name
+		)
+		assert_eq(found.get("size", Vector2i.ZERO), Vector2i(8, 12), "%s is an 8x12 glyph." % name)
+		assert_eq(found.get("palette", ""), "robot", "%s uses the robot palette." % name)
