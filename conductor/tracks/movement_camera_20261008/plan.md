@@ -2,7 +2,7 @@
 
 **Strategy note:** physics logic (movement, jump, bounce, camera math, input state) is logic-bearing → strict TDD. Animation and level layout are visual → deterministic structural tests. Test physics via real scene-tree simulation (`Input.action_press` + physics frames), extending the pattern the proof-scene tests established.
 
-## Phase 1: Tuning Constants & Horizontal Movement
+## Phase 1: Tuning Constants & Horizontal Movement [checkpoint: 1ba4b1f]
 - [x] Task: Write failing tests for the tuning constants file (all spec values present: walk speed, accel ramp, jump impulse, gravity, fall cap, bounce power, coyote, buffer, camera smoothing) [1ba4b1f]
 - [x] Task: Write failing tests for horizontal movement — accel ramp to fixed target speed, deceleration to stop, identical air control, movement disabled physics sanity [1ba4b1f]
 - [x] Task: Implement `src/tuning/tuning.gd` (single constants file) [1ba4b1f]
