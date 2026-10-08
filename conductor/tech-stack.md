@@ -15,7 +15,7 @@ or fonts exist in the repository.
 
 - **Factory:** `AssetFactory` autoload generates all assets during startup
   (sub-second target) and caches them by palette. A small pixel-drawing DSL
-  (rect/disc/outline/shade helpers over `Image` buffers) lets frames be
+  (rect/disc/outline/shade/clear helpers over `Image` buffers) lets frames be
   defined as data rather than hand-coded pixels.
 - **Asset spec first:** the full asset list (name, dimensions, palette refs)
   is defined as a structured spec; factory generators are built against it
