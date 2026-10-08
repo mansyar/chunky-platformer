@@ -4,10 +4,10 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 
 ## Phase 1: Pixel Digit Glyphs
 
-- [ ] Task: Write failing tests — asset spec gains `digit_0`…`digit_9` (`kind: "ui"`, size 8×12); snapshot tests pin glyph ink presence, size, and byte determinism
-- [ ] Task: Implement — spec entries + `_ops_for` digit generators (bar-style pixel glyphs)
-- [ ] Task: Full gate run (format, lint, tests, coverage ≥80%)
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Write failing tests — asset spec gains `digit_0`…`digit_9` (`kind: "ui"`, size 8×12); snapshot tests pin glyph ink presence, size, and byte determinism [0a08f23]
+- [x] Task: Implement — spec entries + `_ops_for` digit generators (bar-style pixel glyphs) [0a08f23]
+- [x] Task: Full gate run (format, lint, tests, coverage ≥80%) [0a08f23]
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [0a08f23]
 
 ## Phase 2: Gem Entity & Collection State Machine
 
