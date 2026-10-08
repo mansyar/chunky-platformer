@@ -109,3 +109,14 @@ func test_ops_for_unknown_asset_warns_and_returns_empty() -> void:
 		"unknown assets produce an empty op list and a warning."
 	)
 	fresh.free()
+
+
+func test_startup_generation_under_one_second() -> void:
+	var fresh := _fresh_factory()
+	var start := Time.get_ticks_msec()
+	fresh.warm_all()
+	var elapsed := Time.get_ticks_msec() - start
+	fresh.free()
+	assert_lt(
+		elapsed, 1000, "warm_all generates every asset in under 1 second (took %d ms)." % elapsed
+	)
