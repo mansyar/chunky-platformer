@@ -26,12 +26,16 @@
 
 ## Phase 3: Palettes & Asset Spec
 
-- [~] Task: Write failing test for asset-spec completeness contract
+- [x] Task: Write failing test for asset-spec completeness contract [f8a9fd]
   - Every spec entry must yield a factory output (name, dimensions, palette)
-- [ ] Task: Define palette constants (PALETTE_MEADOW, PALETTE_CAVE,
-  PALETTE_SUNSET) in a single palette file
-- [ ] Task: Define asset spec data: 8 tiles, 8 robot frames (idle ×2, walk ×4,
-  jump ×1, land-squash ×1), gem, key, door (locked/open)
+- [x] Task: Define palette constants (PALETTE_MEADOW, PALETTE_CAVE,
+  PALETTE_SUNSET) in a single palette file [f8a9fd]
+  - Deviation: implemented as a single `AREA_PALETTES` dictionary keyed by
+    name ("meadow"/"cave"/"sunset") instead of three separate constants —
+    palettes stay in one file but resolve by string, which the spec test
+    and the factory's palette-parameterized generation both rely on.
+- [x] Task: Define asset spec data: 8 tiles, 8 robot frames (idle ×2, walk ×4,
+  jump ×1, land-squash ×1), gem, key, door (locked/open) [f8a9fd]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: AssetFactory
