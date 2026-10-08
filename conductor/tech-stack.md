@@ -29,6 +29,10 @@ or fonts exist in the repository.
   plus gems, keys, doors, trampolines, decorations.
 - **Robot:** Multi-frame generated textures — walk cycle, jump, landing
   squash — swapped procedurally; palette lives in code constants.
+- **HUD digits:** Generated from a 3×5 bitmap font expanded to 2px cells (no
+  font files). Glyph legibility is pinned by tests — shared baseline, no 1px
+  strokes, all ten bitmaps distinct — because confusable 5/6/8/9 glyphs are
+  unreadable to a 4-year-old.
 - **Palettes:** Each area's theme is a palette record passed to the factory;
   area theming = regeneration with different parameters.
 - **Audio:** Pre-generated `AudioStreamWAV` buffers at startup — synthesized

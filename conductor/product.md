@@ -42,6 +42,8 @@ One full area takes a 4-year-old roughly 5–10 minutes.
   fall path ends on a safe lower route or a trampoline that returns the player.
 - **Collectibles:** One gem type, respawning after a cooldown. A single big,
   friendly counter on screen. Collecting gives sparkle + pop feedback.
+  A collected gem only returns once Robo has stepped off the spot, so it can
+  never pop back under him and pop straight off again.
 - **Keys & doors:** 3 keys per area, door unlocks when all are collected.
   Keys are large, shiny, and visually salient.
 - **Anti-frustration:** If no key progress for ~30 seconds, a sparkle trail
