@@ -53,3 +53,8 @@ const SPARKLE_COUNT := 6  # fixed sparkle count, no randomness
 # Robo's visual-only celebration squash.
 const CELEBRATE_TIME := 0.3  # total squash-and-return duration in seconds
 const CELEBRATE_SQUASH := Vector2(1.25, 0.75)  # peak squash on the sprite
+
+# HUD counter (collect_play_20261008): screen-space, top-left, big digits.
+const COUNTER_SCALE := 4.0  # 8x12 digit glyph -> 32x48 on screen
+const COUNTER_MARGIN := Vector2(48, 40)  # top-left inset in screen pixels
+const COUNTER_BUMP_TIME := 0.25  # counter squash-pulse duration in seconds
