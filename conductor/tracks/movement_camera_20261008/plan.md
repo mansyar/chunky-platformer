@@ -38,7 +38,7 @@
 - [x] Task: Refactor & verify — format, lint, full suite [1ba4b1f]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 6: Input Layer
+## Phase 6: Input Layer [checkpoint: af57b7d]
 - [x] Task: Extend asset spec + completeness tests with 3 touch-button assets (left arrow, right arrow, jump icon) [fa5068e] — spec-first; implement generators + snapshot tests
 - [ ] Task: Configure Godot Input Map in `project.godot`: keyboard (arrows + WASD + space/enter), gamepad (d-pad, left stick, bottom face button) for `move_left`/`move_right`/`jump`
 - [ ] Task: Write failing tests — device detection: last-input-device tracking flags keyboard/mouse/gamepad/touch; touch controls visible only while touch is the last device
