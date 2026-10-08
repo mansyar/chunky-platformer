@@ -67,6 +67,17 @@ func test_robot_land_is_squashed_wider_than_idle() -> void:
 	assert_eq(idle.get_pixel(6, 22).a, 0.0, "idle frame is transparent at the same pixel.")
 
 
+func test_land_frame_feet_reach_the_ground() -> void:
+	# Landing must look planted: the land frame's feet must reach the canvas
+	# bottom line like idle does, or Robo visibly hovers during the squash.
+	var factory: Node = get_node("/root/AssetFactory")
+	var land: Image = factory.get_image("robot_land")
+	var idle: Image = factory.get_image("robot_idle_0")
+	var feet_color: Color = Palettes.PALETTE_ROBOT["body_dark"]
+	assert_eq(idle.get_pixel(10, 30), feet_color, "idle baseline: feet touch the bottom row.")
+	assert_eq(land.get_pixel(11, 30), feet_color, "land feet touch the bottom row (no hover).")
+
+
 func test_generation_is_deterministic() -> void:
 	var a := _fresh_factory()
 	var b := _fresh_factory()
