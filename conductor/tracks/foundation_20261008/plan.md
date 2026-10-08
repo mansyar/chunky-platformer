@@ -38,7 +38,7 @@
   jump ×1, land-squash ×1), gem, key, door (locked/open) [f8a9fd]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 4: AssetFactory
+## Phase 4: AssetFactory [checkpoint: de34e42]
 
 - [x] Task: Write failing unit tests for factory logic [3e6c711]
   - Generates every spec'd asset; caches by palette; typed accessors;
