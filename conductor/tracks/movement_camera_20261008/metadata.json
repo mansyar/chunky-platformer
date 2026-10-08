@@ -1,0 +1,7 @@
+{
+  "id": "movement_camera_20261008",
+  "type": "feature",
+  "status": "new",
+  "created": "2026-10-08",
+  "description": "Robo walks, jumps, bounces, and falls safely; smooth clamped camera; keyboard + gamepad + touch input; multi-layer playground level as new main scene"
+}
