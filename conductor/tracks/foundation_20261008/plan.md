@@ -1,6 +1,6 @@
 # Implementation Plan — Foundation (Bootstrap)
 
-## Phase 1: Project Scaffold & Toolchain
+## Phase 1: Project Scaffold & Toolchain [checkpoint: f579ae8]
 
 - [x] Task: Create Godot project with required settings [498ca06]
   - project.godot: Godot 4.5+ config, 1280×720 landscape, canvas_items
