@@ -25,8 +25,10 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func bounce(character: CharacterBody2D) -> void:
-	# Only falling bodies bounce: entering while rising or moving sideways
-	# is ignored, which is exactly the "landed on it from above" rule.
-	if character.velocity.y <= 0.0:
+	# Only rising bodies are ignored: entering while moving up (e.g. jumping
+	# past the pad) must not steal Robo's jump. Falling, landing, and simply
+	# standing on the pad all bounce — standing on a trampoline should feel
+	# like standing on a trampoline.
+	if character.velocity.y < 0.0:
 		return
 	character.velocity.y = -Tuning.BOUNCE_IMPULSE

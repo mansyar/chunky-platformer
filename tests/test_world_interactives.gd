@@ -87,6 +87,15 @@ func test_trampoline_ignores_rising_body() -> void:
 	robot.free()
 
 
+func test_trampoline_bounces_resting_body() -> void:
+	var trampoline: Area2D = Trampoline.new()
+	var robot: Robot = _robot()
+	robot.velocity.y = 0.0  # standing on the pad
+	trampoline.bounce(robot)
+	assert_eq(robot.velocity.y, -Tuning.BOUNCE_IMPULSE, "standing on the pad bounces.")
+	robot.free()
+
+
 func test_bounce_preserves_horizontal_momentum() -> void:
 	var trampoline: Area2D = Trampoline.new()
 	var robot: Robot = _robot()
