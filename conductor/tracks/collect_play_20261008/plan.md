@@ -25,10 +25,10 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 
 ## Phase 4: HUD Counter
 
-- [ ] Task: Write failing tests — screen-space CanvasLayer at top-left, gem icon + digit sprites matching current count, count only grows, squash-pulse bump on increment
-- [ ] Task: Implement `src/ui/gem_counter.gd` (code-assembled, AssetFactory textures)
-- [ ] Task: Full gate run
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Write failing tests — screen-space CanvasLayer at top-left, gem icon + digit sprites matching current count, count only grows, squash-pulse bump on increment [4e5b124]
+- [x] Task: Implement `src/ui/gem_counter.gd` (code-assembled, AssetFactory textures) [4e5b124]
+- [x] Task: Full gate run [4e5b124]
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [4e5b124]
 
 ## Phase 5: Playground Integration
 
