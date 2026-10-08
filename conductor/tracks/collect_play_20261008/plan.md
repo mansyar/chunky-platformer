@@ -5,7 +5,7 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 ## Phase 1: Pixel Digit Glyphs [checkpoint: 0a08f23]
 
 - [x] Task: Write failing tests — asset spec gains `digit_0`…`digit_9` (`kind: "ui"`, size 8×12); snapshot tests pin glyph ink presence, size, and byte determinism [0a08f23]
-- [x] Task: Implement — spec entries + `_ops_for` digit generators (bar-style pixel glyphs) [0a08f23]
+- [x] Task: Implement - spec entries + `_ops_for` digit generators (bar-style pixel glyphs) [0a08f23] _(superseded by 93d2237: glyphs are now a 3×5 bitmap font)_
 - [x] Task: Full gate run (format, lint, tests, coverage ≥80%) [0a08f23]
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [0a08f23]
 
@@ -37,3 +37,6 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 - [x] Task: Full gate run [3d07336]
 - [x] Task: Manual verification plan — run the game: collect gems by walking, jumping, and bouncing; watch the counter grow; wait ~10 s to see the respawn sparkle [3d07336]
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [3d07336]
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (conductor-review 2026-10-09: gems and the HUD icon take their area palette; gem pickup radius moved to Tuning; dead digit-pool shrink branch removed; redundant Timer.wait_time removed; Phase 1 plan wording marked superseded) [2ffdf79]
