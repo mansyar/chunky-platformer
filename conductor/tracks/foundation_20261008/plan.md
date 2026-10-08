@@ -7,7 +7,7 @@
     stretch, nearest filtering
   - Feature-first directory skeleton: src/factory/, src/robot/,
     src/world/, src/proof/, tests/
-- [ ] Task: Bootstrap gd-tools
+- [x] Task: Bootstrap gd-tools [54ee8ec]
   - Run gd-tools init; verify generated configs (gd-tools.toml, gdlintrc,
     gdformatrc)
   - Create tests/ with a trivial smoke suite extending GdToolsTest
