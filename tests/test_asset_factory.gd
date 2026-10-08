@@ -11,9 +11,16 @@ func _factory() -> Node:
 	return get_node("/root/AssetFactory")
 
 
+func _fresh_factory() -> Node:
+	return load("res://src/factory/asset_factory.gd").new()
+
+
 func test_factory_generates_every_spec_asset() -> void:
+	# A fresh instance bypasses the autoload's startup cache so the real
+	# generation paths execute inside the tracked test run.
+	var fresh := _fresh_factory()
 	for entry: Dictionary in AssetSpec.SPEC:
-		var img: Image = _factory().get_image(entry["name"], "meadow")
+		var img: Image = fresh.get_image(entry["name"], "meadow")
 		assert_true(img is Image, "%s produces an Image." % entry["name"])
 		if img == null:
 			continue
@@ -25,6 +32,7 @@ func test_factory_generates_every_spec_asset() -> void:
 				if img.get_pixel(x, y).a > 0.0:
 					has_pixels = true
 		assert_true(has_pixels, "%s is not fully transparent." % entry["name"])
+	fresh.free()
 
 
 func test_repeated_calls_return_cached_objects() -> void:
@@ -69,3 +77,35 @@ func test_unknown_asset_returns_null() -> void:
 	assert_true(
 		_factory().get_image("does_not_exist") == null, "unknown assets warn and return null."
 	)
+
+
+func test_get_texture_unknown_asset_returns_null() -> void:
+	assert_true(
+		_factory().get_texture("does_not_exist") == null, "unknown textures warn and return null."
+	)
+
+
+func test_warm_all_populates_all_caches() -> void:
+	var fresh := _fresh_factory()
+	fresh.warm_all()
+	assert_true(
+		fresh.get_texture("tile_solid", "cave") is Texture2D,
+		"warm_all pre-builds area textures for every palette."
+	)
+	assert_true(fresh.get_texture("robot_walk_2") is Texture2D, "warm_all pre-builds robot frames.")
+	assert_eq(
+		fresh.get_tile_atlas_coords("tile_platform", "sunset"),
+		Vector2i(2, 0),
+		"warm_all pre-builds tile atlases with stable coordinates."
+	)
+	fresh.free()
+
+
+func test_ops_for_unknown_asset_warns_and_returns_empty() -> void:
+	var fresh := _fresh_factory()
+	assert_eq(
+		fresh._ops_for("does_not_exist", Palettes.AREA_PALETTES["meadow"]).size(),
+		0,
+		"unknown assets produce an empty op list and a warning."
+	)
+	fresh.free()

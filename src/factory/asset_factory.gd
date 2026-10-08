@@ -251,11 +251,10 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 		"tile_grass_top":
 			ops = [
 				_rect(Rect2i(0, 0, 16, 16), g),
+				_rect(Rect2i(0, 13, 16, 3), gd),
 				_rect(Rect2i(0, 0, 16, 4), gr),
 				_rect(Rect2i(3, 0, 2, 2), g),
 				_rect(Rect2i(9, 0, 2, 2), g),
-				_rect(Rect2i(0, 13, 16, 3), gd),
-				_outline(Rect2i(0, 0, 16, 16), gd),
 			]
 		"tile_platform":
 			ops = [
