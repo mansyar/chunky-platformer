@@ -27,7 +27,9 @@ const SPEC: Array = [
 	{"name": "deco_grass_tuft", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
 	{"name": "deco_rock", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
 	{"name": "deco_flower", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
-	{"name": "sky_strip", "kind": "background", "size": TILE_SIZE, "palette": "area"},
+	# Screen-resolution vertical gradient: rendered 1:1 behind the scaled
+	# world, so gradient steps are one screen pixel and invisible.
+	{"name": "sky_strip", "kind": "background", "size": Vector2i(16, 720), "palette": "area"},
 	# --- robot animation frames (8): idle x2, walk x4, jump, land-squash ---
 	{"name": "robot_idle_0", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},
 	{"name": "robot_idle_1", "kind": "frame", "size": ROBOT_FRAME_SIZE, "palette": "robot"},

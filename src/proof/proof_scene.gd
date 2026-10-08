@@ -14,25 +14,27 @@ const ROBOT_GROUND_Y := 160.0
 
 
 func _ready() -> void:
+	# Sky renders at screen resolution (scale 1) for a smooth gradient;
+	# the scaled world draws on top of it.
+	_build_sky()
 	var world := Node2D.new()
 	world.name = "World"
 	world.scale = Vector2(WORLD_SCALE, WORLD_SCALE)
 	add_child(world)
-	_build_sky(world)
 	_build_tiles(world)
 	_build_props(world)
 	_build_robot(world)
 
 
-func _build_sky(world: Node2D) -> void:
+func _build_sky() -> void:
 	var sky := Sprite2D.new()
 	sky.name = "Sky"
 	sky.texture = AssetFactory.get_texture("sky_strip", "meadow")
 	sky.centered = false
 	sky.region_enabled = true
-	sky.region_rect = Rect2(Vector2.ZERO, Vector2(VIEW))
+	sky.region_rect = Rect2(Vector2.ZERO, Vector2(1280, 720))
 	sky.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	world.add_child(sky)
+	add_child(sky)
 
 
 func _build_tiles(world: Node2D) -> void:
