@@ -17,11 +17,11 @@
 
 ## Phase 2: Pixel-Drawing DSL
 
-- [~] Task: Write failing unit tests for DSL primitives
+- [x] Task: Write failing unit tests for DSL primitives [b758f7f]
   - rect, disc, outline, shade produce correct pixels on small test buffers
     (edge cases: out-of-bounds, alpha, blend behavior)
-- [ ] Task: Implement DSL helpers to pass tests
-- [ ] Task: Refactor DSL API for ergonomics (data-driven op lists), rerun tests
+- [x] Task: Implement DSL helpers to pass tests [b758f7f]
+- [~] Task: Refactor DSL API for ergonomics (data-driven op lists), rerun tests
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Palettes & Asset Spec
