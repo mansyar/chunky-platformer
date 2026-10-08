@@ -24,7 +24,7 @@
 - [x] Task: Refactor & verify — format, lint, full suite [1ba4b1f]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 4: World Interactives
+## Phase 4: World Interactives [checkpoint: c5ad518]
 - [x] Task: Write failing tests — one-way platform: body falls onto it and lands; body rising from below passes through; no drop-through input path exists [c5ad518]
 - [x] Task: Write failing tests — trampoline: bounces only when falling onto it from above, impulse > jump impulse, horizontal velocity preserved, re-bounces on repeat landings; side/below contact does nothing [c5ad518]
 - [x] Task: Write failing tests — level edge walls block horizontal movement at bounds [c5ad518]
