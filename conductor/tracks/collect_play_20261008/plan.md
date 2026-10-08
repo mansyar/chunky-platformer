@@ -30,7 +30,7 @@ TDD-ordered per workflow.md: failing tests (red) → implement (green) → refac
 - [x] Task: Full gate run [4e5b124]
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [4e5b124]
 
-## Phase 5: Playground Integration
+## Phase 5: Playground Integration [checkpoint: 3ce6bf7]
 
 - [x] Task: Write failing tests — ~12 gems at handcrafted mixed-reach coordinates (walk / jump / bounce tiers), HUD present, end-to-end simulation: walk Robo through a gem → count increments + gem hides → advance past respawn time → gem visible again [3d07336]
 - [x] Task: Implement gem placement + HUD wiring in `playground.gd`, tuning constants [3d07336]
