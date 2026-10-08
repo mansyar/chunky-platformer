@@ -79,3 +79,18 @@ func test_generation_is_deterministic() -> void:
 		)
 	a.free()
 	b.free()
+
+
+func test_touch_left_button_structure() -> void:
+	var img: Image = get_node("/root/AssetFactory").get_image("touch_left", "meadow")
+	var p: Dictionary = Palettes.PALETTE_ROBOT
+	assert_eq(img.get_size(), Vector2i(24, 24), "button is 24px.")
+	assert_eq(img.get_pixel(3, 12), p["accent"], "button face is the accent disc.")
+	assert_eq(img.get_pixel(7, 12), p["eye"], "left arrow points left in eye white.")
+
+
+func test_touch_jump_button_structure() -> void:
+	var img: Image = get_node("/root/AssetFactory").get_image("touch_jump", "meadow")
+	var p: Dictionary = Palettes.PALETTE_ROBOT
+	assert_eq(img.get_pixel(3, 12), p["accent"], "button face is the accent disc.")
+	assert_eq(img.get_pixel(12, 8), p["eye"], "jump arrow points up in eye white.")

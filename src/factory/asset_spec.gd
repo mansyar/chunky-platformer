@@ -44,4 +44,7 @@ const SPEC: Array = [
 	{"name": "key", "kind": "prop", "size": TILE_SIZE, "palette": "area"},
 	{"name": "door_locked", "kind": "prop", "size": Vector2i(32, 48), "palette": "area"},
 	{"name": "door_open", "kind": "prop", "size": Vector2i(32, 48), "palette": "area"},
+	{"name": "touch_left", "kind": "ui", "size": Vector2i(24, 24), "palette": "robot"},
+	{"name": "touch_right", "kind": "ui", "size": Vector2i(24, 24), "palette": "robot"},
+	{"name": "touch_jump", "kind": "ui", "size": Vector2i(24, 24), "palette": "robot"},
 ]

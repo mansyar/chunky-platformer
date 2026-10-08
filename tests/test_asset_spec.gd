@@ -20,7 +20,7 @@ func test_every_entry_has_required_fields() -> void:
 		var name: String = entry.get("name", "")
 		assert_gt(name.length(), 0, "entry has a name.")
 		assert_has(
-			["tile", "deco", "background", "frame", "prop"],
+			["tile", "deco", "background", "frame", "prop", "ui"],
 			entry.get("kind", ""),
 			"%s has a valid kind." % name
 		)
@@ -100,3 +100,17 @@ func test_spec_defines_props() -> void:
 			prop_names[entry.get("name", "")] = true
 	for required: String in ["gem", "key", "door_locked", "door_open"]:
 		assert_has(prop_names, required, "spec defines the '%s' prop." % required)
+
+
+func test_spec_defines_three_touch_buttons() -> void:
+	var ui_assets := {}
+	for entry: Dictionary in AssetSpec.SPEC:
+		if entry.get("kind", "") == "ui":
+			ui_assets[entry.get("name", "")] = entry
+	for required: String in ["touch_left", "touch_right", "touch_jump"]:
+		assert_has(ui_assets, required, "spec defines the '%s' touch button." % required)
+		assert_eq(
+			ui_assets[required].get("size", Vector2i.ZERO),
+			Vector2i(24, 24),
+			"%s is a chunky 24px button." % required
+		)

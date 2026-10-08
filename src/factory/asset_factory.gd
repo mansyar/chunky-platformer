@@ -246,10 +246,12 @@ static func _clear(r: Rect2i) -> Dictionary:
 
 
 func _ops_for(asset_name: String, p: Dictionary) -> Array:
-	var g: Color = p["ground"]
-	var gd: Color = p["ground_dark"]
-	var gr: Color = p["grass"]
-	var ac: Color = p["accent"]
+	# Aliases are optional: robot-palette assets (ui buttons) only carry
+	# body/eye/accent keys, so world-color lookups fall back gracefully.
+	var g: Color = p.get("ground", p.get("body", Color.BLACK))
+	var gd: Color = p.get("ground_dark", p.get("body_dark", Color.BLACK))
+	var gr: Color = p.get("grass", p.get("accent", Color.BLACK))
+	var ac: Color = p.get("accent", Color.BLACK)
 	var ops: Array = []
 	match asset_name:
 		"tile_solid":
@@ -330,6 +332,18 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				_shade(Rect2i(3, 3, 26, 44), Color(ac, 0.25)),
 				_outline(Rect2i(1, 1, 30, 46), gd),
 			]
+		"touch_left":
+			ops = [_disc(Vector2i(12, 12), 11, ac)]
+			for i: int in range(4):
+				ops.append(_rect(Rect2i(6 + i * 2, 11 - i, 2, 3 + i * 2), p["eye"]))
+		"touch_right":
+			ops = [_disc(Vector2i(12, 12), 11, ac)]
+			for i: int in range(4):
+				ops.append(_rect(Rect2i(15 - i * 2, 11 - i, 2, 3 + i * 2), p["eye"]))
+		"touch_jump":
+			ops = [_disc(Vector2i(12, 12), 11, ac)]
+			for i: int in range(4):
+				ops.append(_rect(Rect2i(11 - i, 8 + i * 2, 2 + i * 2, 2), p["eye"]))
 		_:
 			push_warning("AssetFactory: no generator for asset '%s'." % asset_name)
 	return ops
