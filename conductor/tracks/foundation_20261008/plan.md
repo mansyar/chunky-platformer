@@ -2,7 +2,7 @@
 
 ## Phase 1: Project Scaffold & Toolchain
 
-- [ ] Task: Create Godot project with required settings
+- [x] Task: Create Godot project with required settings [498ca06]
   - project.godot: Godot 4.5+ config, 1280×720 landscape, canvas_items
     stretch, nearest filtering
   - Feature-first directory skeleton: src/factory/, src/robot/,
