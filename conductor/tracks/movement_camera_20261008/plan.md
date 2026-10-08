@@ -19,8 +19,8 @@
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Animation Wiring
-- [ ] Task: Write failing structural tests — animation state selection: walk cycle advances while moving on floor, jump frame while airborne, land-squash plays on landing then returns to idle, idle bob advances when still
-- [ ] Task: Implement code-built `AnimatedSprite2D` (SpriteFrames from `AssetFactory` robot textures) + state selection in `robot.gd`
+- [x] Task: Write failing structural tests — animation state selection: walk cycle advances while moving on floor, jump frame while airborne, land-squash plays on landing then returns to idle, idle bob advances when still [a96aa15]
+- [x] Task: Implement code-built `AnimatedSprite2D` (SpriteFrames from `AssetFactory` robot textures) + state selection in `robot.gd` [a96aa15]
 - [x] Task: Refactor & verify — format, lint, full suite [1ba4b1f]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
