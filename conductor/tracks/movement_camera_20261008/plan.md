@@ -11,10 +11,10 @@
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Jump & Gravity
-- [ ] Task: Write failing tests — fixed-impulse jump reaches expected height, only when on floor (or within coyote window)
-- [ ] Task: Write failing tests — coyote time (~0.1s window after leaving edge), input buffer (~0.1s pre-landing press fires on landing)
-- [ ] Task: Write failing tests — floaty gravity, terminal fall-speed cap
-- [ ] Task: Implement jump + coyote + buffer + gravity/cap in `robot.gd` using Tuning
+- [x] Task: Write failing tests — fixed-impulse jump reaches expected height, only when on floor (or within coyote window) [f3193e7]
+- [x] Task: Write failing tests — coyote time (~0.1s window after leaving edge), input buffer (~0.1s pre-landing press fires on landing) [f3193e7]
+- [x] Task: Write failing tests — floaty gravity, terminal fall-speed cap [f3193e7]
+- [x] Task: Implement jump + coyote + buffer + gravity/cap in `robot.gd` using Tuning [f3193e7]
 - [x] Task: Refactor & verify — format, lint, full suite [1ba4b1f]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
