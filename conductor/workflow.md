@@ -159,7 +159,6 @@ Before marking any task complete, verify:
 pip install gd-tools-cli      # gd-tools CLI (requires Python 3.10+, Godot 4.5+)
 godot --version               # verify Godot binary on PATH or GODOT_BIN
 gd-tools init                 # bootstrap test/coverage addons + configs
-gd-tools install-hooks --all  # pre-commit: format + lint + test
 ```
 
 ### Daily Development

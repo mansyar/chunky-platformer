@@ -1,0 +1,8 @@
+{
+  "id": "foundation_20261008",
+  "type": "MVP/Bootstrap",
+  "status": "new",
+  "created": "2026-10-08",
+  "updated": "2026-10-08",
+  "description": "Godot project scaffold + code-generated art pipeline (pixel DSL, asset spec, AssetFactory, proof scene)"
+}

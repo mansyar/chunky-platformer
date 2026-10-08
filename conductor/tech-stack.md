@@ -46,8 +46,10 @@ Unified development workflow CLI for GDScript ([mansyar/gd-tools](https://github
 - **Coverage:** `gd-tools test --coverage --min 80` — line + branch coverage
   with threshold gates. Focus: gameplay logic (physics tuners, save/load,
   hint logic, collectible state, AssetFactory); draw/frame data excepted.
-- **Hooks:** `gd-tools install-hooks` — pre-commit format + lint on commits.
 - **Diagnostics:** `gd-tools doctor` for environment verification.
+
+*(Note: no pre-commit hooks — format/lint/test gates are run manually before
+each commit, per the workflow.)*
 
 ## Data & Persistence
 
