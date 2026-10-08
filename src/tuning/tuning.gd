@@ -38,10 +38,18 @@ const WALK_ANIM_FPS := 8.0  # brisk enough to read as walking at 2.5 tiles/s
 const LAND_SQUASH_TIME := 0.15  # seconds the squash frame holds after landing
 
 ## Camera
-const CAMERA_SMOOTHING := 8.0
+const CAMERA_SMOOTHING := 8.0  # lerp weight for follow smoothing
 
 # Collect & Play (collect_play_20261008)
 const GEM_RESPAWN_TIME := 10.0  # seconds a collected gem stays hidden
 const GEM_BOB_AMPLITUDE := 3.0  # idle bob height in pixels
 # Idle bob angular speed in rad/s (~2 second period).
-const GEM_BOB_SPEED := 3.0  # lerp weight for follow smoothing
+const GEM_BOB_SPEED := 3.0
+# Collection juice (collect_play_20261008): pop ring + sparkle burst.
+const POP_LIFETIME := 0.45  # seconds the pop effect lives
+const POP_START_RADIUS := 4.0  # ring radius at birth
+const POP_END_RADIUS := 20.0  # ring radius at death
+const SPARKLE_COUNT := 6  # fixed sparkle count, no randomness
+# Robo's visual-only celebration squash.
+const CELEBRATE_TIME := 0.3  # total squash-and-return duration in seconds
+const CELEBRATE_SQUASH := Vector2(1.25, 0.75)  # peak squash on the sprite

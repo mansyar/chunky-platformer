@@ -12,6 +12,7 @@ var facing := 1
 var _coyote_left := 0.0
 var _buffer_left := 0.0
 var _sprite: AnimatedSprite2D
+var _celebrate_tween: Tween
 var _was_on_floor := true  # Robo spawns standing; a real jump still squashes on landing
 var _land_left := 0.0
 
@@ -79,6 +80,20 @@ func update_animation(delta: float, on_floor: bool, moving: bool) -> void:
 	if _sprite.animation != anim:
 		_sprite.play(anim)
 	_sprite.flip_h = facing < 0
+
+
+## Visual-only celebration for collecting something: a quick squash and
+## release on the sprite. Physics is never touched — collecting must not
+## interrupt movement, ever (toddler anti-frustration rule).
+func celebrate() -> void:
+	if _celebrate_tween:
+		_celebrate_tween.kill()
+	_sprite.scale = Vector2.ONE
+	_celebrate_tween = create_tween()
+	_celebrate_tween.tween_property(
+		_sprite, "scale", Tuning.CELEBRATE_SQUASH, Tuning.CELEBRATE_TIME * 0.4
+	)
+	_celebrate_tween.tween_property(_sprite, "scale", Vector2.ONE, Tuning.CELEBRATE_TIME * 0.6)
 
 
 func move_axis(axis: float, delta: float) -> void:
