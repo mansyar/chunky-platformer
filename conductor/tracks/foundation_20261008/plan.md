@@ -26,7 +26,7 @@
 
 ## Phase 3: Palettes & Asset Spec
 
-- [ ] Task: Write failing test for asset-spec completeness contract
+- [~] Task: Write failing test for asset-spec completeness contract
   - Every spec entry must yield a factory output (name, dimensions, palette)
 - [ ] Task: Define palette constants (PALETTE_MEADOW, PALETTE_CAVE,
   PALETTE_SUNSET) in a single palette file
