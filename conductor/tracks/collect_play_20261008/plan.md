@@ -2,7 +2,7 @@
 
 TDD-ordered per workflow.md: failing tests (red) → implement (green) → refactor → full gates → checkpoint. Logic is tested with real physics/input; visuals via deterministic structural/snapshot tests.
 
-## Phase 1: Pixel Digit Glyphs
+## Phase 1: Pixel Digit Glyphs [checkpoint: 0a08f23]
 
 - [x] Task: Write failing tests — asset spec gains `digit_0`…`digit_9` (`kind: "ui"`, size 8×12); snapshot tests pin glyph ink presence, size, and byte determinism [0a08f23]
 - [x] Task: Implement — spec entries + `_ops_for` digit generators (bar-style pixel glyphs) [0a08f23]
