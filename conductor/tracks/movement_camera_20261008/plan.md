@@ -32,7 +32,7 @@
 - [x] Task: Refactor & verify — format, lint, full suite [1ba4b1f]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 5: Camera
+## Phase 5: Camera [checkpoint: c2b32a0]
 - [x] Task: Write failing tests — camera follows a moving target on both axes with smoothing; clamped to level bounds on all sides [c2b32a0]
 - [x] Task: Implement `src/world/follow_camera.gd` (Camera2D, target follow + bounds clamp via Tuning smoothing value) [c2b32a0]
 - [x] Task: Refactor & verify — format, lint, full suite [1ba4b1f]
