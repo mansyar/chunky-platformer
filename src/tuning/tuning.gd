@@ -26,5 +26,10 @@ const BOUNCE_IMPULSE := 320.0  # clearly higher than a normal jump
 const COYOTE_TIME := 0.1  # seconds of forgiveness after walking off an edge
 const JUMP_BUFFER := 0.1  # seconds a jump press is remembered before landing
 
+## Animation feel
+const IDLE_ANIM_FPS := 2.0  # gentle two-frame bob
+const WALK_ANIM_FPS := 8.0  # brisk enough to read as walking at 2.5 tiles/s
+const LAND_SQUASH_TIME := 0.15  # seconds the squash frame holds after landing
+
 ## Camera
 const CAMERA_SMOOTHING := 8.0  # lerp weight for follow smoothing

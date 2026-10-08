@@ -10,10 +10,14 @@ extends CharacterBody2D
 var facing := 1
 var _coyote_left := 0.0
 var _buffer_left := 0.0
+var _sprite: AnimatedSprite2D
+var _was_on_floor := true  # Robo spawns standing; a real jump still squashes on landing
+var _land_left := 0.0
 
 
 func _ready() -> void:
 	_build_collision()
+	_build_sprite()
 
 
 func _build_collision() -> void:
@@ -24,6 +28,56 @@ func _build_collision() -> void:
 	rect.size = Vector2(16, 28)
 	shape.shape = rect
 	add_child(shape)
+
+
+func _build_sprite() -> void:
+	var frames := SpriteFrames.new()
+	_add_anim(frames, "idle", ["robot_idle_0", "robot_idle_1"], Tuning.IDLE_ANIM_FPS, true)
+	_add_anim(
+		frames,
+		"walk",
+		["robot_walk_0", "robot_walk_1", "robot_walk_2", "robot_walk_3"],
+		Tuning.WALK_ANIM_FPS,
+		true
+	)
+	_add_anim(frames, "jump", ["robot_jump"], 1.0, false)
+	_add_anim(frames, "land", ["robot_land"], 1.0, false)
+	_sprite = AnimatedSprite2D.new()
+	_sprite.sprite_frames = frames
+	# Feet of the 32px art must meet the 28px collider bottom.
+	_sprite.offset = Vector2(0, -2)
+	_sprite.play("idle")
+	add_child(_sprite)
+
+
+func _add_anim(
+	frames: SpriteFrames, anim: String, texture_names: Array[String], fps: float, loops: bool
+) -> void:
+	frames.add_animation(anim)
+	frames.set_animation_speed(anim, fps)
+	frames.set_animation_loop(anim, loops)
+	for texture_name: String in texture_names:
+		frames.add_frame(anim, AssetFactory.get_texture(texture_name))
+
+
+func update_animation(delta: float, on_floor: bool, moving: bool) -> void:
+	# State machine: airborne jump pose, a short squash right after landing,
+	# then walk or idle. Facing mirrors the sprite every frame.
+	if on_floor and not _was_on_floor:
+		_land_left = Tuning.LAND_SQUASH_TIME
+	_land_left = maxf(_land_left - delta, 0.0)
+	_was_on_floor = on_floor
+	var anim := "jump"
+	if on_floor:
+		if _land_left > 0.0:
+			anim = "land"
+		elif moving:
+			anim = "walk"
+		else:
+			anim = "idle"
+	if _sprite.animation != anim:
+		_sprite.play(anim)
+	_sprite.flip_h = facing < 0
 
 
 func move_axis(axis: float, delta: float) -> void:
@@ -63,4 +117,5 @@ func _physics_process(delta: float) -> void:
 	update_gravity(delta, on_floor)
 	update_jump(delta, on_floor, jump_pressed)
 	move_axis(Input.get_axis("move_left", "move_right"), delta)
+	update_animation(delta, on_floor, absf(velocity.x) > 1.0)
 	move_and_slide()
