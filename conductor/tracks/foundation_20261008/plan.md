@@ -52,13 +52,14 @@
 - [x] Task: Verify startup generation completes in < 1 second [de34e42]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 5: Proof Scene
+## Phase 5: Proof Scene [checkpoint: 18a1411]
 
-- [~] Task: Build proof scene
+- [x] Task: Build proof scene [b563dd5]
   - Ground + platform + sky + decorations from generated tiles; robot idle
     frame standing on ground; set as main scene
-- [ ] Task: Full gate run: gd-tools format --check && gd-tools lint &&
-  gd-tools test --coverage --min 80
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Full gate run: gd-tools format --check && gd-tools lint &&
+  gd-tools test --coverage --min 80 [b563dd5]
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+  [18a1411]
   - Manual verification: fresh-clone run via editor, robot visible on
     generated world, no external assets loaded
