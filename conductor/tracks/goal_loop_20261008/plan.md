@@ -57,6 +57,10 @@
 
 ## Phase 6: Areas 2 & 3 + Integration [checkpoint: d4790e5]
 
+## Phase: Review Fixes
+
+- [x] [0405fc8] Task: Apply review suggestions (conductor-review 2026-10-09: renamed `_recount` → `recount` to match its documented public use; noted Robo's "pointing" is facing-only in v1)
+
 - [x] [942ea71] Task: Write failing tests - each layout validates; cave and sunset build
   distinct terrain with 3 keys (one per reach tier) and a reachable door
 - [x] [d4790e5] Task: Write failing tests - full playthrough test: meadow → cave → sunset →
