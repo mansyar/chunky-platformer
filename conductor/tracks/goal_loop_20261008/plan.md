@@ -47,12 +47,12 @@
 
 ## Phase 5: Area Transition & Celebration
 
-- [ ] Task: Write failing tests — walking into an open door emits transition with
+- [x] Task: Write failing tests — walking into an open door emits transition with
   the outgoing palette; the swap builds area N+1 and resets its goal state; the gem
-  counter persists; area 3 loops to meadow after the celebration
-- [ ] Task: Implement — `src/levels/transition.gd` (palette fade), game root that owns
-  the area index and swaps levels
-- [ ] Task: Run full gate
+  counter persists; area 3 loops to meadow after the celebration [2989ec4]
+- [x] Task: Implement — `src/levels/transition.gd` (palette fade), game root that owns
+  the area index and swaps levels [2989ec4]
+- [x] Task: Run full gate [2989ec4]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 6: Areas 2 & 3 + Integration
