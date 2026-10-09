@@ -31,6 +31,11 @@ var _keys: Array[Key] = []
 var _layout: AreaLayout
 
 
+## Which area this builder built - used by the game root and tests.
+func area_name() -> String:
+	return _layout.area_name
+
+
 ## Build the given layout under this node. Returns the level's bounds so a
 ## caller can clamp a camera or check that the level is the expected size.
 func build(layout: AreaLayout) -> Rect2:

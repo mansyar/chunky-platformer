@@ -63,6 +63,7 @@ const HINT_DELAY := 30.0
 const HINT_SHOW_TIME := 4.0  # the trail dissolves after this; it is a nudge, not wallpaper
 const HINT_SPARKLE := Color(1.0, 0.85, 0.35)  # warm gold, reads as 'go here'
 const POINT_HOLD_TIME := 1.5  # how long Robo holds the pointing pose
+const TRANSITION_TIME := 1.2  # seconds for the full palette fade between areas
 # Collection juice (collect_play_20261008): pop ring + sparkle burst.
 const POP_LIFETIME := 0.45  # seconds the pop effect lives
 const POP_START_RADIUS := 4.0  # ring radius at birth
