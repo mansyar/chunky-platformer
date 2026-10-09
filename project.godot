@@ -8,7 +8,7 @@ config_version=5
 
 config/name="Robo's Treasure Hunt"
 config/features=PackedStringArray("4.7")
-run/main_scene="res://src/levels/playground.tscn"
+run/main_scene="res://src/levels/game.tscn"
 
 [autoload]
 

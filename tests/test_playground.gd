@@ -50,8 +50,8 @@ func test_physics_world_is_unscaled_and_camera_zooms() -> void:
 func test_main_scene_is_playground() -> void:
 	assert_eq(
 		ProjectSettings.get_setting("application/run/main_scene", ""),
-		PLAYGROUND_SCENE,
-		"the playground is the game's main scene."
+		"res://src/levels/game.tscn",
+		"the game root is the main scene; the playground remains the meadow fixture."
 	)
 
 
