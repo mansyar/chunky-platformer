@@ -348,18 +348,19 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				_disc(Vector2i(16, 24), 2, gd),
 			]
 		"door_open":
-			# An open door is a dark opening with warm light falling OUT of it.
-			# The Foundation version was a flat pale panel, which read as a blank
-			# canvas. An early attempt at the gradient used three chunky bands and
-			# that read as a STAIRCASE - a child would have tried to climb it - so
-			# the falloff is now many thin steps toward black.
+			# An open door is a dark hole with warm light at its threshold.
+			# Two earlier versions both failed in playtest: the Foundation one was a
+			# flat pale panel (read as blank), and a full-height yellow gradient
+			# read as a glowing slab rather than a way in. So the interior is
+			# nearly black and the light only rises a third of the way up - strong
+			# contrast is what makes it read as a hole at 32px.
 			ops = [
 				_rect(Rect2i(2, 2, 28, 46), g),
-				_rect(Rect2i(5, 5, 22, 41), ac),
+				_rect(Rect2i(5, 5, 22, 41), Color(0.09, 0.07, 0.13)),
 			]
-			for band: int in 11:
-				var y := 5 + band * 4
-				ops.append(_shade(Rect2i(5, y, 22, 4), Color(0, 0, 0, 0.86 - band * 0.075)))
+			for band: int in 7:
+				var y := 45 - band * 4
+				ops.append(_shade(Rect2i(5, y, 22, 4), Color(ac, 0.8 - band * 0.11)))
 			(
 				ops
 				. append_array(
