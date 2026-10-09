@@ -55,7 +55,7 @@
 - [x] Task: Run full gate [2989ec4]
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [2989ec4]
 
-## Phase 6: Areas 2 & 3 + Integration
+## Phase 6: Areas 2 & 3 + Integration [checkpoint: d4790e5]
 
 - [x] [942ea71] Task: Write failing tests - each layout validates; cave and sunset build
   distinct terrain with 3 keys (one per reach tier) and a reachable door
@@ -66,7 +66,7 @@
 - [x] [d4790e5] Task: Integration - 3 keys + door in each area, hints live, celebration on
   finishing sunset
 - [x] [d4790e5] Task: Run full gate
-- [ ] Task: Manual verification — play all 3 areas end to end, confirm hint fires and
+- [x] [d4790e5] Task: Manual verification — play all 3 areas end to end, confirm hint fires and
   never strands
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [d4790e5] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
