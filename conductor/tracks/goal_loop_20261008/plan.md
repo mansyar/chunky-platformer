@@ -53,7 +53,7 @@
 - [x] Task: Implement — `src/levels/transition.gd` (palette fade), game root that owns
   the area index and swaps levels [2989ec4]
 - [x] Task: Run full gate [2989ec4]
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [2989ec4]
 
 ## Phase 6: Areas 2 & 3 + Integration
 
