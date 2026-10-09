@@ -57,11 +57,11 @@
 
 ## Phase 6: Areas 2 & 3 + Integration
 
-- [ ] Task: Write failing tests — each layout validates; cave and sunset build
+- [x] [942ea71] Task: Write failing tests - each layout validates; cave and sunset build
   distinct terrain with 3 keys (one per reach tier) and a reachable door
 - [ ] Task: Write failing tests — full playthrough test: meadow → cave → sunset →
   meadow, collecting all 9 keys
-- [ ] Task: Implement — cave layout (layered, tight, bridge route) and sunset layout
+- [x] [942ea71] Task: Implement - cave layout (layered, tight, bridge route) and sunset layout
   (tall, trampoline-driven)
 - [ ] Task: Integration — 3 keys + door in each area, hints live, celebration on
   finishing sunset
@@ -69,3 +69,4 @@
 - [ ] Task: Manual verification — play all 3 areas end to end, confirm hint fires and
   never strands
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+
