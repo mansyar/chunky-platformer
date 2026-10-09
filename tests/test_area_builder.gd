@@ -188,8 +188,8 @@ func test_builder_places_the_layout_s_interactives() -> void:
 	assert_eq(level.find_children("*", "Trampoline", true, false).size(), 2, "both trampolines.")
 	assert_eq(
 		level.find_children("*", "StaticBody2D", true, false).size(),
-		3,
-		"one bridge plus a wall at each end"
+		4,
+		"one bridge, a wall at each end, and the locked door's own body"
 	)
 
 
@@ -203,20 +203,38 @@ func test_builder_spawns_one_gem_per_layout_spot() -> void:
 
 
 func test_builder_shows_the_layout_s_props() -> void:
-	var level := _built()
-	var found := false
-	for child: Node in level.find_child("World", true, false).get_children():
+	# The meadow no longer uses plain prop sprites - its door and keys are real
+	# entities now - so this covers the mechanism with a layout that does use it.
+	var layout := _meadow()
+	layout.props = [{"asset": "deco_rock", "at": Vector2(64, 480)}]
+	var builder := AreaBuilder.new()
+	add_child(builder)
+	builder.build(layout)
+	var painted := 0
+	for child: Node in builder.find_child("World", true, false).get_children():
 		if child is Sprite2D:
-			found = true
-	assert_true(found, "the layout's props are painted into the world.")
+			painted += 1
+	assert_eq(painted, 1, "the layout's props are painted into the world.")
 
 
-func test_every_layout_fills_one_gem_tier_per_reach_style() -> void:
-	# Gems keep their flat handcrafted list; keys carry an explicit tier. This
-	# guards the two lists from drifting into the same shape by accident.
+func test_meadow_uses_real_entities_instead_of_placeholder_sprites() -> void:
+	# The Movement track drew a key and a door as plain sprites because nothing
+	# interactive existed yet. Both are now live entities, so drawing them again
+	# as props would double them up on screen.
+	assert_eq(_meadow().props, [], "no placeholder art left in the meadow.")
+	assert_eq(_meadow().key_spots.size(), AreaLayout.KEYS_PER_AREA, "three real keys instead.")
+
+
+func test_gems_and_keys_keep_different_list_shapes() -> void:
+	# Gems stay a flat handcrafted list; keys carry an explicit reach tier,
+	# because the goal loop has to reason about how findable a key is.
 	var layout := _meadow()
 	assert_gt(layout.gem_spots.size(), 0, "the meadow still has gems.")
-	assert_eq(layout.key_spots.size(), 0, "keys arrive in Phase 2.")
+	for spot: Vector2 in layout.gem_spots:
+		assert_eq(typeof(spot), TYPE_VECTOR2, "a gem is just a position.")
+	for spot: Dictionary in layout.key_spots:
+		assert_has(spot, "tier", "a key says how to reach it.")
+		assert_has(spot, "at", "and where it is.")
 
 
 func _find_first_tile_map(node: Node) -> TileMapLayer:

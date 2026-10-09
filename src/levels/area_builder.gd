@@ -18,6 +18,9 @@ const SCREEN := Vector2(1280, 720)
 ## Handles to the parts a caller needs to wire up (gems, transitions, hints).
 var robot: Robot
 var counter: GemCounter
+var goal_state: GoalState
+var door: Door
+var key_counter: KeyCounter
 
 var _layout: AreaLayout
 
@@ -34,6 +37,7 @@ func build(layout: AreaLayout) -> Rect2:
 	_build_interactives(world)
 	_build_props(world)
 	robot = _build_robot(world)
+	_build_goal(world)
 	_build_camera(world)
 	_build_gems(world)
 	counter = GemCounter.new()
@@ -147,6 +151,51 @@ func _build_props(world: Node2D) -> void:
 		sprite.texture = AssetFactory.get_texture(prop["asset"], _layout.palette)
 		sprite.position = prop["at"]
 		world.add_child(sprite)
+
+
+## The goal loop: three keys, a door, and the badge counting them. The keys and
+## the door replace the static prop sprites the Movement track used as
+## placeholders, so the picture a child has already seen now means something.
+func _build_goal(world: Node2D) -> void:
+	goal_state = GoalState.new()
+	goal_state.name = "GoalState"
+	add_child(goal_state)
+
+	door = Door.new()
+	door.name = "Door"
+	door.palette = _layout.palette
+	door.position = _layout.door_at
+	goal_state.progress.connect(door.on_progress)
+	door.unlocked.connect(_on_door_unlocked)
+	world.add_child(door)
+
+	for spot: Dictionary in _layout.key_spots:
+		var key := Key.new()
+		key.position = spot["at"]
+		key.palette = _layout.palette
+		key.taken.connect(_on_key_taken)
+		world.add_child(key)
+
+	key_counter = KeyCounter.new()
+	key_counter.name = "KeyCounter"
+	key_counter.palette = _layout.palette
+	add_child(key_counter)
+
+
+func _on_key_taken(_key: Key) -> void:
+	goal_state.take_key()
+	key_counter.set_count(goal_state.keys_taken())
+
+
+func _on_door_unlocked(_door: Door) -> void:
+	# The door opening is the moment the child has been working toward, so it
+	# gets the same celebration a gem would.
+	PopEffect.spawn(_layout_world(), door.global_position, _accent())
+	robot.celebrate()
+
+
+func _layout_world() -> Node:
+	return find_child("World", true, false)
 
 
 func _build_gems(world: Node2D) -> void:

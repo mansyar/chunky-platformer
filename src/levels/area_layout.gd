@@ -138,11 +138,15 @@ static func meadow() -> AreaLayout:
 		Vector2(328, 392),
 		Vector2(176, 328),
 	]
-	l.door_at = Vector2(520, 360)
-	l.props = [
-		{"asset": "key", "at": Vector2(600, 352)},
-		{"asset": "door_locked", "at": Vector2(520, 360)},
+	l.key_spots = [
+		# One key per reach tier, so every way of climbing the meadow leads
+		# somewhere new and no tier is a wasted walk.
+		{"tier": "walk", "at": Vector2(340, 500)},  # plain walk across the valley floor
+		{"tier": "jump", "at": Vector2(432, 412)},  # a hop up the tall hill's middle step
+		{"tier": "bounce", "at": Vector2(176, 330)},  # trampolined up to the low plateau
 	]
+	l.door_at = Vector2(520, 360)
+	l.props = []
 	l.robot_spawn = Vector2(300, 498)
 	return l
 
