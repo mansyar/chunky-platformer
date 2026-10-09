@@ -37,12 +37,12 @@
 
 ## Phase 4: Hint System
 
-- [ ] Task: Write failing tests — timer re-arms on collection; fires at
+- [x] Task: Write failing tests — timer re-arms on collection; fires at
   `HINT_DELAY` with no progress; trail endpoints are Robo → nearest uncollected key;
-  with 3/3 keys the target is the door; `Robo.point_at()` turns and holds
-- [ ] Task: Implement — `src/fx/hint_trail.gd` (deterministic dots along the line,
-  like `PopEffect`), `src/robot/robot.gd` point-at state
-- [ ] Task: Run full gate
+  with 3/3 keys the target is the door; `Robo.point_at()` turns and holds [b19d4f4]
+- [x] Task: Implement — `src/fx/hint_trail.gd` (deterministic dots along the line,
+  like `PopEffect`), `src/robot/robot.gd` point-at state [b19d4f4]
+- [x] Task: Run full gate [b19d4f4]
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: Area Transition & Celebration
