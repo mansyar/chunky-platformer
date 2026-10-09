@@ -1,6 +1,6 @@
 # Implementation Plan — Goal Loop
 
-## Phase 1: Layout Records & Shared Builder (the enabling refactor) [checkpoint: pending]
+## Phase 1: Layout Records & Shared Builder (the enabling refactor) [checkpoint: c2b76ba]
 
 - [x] [c2b76ba] Task: Write failing tests — `AreaLayout` records validate every field;
   `AreaBuilder` produces the same world shape from a layout record as the current
@@ -12,7 +12,7 @@
 - [x] [c2b76ba] Task: Refactor — `Playground` becomes a meadow layout; all existing tests stay
   green
 - [x] [c2b76ba] Task: Run full gate (format, lint, test, coverage ≥80%)
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [c2b76ba] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Key Entity & Counter
 
@@ -23,7 +23,7 @@
 - [ ] Task: Implement — `src/world/key.gd`, glow/bob, `src/ui/key_counter.gd`
 - [ ] Task: Implement — key art in the asset spec + generators
 - [ ] Task: Run full gate
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [c2b76ba] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Goal State & Door
 
@@ -33,7 +33,7 @@
   (art swap + collision change + signal)
 - [ ] Task: Implement — `src/levels/goal_state.gd`, `src/world/door.gd`
 - [ ] Task: Run full gate
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [c2b76ba] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: Hint System
 
@@ -43,7 +43,7 @@
 - [ ] Task: Implement — `src/fx/hint_trail.gd` (deterministic dots along the line,
   like `PopEffect`), `src/robot/robot.gd` point-at state
 - [ ] Task: Run full gate
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [c2b76ba] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 5: Area Transition & Celebration
 
@@ -53,7 +53,7 @@
 - [ ] Task: Implement — `src/levels/transition.gd` (palette fade), game root that owns
   the area index and swaps levels
 - [ ] Task: Run full gate
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [c2b76ba] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 6: Areas 2 & 3 + Integration
 
@@ -68,4 +68,4 @@
 - [ ] Task: Run full gate
 - [ ] Task: Manual verification — play all 3 areas end to end, confirm hint fires and
   never strands
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [c2b76ba] Task: Phase Verification & Checkpoint (Refer to workflow.md)
