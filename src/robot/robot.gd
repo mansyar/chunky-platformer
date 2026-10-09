@@ -66,9 +66,10 @@ func _add_anim(
 		frames.add_frame(anim, AssetFactory.get_texture(texture_name))
 
 
-## Turn toward a target and hold the pose. Purely visual: a hint must never
-## move or slow the player, because the child may well walk where they are
-## pointed while doing it.
+## Turn toward a target and hold. v1 note: "pointing" is facing-only — the
+## raised-arm pose is a possible future polish. Purely visual: a hint must
+## never move or slow the player, because the child may well walk where they
+## are pointed while doing it.
 func point_at(target: Node2D) -> void:
 	if target == null:
 		return

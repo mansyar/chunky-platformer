@@ -66,7 +66,7 @@ func begin(state: GoalState, robot: Robot, keys: Array[Key]) -> void:
 	showing = false
 	# Resolve the target immediately: a caller may ask what the hint would point
 	# at on the same frame it wired the area up.
-	_recount()
+	recount()
 
 
 ## Called whenever a key is taken. Resets the silence timer and clears the
@@ -74,7 +74,7 @@ func begin(state: GoalState, robot: Robot, keys: Array[Key]) -> void:
 func progressed() -> void:
 	_timer = 0.0
 	showing = false
-	_recount()
+	recount()
 
 
 func is_showing() -> bool:
@@ -96,7 +96,7 @@ func target() -> Node2D:
 func _process(delta: float) -> void:
 	_timer += delta
 	if not showing and _timer >= hint_delay:
-		_recount()
+		recount()
 		showing = _target != null
 	if showing:
 		_age += delta
@@ -114,9 +114,9 @@ func _exit_tree() -> void:
 		showing = false
 
 
-## Re-pick the target. Public because a test may take a key and immediately ask
-## what the hint would point at, without waiting a frame for _process.
-func _recount() -> void:
+## Re-pick the target. A test may take a key and immediately ask what the hint
+## would point at, without waiting a frame for _process.
+func recount() -> void:
 	if goal_state != null and goal_state.is_complete():
 		_target = door
 		return
