@@ -47,6 +47,15 @@ const GEM_BOB_AMPLITUDE := 3.0  # idle bob height in pixels
 const GEM_BOB_SPEED := 3.0
 # Generous: a toddler should never walk past a gem without collecting it.
 const GEM_PICKUP_RADIUS := 10.0
+# Goal Loop (goal_loop_20261008) - keys. A key is permanent, so its bob and
+# glow exist only to make it findable, never to move its sensor.
+const KEY_BOB_AMPLITUDE := 3.0
+const KEY_BOB_SPEED := 2.5  # slower than a gem: keys should feel more special
+const KEY_PICKUP_RADIUS := 12.0  # generous: reaching a key should never be a near miss
+const KEY_GLOW_DEPTH := 0.35  # how far the art tints toward KEY_GLOW_TINT
+const KEY_GLOW_TINT := Color(1.35, 1.35, 0.9)  # a warm bloom, not a colour change
+const KEY_COUNTER_MARGIN := Vector2(48, 140)  # directly below the gem badge
+const KEY_BUMP_TIME := 0.25
 # Collection juice (collect_play_20261008): pop ring + sparkle burst.
 const POP_LIFETIME := 0.45  # seconds the pop effect lives
 const POP_START_RADIUS := 4.0  # ring radius at birth
