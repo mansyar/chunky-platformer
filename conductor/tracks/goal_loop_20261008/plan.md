@@ -59,11 +59,11 @@
 
 - [x] [942ea71] Task: Write failing tests - each layout validates; cave and sunset build
   distinct terrain with 3 keys (one per reach tier) and a reachable door
-- [ ] Task: Write failing tests — full playthrough test: meadow → cave → sunset →
+- [x] [d4790e5] Task: Write failing tests - full playthrough test: meadow → cave → sunset →
   meadow, collecting all 9 keys
 - [x] [942ea71] Task: Implement - cave layout (layered, tight, bridge route) and sunset layout
   (tall, trampoline-driven)
-- [ ] Task: Integration — 3 keys + door in each area, hints live, celebration on
+- [x] [d4790e5] Task: Integration - 3 keys + door in each area, hints live, celebration on
   finishing sunset
 - [ ] Task: Run full gate
 - [ ] Task: Manual verification — play all 3 areas end to end, confirm hint fires and
