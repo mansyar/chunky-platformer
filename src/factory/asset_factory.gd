@@ -348,11 +348,30 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				_disc(Vector2i(16, 24), 2, gd),
 			]
 		"door_open":
+			# An open door is a dark opening with warm light falling OUT of it.
+			# The Foundation version was a flat pale panel, which read as a blank
+			# canvas. An early attempt at the gradient used three chunky bands and
+			# that read as a STAIRCASE - a child would have tried to climb it - so
+			# the falloff is now many thin steps toward black.
 			ops = [
-				_rect(Rect2i(3, 3, 26, 44), p["sky_bottom"]),
-				_shade(Rect2i(3, 3, 26, 44), Color(ac, 0.25)),
-				_outline(Rect2i(1, 1, 30, 46), gd),
+				_rect(Rect2i(2, 2, 28, 46), g),
+				_rect(Rect2i(5, 5, 22, 41), ac),
 			]
+			for band: int in 11:
+				var y := 5 + band * 4
+				ops.append(_shade(Rect2i(5, y, 22, 4), Color(0, 0, 0, 0.86 - band * 0.075)))
+			(
+				ops
+				. append_array(
+					[
+						_outline(Rect2i(2, 2, 28, 46), gd),
+						_outline(Rect2i(5, 5, 22, 41), Color(0, 0, 0, 1)),
+						# A bright threshold lip: the one thing a child looks for when
+						# deciding whether a gap is walk-through.
+						_rect(Rect2i(5, 44, 22, 2), Color(1, 1, 1)),
+					]
+				)
+			)
 		"touch_left":
 			ops = [_disc(Vector2i(12, 12), 11, ac)]
 			for i: int in range(4):
