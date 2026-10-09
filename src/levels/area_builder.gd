@@ -13,6 +13,7 @@ extends Node2D
 const CAMERA_ZOOM := 4.0
 const TILE := 16
 const ROBOT_HALF_HEIGHT := 14.0  # collider half-height (slim 28px box)
+const ROBOT_Z_INDEX := 10  # the player always paints above level geometry
 const SCREEN := Vector2(1280, 720)
 
 ## Handles to the parts a caller needs to wire up (gems, transitions, hints).
@@ -229,6 +230,12 @@ func _build_robot(world: Node2D) -> Robot:
 	var robo := Robot.new()
 	robo.name = "Robo"
 	robo.position = _layout.robot_spawn
+	# Siblings paint in tree order, and the door and keys are built after the
+	# robot - so without an explicit z-index the door would cover Robo at the
+	# exact moment a child walks into the doorway. z_index rather than
+	# move_child(): the player should be on top of the level wherever it sits
+	# in the tree, not only because it happens to be added last.
+	robo.z_index = ROBOT_Z_INDEX
 	world.add_child(robo)
 	return robo
 

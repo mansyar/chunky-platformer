@@ -71,6 +71,23 @@ func test_the_door_is_where_the_layout_puts_it() -> void:
 	)
 
 
+func test_robo_always_draws_in_front_of_the_level() -> void:
+	# A door is 32x48 and Robo is 32x32, so walking into the doorway makes them
+	# overlap. Siblings paint in tree order, and the door is built after the
+	# robot, so without an explicit z-index the door would cover Robo at the
+	# exact moment the player is most interested in him.
+	var level := _open_level()
+	var robot := level.find_child("Robo", true, false) as Node2D
+	for other: Node2D in [
+		_door(level), _keys(level)[0] as Node2D, level.find_child("World", true, false)
+	]:
+		assert_gt(
+			robot.z_index,
+			other.z_index,
+			"Robo must paint above the door, the keys and the terrain."
+		)
+
+
 func _take_a_key(level: Node, index: int) -> void:
 	var key := _keys(level)[index] as Key
 	key.take()
