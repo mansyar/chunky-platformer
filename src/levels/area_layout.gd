@@ -118,7 +118,7 @@ static func meadow() -> AreaLayout:
 		"deco_rock": [Vector2i(10, 27), Vector2i(37, 23), Vector2i(22, 31)],
 	}
 	l.pad_cells = [Vector2i(20, 31), Vector2i(11, 27)]
-	l.trampolines = [Vector2(328, 512), Vector2(176, 448)]
+	l.trampolines = [Vector2(328, 512), Vector2(184, 448)]  # x must match its pad cell
 	l.platforms = [{"width": 144.0, "at": Vector2(280, 400)}]
 	l.walls = [-4.0, 644.0]
 	l.gem_spots = [
@@ -127,7 +127,7 @@ static func meadow() -> AreaLayout:
 		Vector2(140, 436),
 		Vector2(240, 500),
 		Vector2(380, 500),
-		Vector2(440, 500),
+		Vector2(400, 468),
 		Vector2(416, 436),
 		Vector2(520, 372),
 		Vector2(600, 372),
@@ -135,7 +135,7 @@ static func meadow() -> AreaLayout:
 		Vector2(270, 464),
 		Vector2(560, 336),
 		# bounce tier - only the trampoline arcs (~133px) reach this high
-		Vector2(328, 392),
+		Vector2(328, 448),
 		Vector2(176, 328),
 	]
 	l.key_spots = [
@@ -151,9 +151,9 @@ static func meadow() -> AreaLayout:
 	return l
 
 
-## The cave: layered and tight. The tall hill's steps collapse into a sheer
-## cliff whose only route is the bridge, so the bounce key is compulsory rather
-## than optional and the walk key sits deep in the left alcove.
+## The cave: layered and tight. Twin staircase massifs squeeze a deep valley
+## in the middle; the bridge crosses it high up and the left trampoline is the
+## fun route to the bounce key. Every route stays walkable end to end.
 static func cave() -> AreaLayout:
 	var l := AreaLayout.new()
 	l.area_name = "cave"
@@ -162,43 +162,56 @@ static func cave() -> AreaLayout:
 	l.rows = 34
 	l.ground_row = 32
 	l.spans = [
-		{"from": 0, "to": 8, "top_row": 24},  # high left ceiling
-		{"from": 8, "to": 14, "top_row": 28},  # step down into the alcove
-		{"from": 26, "to": 30, "top_row": 26},  # right ledge, one hop up
-		{"from": 30, "to": 40, "top_row": 30},  # low right shelf by the door
+		{"from": 0, "to": 10, "top_row": 26},  # left plateau
+		{"from": 10, "to": 12, "top_row": 28},  # staircase down
+		{"from": 12, "to": 14, "top_row": 30},  # staircase down
+		{"from": 26, "to": 28, "top_row": 30},  # staircase up
+		{"from": 28, "to": 30, "top_row": 28},  # staircase up
+		{"from": 30, "to": 40, "top_row": 26},  # right shelf by the door
 	]
 	l.deco = {
-		"deco_rock": [Vector2i(3, 23), Vector2i(11, 27), Vector2i(28, 25), Vector2i(36, 29)],
-		"deco_grass_tuft": [Vector2i(6, 23)],
+		"deco_rock": [Vector2i(3, 25), Vector2i(36, 25), Vector2i(28, 27)],
+		"deco_grass_tuft": [Vector2i(7, 25), Vector2i(31, 25)],
 	}
-	l.pad_cells = [Vector2i(20, 31), Vector2i(33, 29)]
-	l.trampolines = [Vector2(328, 512), Vector2(536, 496)]
+	l.pad_cells = [Vector2i(5, 25), Vector2i(20, 31)]
+	l.trampolines = [Vector2(88, 416), Vector2(328, 512)]
 	l.platforms = [
-		{"width": 96.0, "at": Vector2(272, 416)},  # the cave bridge
-		{"width": 64.0, "at": Vector2(112, 352)},  # alcove ledge
+		{"width": 128.0, "at": Vector2(288, 400)},  # the cave bridge
 	]
-	l.walls = [0.0, 644.0]
+	l.walls = [-4.0, 644.0]
 	l.gem_spots = [
-		Vector2(120, 340),
-		Vector2(288, 404),
-		Vector2(360, 484),
-		Vector2(496, 484),
-		Vector2(560, 284),
+		# walk tier - plain walking pickups
+		Vector2(88, 404),
+		Vector2(176, 436),
+		Vector2(216, 468),
+		Vector2(296, 500),
+		Vector2(376, 500),
+		Vector2(288, 388),  # on the bridge, reached via the elevator
+		Vector2(440, 468),
+		Vector2(472, 436),
+		# jump tier - one clean jump apex (48px) above a surface
+		Vector2(120, 368),
+		Vector2(536, 368),
+		# bounce tier - only the trampoline arcs (~133px) reach this high
+		Vector2(88, 336),
+		Vector2(328, 440),
 	]
 	l.key_spots = [
-		{"tier": "walk", "at": Vector2(96, 268)},
-		{"tier": "jump", "at": Vector2(208, 444)},
-		{"tier": "bounce", "at": Vector2(328, 300)},
+		# One key per reach tier, so every way of climbing the cave leads
+		# somewhere new and no tier is a wasted walk.
+		{"tier": "walk", "at": Vector2(232, 500)},  # plain walk across the valley floor
+		{"tier": "jump", "at": Vector2(464, 400)},  # a hop up the right staircase
+		{"tier": "bounce", "at": Vector2(88, 304)},  # trampolined above the left plateau
 	]
-	l.door_at = Vector2(596, 464)
+	l.door_at = Vector2(596, 392)
 	l.props = []
-	l.robot_spawn = Vector2(200, 498)
+	l.robot_spawn = Vector2(240, 498)
 	return l
 
 
-## The sunset hills: tall and trampoline-driven. Three stacked plateaus mean
-## two of the three keys are bounce-tier; the low ground is the fast route to
-## the door, but it is long.
+## The sunset hills: tall and trampoline-driven. A tall central plateau is
+## ringed by two-tile steps on both sides, a catch platform floats over the
+## valley trampoline, and the door waits on the right shoulder.
 static func sunset() -> AreaLayout:
 	var l := AreaLayout.new()
 	l.area_name = "sunset"
@@ -207,39 +220,54 @@ static func sunset() -> AreaLayout:
 	l.rows = 34
 	l.ground_row = 32
 	l.spans = [
-		{"from": 0, "to": 10, "top_row": 30},  # low left shoulder
-		{"from": 10, "to": 20, "top_row": 20},  # tallest plateau
-		{"from": 20, "to": 24, "top_row": 26},  # long descent to the valley
-		{"from": 34, "to": 40, "top_row": 26},  # right shoulder by the door
+		{"from": 0, "to": 9, "top_row": 30},  # low left shoulder
+		{"from": 9, "to": 11, "top_row": 28},  # staircase up
+		{"from": 11, "to": 13, "top_row": 26},  # staircase up
+		{"from": 13, "to": 23, "top_row": 24},  # tallest plateau
+		{"from": 23, "to": 25, "top_row": 26},  # staircase down
+		{"from": 25, "to": 27, "top_row": 28},  # staircase down
+		{"from": 27, "to": 29, "top_row": 30},  # staircase down
+		{"from": 35, "to": 36, "top_row": 30},  # right approach step
+		{"from": 36, "to": 40, "top_row": 28},  # right shoulder by the door
 	]
 	l.deco = {
-		"deco_flower": [Vector2i(4, 29), Vector2i(14, 19), Vector2i(37, 25)],
-		"deco_grass_tuft": [Vector2i(8, 29), Vector2i(18, 19), Vector2i(35, 25)],
-		"deco_rock": [Vector2i(22, 25)],
+		"deco_flower": [Vector2i(5, 29), Vector2i(18, 23), Vector2i(38, 27)],
+		"deco_grass_tuft": [Vector2i(2, 29), Vector2i(20, 23)],
+		"deco_rock": [Vector2i(24, 25)],
 	}
-	l.pad_cells = [Vector2i(16, 31), Vector2i(28, 31)]
-	l.trampolines = [Vector2(264, 512), Vector2(456, 512)]
+	l.pad_cells = [Vector2i(14, 23), Vector2i(31, 31)]
+	l.trampolines = [Vector2(232, 384), Vector2(504, 512)]
 	l.platforms = [
-		{"width": 80.0, "at": Vector2(232, 384)},  # mid-air catch above the valley
-		{"width": 80.0, "at": Vector2(432, 384)},
+		{"width": 80.0, "at": Vector2(504, 384)},  # mid-air catch above the valley
 	]
-	l.walls = [0.0, 644.0]
+	l.walls = [-4.0, 644.0]
 	l.gem_spots = [
-		Vector2(120, 188),
-		Vector2(200, 188),
-		Vector2(296, 300),
-		Vector2(360, 484),
-		Vector2(424, 484),
-		Vector2(560, 244),
+		# walk tier - plain walking pickups
+		Vector2(40, 468),
+		Vector2(104, 468),
+		Vector2(160, 436),
+		Vector2(192, 404),
+		Vector2(280, 372),
+		Vector2(328, 372),
+		Vector2(384, 404),
+		Vector2(576, 436),
+		# jump tier - one clean jump apex (48px) above a surface
+		Vector2(344, 336),
+		Vector2(616, 400),
+		# bounce tier - only the trampoline arcs (~133px) reach this high
+		Vector2(232, 300),
+		Vector2(504, 440),
 	]
 	l.key_spots = [
-		{"tier": "walk", "at": Vector2(56, 288)},
-		{"tier": "jump", "at": Vector2(296, 188)},
-		{"tier": "bounce", "at": Vector2(160, 76)},
+		# One key per reach tier, so every way of climbing the sunset leads
+		# somewhere new and no tier is a wasted walk.
+		{"tier": "walk", "at": Vector2(72, 468)},  # plain walk along the left shoulder
+		{"tier": "jump", "at": Vector2(296, 336)},  # a hop on the tallest plateau
+		{"tier": "bounce", "at": Vector2(504, 396)},  # trampolined up the valley arc
 	]
-	l.door_at = Vector2(600, 408)
+	l.door_at = Vector2(600, 424)
 	l.props = []
-	l.robot_spawn = Vector2(300, 498)
+	l.robot_spawn = Vector2(80, 466)
 	return l
 
 

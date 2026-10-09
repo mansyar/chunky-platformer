@@ -1,17 +1,10 @@
 extends GdToolsTest
 ## End-to-end tests for gems in the playground level (Phase 5).
 ##
-## Reach tiers are verified geometrically against the level's real surfaces
-## (world y of the walkable tops) instead of trusting a hand-written label:
-##   - walk  = gem hovering 12px above a surface
-##   - jump  = gem exactly one jump apex (48px) above a surface
-##   - bounce= gem high above a trampoline, only the arc reaches it
+## Reach tiers are verified geometrically in tests/test_area_reachability.gd,
+## which is x-aware and covers every area; this file tests level wiring.
 
 const PLAYGROUND_SCENE := "res://src/levels/playground.tscn"
-const SURFACES: Array[float] = [384.0, 416.0, 448.0, 480.0, 512.0]
-const TRAMPOLINE_X: Array[float] = [328.0, 176.0]
-const HOVER_ABOVE_SURFACE := 12.0
-const JUMP_APEX := 48.0
 const WALK_FRAMES := 200
 
 
@@ -60,30 +53,13 @@ func test_level_spawns_twelve_gems() -> void:
 
 
 func test_gems_are_grouped_into_reachable_tiers() -> void:
+	# The x-aware tier classification for every area lives in
+	# tests/test_area_reachability.gd; this integration-level test keeps only
+	# the level-level contract. (The old y-only classifier here could not see
+	# whether a surface exists at a gem's x - it once blessed a gem that was
+	# embedded inside the tall hill.)
 	var level := _open_level()
-	var walk := 0
-	var jump := 0
-	var bounce := 0
-	for gem: Node in _gems(level):
-		var pos: Vector2 = gem.position
-		var matched := false
-		for surface: float in SURFACES:
-			if absf(pos.y - (surface - HOVER_ABOVE_SURFACE)) < 1.0:
-				walk += 1
-				matched = true
-				break
-			if absf(pos.y - (surface - JUMP_APEX)) < 1.0:
-				jump += 1
-				matched = true
-				break
-		if not matched:
-			for tramp_x: float in TRAMPOLINE_X:
-				if absf(pos.x - tramp_x) <= 16.0 and pos.y <= 512.0 - 100.0:
-					bounce += 1
-					break
-	assert_gte(walk, 6, "most gems are plain walking pickups.")
-	assert_gte(jump, 2, "at least two gems need a jump.")
-	assert_gte(bounce, 2, "at least two gems need the trampoline arc.")
+	assert_eq(_gems(level).size(), 12, "the meadow spawns its full gem set.")
 
 
 func test_level_has_a_counter_starting_at_zero() -> void:

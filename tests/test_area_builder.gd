@@ -129,8 +129,8 @@ func test_meadow_keeps_its_trampoline_elevator_and_bridge() -> void:
 	var layout := _meadow()
 	assert_eq(
 		layout.trampolines,
-		[Vector2(328, 512), Vector2(176, 448)],
-		"both trampolines survive the refactor."
+		[Vector2(328, 512), Vector2(184, 448)],
+		"both trampolines survive the refactor. (184 aligns with its pad art.)"
 	)
 	assert_eq(layout.platforms, [{"width": 144.0, "at": Vector2(280, 400)}], "the bridge survives.")
 	assert_eq(layout.walls, [-4.0, 644.0], "the level still closes at both ends.")
