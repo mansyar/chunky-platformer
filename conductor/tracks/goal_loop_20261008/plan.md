@@ -1,17 +1,17 @@
 # Implementation Plan — Goal Loop
 
-## Phase 1: Layout Records & Shared Builder (the enabling refactor)
+## Phase 1: Layout Records & Shared Builder (the enabling refactor) [checkpoint: pending]
 
-- [ ] Task: Write failing tests — `AreaLayout` records validate every field;
+- [x] [c2b76ba] Task: Write failing tests — `AreaLayout` records validate every field;
   `AreaBuilder` produces the same world shape from a layout record as the current
   hand-built playground
-- [ ] Task: Write failing tests — meadow layout converts to the existing terrain
+- [x] [c2b76ba] Task: Write failing tests — meadow layout converts to the existing terrain
   exactly (regression guard against losing the staircase hills and trampoline elevator)
-- [ ] Task: Implement — `src/levels/area_layout.gd` (typed layout record),
+- [x] [c2b76ba] Task: Implement — `src/levels/area_layout.gd` (typed layout record),
   `src/levels/area_builder.gd` (one builder, data in / world out)
-- [ ] Task: Refactor — `Playground` becomes a meadow layout; all existing tests stay
+- [x] [c2b76ba] Task: Refactor — `Playground` becomes a meadow layout; all existing tests stay
   green
-- [ ] Task: Run full gate (format, lint, test, coverage ≥80%)
+- [x] [c2b76ba] Task: Run full gate (format, lint, test, coverage ≥80%)
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Key Entity & Counter
