@@ -25,15 +25,15 @@
 - [x] [8c6f972] Task: Run full gate
 - [x] [8c6f972] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 3: Goal State & Door
+## Phase 3: Goal State & Door [checkpoint: a1ba80a]
 
 - [x] [7503412] Task: Write failing tests — `GoalState` starts at 0 keys / locked; `take_key()`
   increments, is idempotent per key, emits; `open_door()` only at 3/3
 - [x] [7503412] Task: Write failing tests — `Door` is solid while locked, opens at 3/3
   (art swap + collision change + signal)
 - [x] [7503412] Task: Implement — `src/levels/goal_state.gd`, `src/world/door.gd`
-- [ ] Task: Run full gate
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [a1ba80a] Task: Run full gate
+- [x] [a1ba80a] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 4: Hint System
 
