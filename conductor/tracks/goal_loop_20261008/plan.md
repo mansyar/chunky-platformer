@@ -23,7 +23,7 @@
 - [x] [8c6f972] Task: Implement — `src/world/key.gd`, glow/bob, `src/ui/key_counter.gd`
 - [x] [8c6f972] Task: Implement — key art in the asset spec + generators
 - [x] [8c6f972] Task: Run full gate
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] [8c6f972] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Goal State & Door
 
