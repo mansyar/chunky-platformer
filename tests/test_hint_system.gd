@@ -176,6 +176,25 @@ func test_the_trail_fades_out_on_its_own() -> void:
 	assert_false(hint.is_showing(), "the trail has a life of its own.")
 
 
+func test_after_fading_the_hint_waits_a_full_delay_before_returning() -> void:
+	# Playtest finding: the trail faded after its show time and then blinked
+	# straight back, because the stall timer had kept running past the deadline.
+	# A fade must re-arm the clock, so a child who ignored the first nudge gets
+	# a full quiet period before the second one.
+	var hint := _hint()
+	hint.hint_delay = 0.3
+	hint.show_time = 0.5
+	hint.begin(_goal(), _robot(), [_key()])
+	# Show window [0.3, 0.8], quiet [0.8, 1.3], show again [1.3, 1.8]. Samples
+	# sit well inside each window so frame jitter cannot flip an assertion.
+	await _wait(0.4)
+	assert_true(hint.is_showing(), "shown within the first delay.")
+	await _wait(0.5)
+	assert_false(hint.is_showing(), "then faded, and stays quiet...")
+	await _wait(0.5)
+	assert_true(hint.is_showing(), "...until a full delay has passed again.")
+
+
 # --- robo pointing ---------------------------------------------------------
 
 

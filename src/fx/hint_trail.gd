@@ -103,6 +103,10 @@ func _process(delta: float) -> void:
 		queue_redraw()
 		if _age >= show_time:
 			showing = false
+			# Re-arm the clock. Without this, the timer - still past the
+			# deadline - would re-show the trail on the very next frame and the
+			# hint would blink forever instead of resting between nudges.
+			_timer = 0.0
 
 
 func _exit_tree() -> void:
