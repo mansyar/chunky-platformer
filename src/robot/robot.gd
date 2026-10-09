@@ -9,12 +9,16 @@ extends CharacterBody2D
 ## hands-free (toddler anti-frustration rule).
 
 var facing := 1
+
+## Seconds of pointing pose remaining. Zero means Robo is not pointing.
+var point_hold_left := 0.0
+
 var _coyote_left := 0.0
 var _buffer_left := 0.0
 var _sprite: AnimatedSprite2D
 var _celebrate_tween: Tween
-var _was_on_floor := true  # Robo spawns standing; a real jump still squashes on landing
 var _land_left := 0.0
+var _was_on_floor := true  # Robo spawns standing; a real jump still squashes on landing
 
 
 func _ready() -> void:
@@ -62,9 +66,32 @@ func _add_anim(
 		frames.add_frame(anim, AssetFactory.get_texture(texture_name))
 
 
+## Turn toward a target and hold the pose. Purely visual: a hint must never
+## move or slow the player, because the child may well walk where they are
+## pointed while doing it.
+func point_at(target: Node2D) -> void:
+	if target == null:
+		return
+	facing = 1 if target.position.x >= position.x else -1
+	point_hold_left = Tuning.POINT_HOLD_TIME
+
+
+func is_pointing() -> bool:
+	return point_hold_left > 0.0
+
+
+func stop_pointing() -> void:
+	point_hold_left = 0.0
+
+
 func update_animation(delta: float, on_floor: bool, moving: bool) -> void:
 	# State machine: airborne jump pose, a short squash right after landing,
 	# then walk or idle. Facing mirrors the sprite every frame.
+	point_hold_left = maxf(point_hold_left - delta, 0.0)
+	if moving:
+		# A child who starts walking again has understood the hint; holding the
+		# pose would fight their input.
+		point_hold_left = 0.0
 	if on_floor and not _was_on_floor:
 		_land_left = Tuning.LAND_SQUASH_TIME
 	_land_left = maxf(_land_left - delta, 0.0)

@@ -22,6 +22,11 @@ var counter: GemCounter
 var goal_state: GoalState
 var door: Door
 var key_counter: KeyCounter
+var hint: HintSystem
+
+## The area's live keys, kept so the hint can re-resolve its target the moment
+## one is taken rather than holding a stale reference.
+var _keys: Array[Key] = []
 
 var _layout: AreaLayout
 
@@ -30,6 +35,7 @@ var _layout: AreaLayout
 ## caller can clamp a camera or check that the level is the expected size.
 func build(layout: AreaLayout) -> Rect2:
 	_layout = layout
+	_keys.clear()  # a rebuild must not inherit the previous area's keys
 	_build_sky()
 	var world := Node2D.new()
 	world.name = "World"
@@ -176,16 +182,36 @@ func _build_goal(world: Node2D) -> void:
 		key.palette = _layout.palette
 		key.taken.connect(_on_key_taken)
 		world.add_child(key)
+		_keys.append(key)
 
 	key_counter = KeyCounter.new()
 	key_counter.name = "KeyCounter"
 	key_counter.palette = _layout.palette
 	add_child(key_counter)
+	_build_hint()
 
 
 func _on_key_taken(_key: Key) -> void:
 	goal_state.take_key()
 	key_counter.set_count(goal_state.keys_taken())
+	# Progress buys silence: the trail is gone the instant a key is banked.
+	hint.progressed()
+
+
+func _build_hint() -> void:
+	hint = HintSystem.new()
+	hint.name = "Hint"
+	hint.door = door
+	add_child(hint)
+	hint.shown.connect(_on_hint_shown)
+	hint.begin(goal_state, robot, _keys)
+
+
+func _on_hint_shown(target: Node2D) -> void:
+	# Robo turns toward whatever the trail points at. The trail can run off the
+	# side of the screen for a far key, so pointing at the key itself (not at a
+	# screen-space position) keeps him facing the right way.
+	robot.point_at(target)
 
 
 func _on_door_unlocked(_door: Door) -> void:

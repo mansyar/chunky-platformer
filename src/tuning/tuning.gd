@@ -56,6 +56,13 @@ const KEY_GLOW_DEPTH := 0.35  # how far the art tints toward KEY_GLOW_TINT
 const KEY_GLOW_TINT := Color(1.35, 1.35, 0.9)  # a warm bloom, not a colour change
 const KEY_COUNTER_MARGIN := Vector2(48, 140)  # directly below the gem badge
 const KEY_BUMP_TIME := 0.25
+# Hint system - the anti-frustration safety net. Long enough that ordinary
+# wandering is never interrupted, short enough that a truly stuck child does
+# not lose interest first.
+const HINT_DELAY := 30.0
+const HINT_SHOW_TIME := 4.0  # the trail dissolves after this; it is a nudge, not wallpaper
+const HINT_SPARKLE := Color(1.0, 0.85, 0.35)  # warm gold, reads as 'go here'
+const POINT_HOLD_TIME := 1.5  # how long Robo holds the pointing pose
 # Collection juice (collect_play_20261008): pop ring + sparkle burst.
 const POP_LIFETIME := 0.45  # seconds the pop effect lives
 const POP_START_RADIUS := 4.0  # ring radius at birth
