@@ -65,7 +65,7 @@
   (tall, trampoline-driven)
 - [x] [d4790e5] Task: Integration - 3 keys + door in each area, hints live, celebration on
   finishing sunset
-- [ ] Task: Run full gate
+- [x] [d4790e5] Task: Run full gate
 - [ ] Task: Manual verification — play all 3 areas end to end, confirm hint fires and
   never strands
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
