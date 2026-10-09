@@ -16,13 +16,13 @@
 
 ## Phase 2: Key Entity & Counter
 
-- [ ] Task: Write failing tests — `Key` builds sprite + sensor, auto-collects on
+- [x] [8c6f972] Task: Write failing tests — `Key` builds sprite + sensor, auto-collects on
   touch, is permanent, `is_taken()`; bob is pure bounded sine like `Gem.bob_offset`
-- [ ] Task: Write failing tests — key counter badge renders icon + correct digits,
+- [x] [8c6f972] Task: Write failing tests — key counter badge renders icon + correct digits,
   baseline-aligned with the gem counter
-- [ ] Task: Implement — `src/world/key.gd`, glow/bob, `src/ui/key_counter.gd`
-- [ ] Task: Implement — key art in the asset spec + generators
-- [ ] Task: Run full gate
+- [x] [8c6f972] Task: Implement — `src/world/key.gd`, glow/bob, `src/ui/key_counter.gd`
+- [x] [8c6f972] Task: Implement — key art in the asset spec + generators
+- [x] [8c6f972] Task: Run full gate
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Goal State & Door
