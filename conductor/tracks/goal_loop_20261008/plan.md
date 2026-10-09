@@ -35,7 +35,7 @@
 - [x] [a1ba80a] Task: Run full gate
 - [x] [a1ba80a] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 4: Hint System
+## Phase 4: Hint System [checkpoint: 5937d47]
 
 - [x] Task: Write failing tests — timer re-arms on collection; fires at
   `HINT_DELAY` with no progress; trail endpoints are Robo → nearest uncollected key;
@@ -43,7 +43,7 @@
 - [x] Task: Implement — `src/fx/hint_trail.gd` (deterministic dots along the line,
   like `PopEffect`), `src/robot/robot.gd` point-at state [b19d4f4]
 - [x] Task: Run full gate [b19d4f4]
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md) [5937d47]
 
 ## Phase 5: Area Transition & Celebration
 
