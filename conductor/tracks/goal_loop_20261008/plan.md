@@ -27,11 +27,11 @@
 
 ## Phase 3: Goal State & Door
 
-- [ ] Task: Write failing tests — `GoalState` starts at 0 keys / locked; `take_key()`
+- [x] [7503412] Task: Write failing tests — `GoalState` starts at 0 keys / locked; `take_key()`
   increments, is idempotent per key, emits; `open_door()` only at 3/3
-- [ ] Task: Write failing tests — `Door` is solid while locked, opens at 3/3
+- [x] [7503412] Task: Write failing tests — `Door` is solid while locked, opens at 3/3
   (art swap + collision change + signal)
-- [ ] Task: Implement — `src/levels/goal_state.gd`, `src/world/door.gd`
+- [x] [7503412] Task: Implement — `src/levels/goal_state.gd`, `src/world/door.gd`
 - [ ] Task: Run full gate
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
