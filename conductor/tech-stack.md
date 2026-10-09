@@ -10,6 +10,11 @@
   `move_and_slide` motion is divided by the parent scale, silently quartering
   speeds and jumps. The chunky look comes from `Camera2D.zoom` (4×) instead;
   screen-space art (sky) lives on a `CanvasLayer` unaffected by zoom.
+- **Levels are data:** each area is an `AreaLayout` record policed by
+  reachability tests (no column step larger than two tiles, keys classified at
+  verified reach tiers — walk/jump/bounce — and props seated exactly on
+  surfaces). One shared `AreaBuilder` turns any record into a running level,
+  so a new area is data, not code.
 
 ## Asset Generation (No External Assets) — All Pixel Art
 

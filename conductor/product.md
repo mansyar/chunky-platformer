@@ -47,10 +47,14 @@ One full area takes a 4-year-old roughly 5–10 minutes.
 - **Keys & doors:** 3 keys per area, door unlocks when all are collected.
   Keys are large, shiny, and visually salient.
 - **Anti-frustration:** If no key progress for ~30 seconds, a sparkle trail
-  appears and Robo points toward the nearest remaining key. No menus, no
-  reading required.
+  appears and Robo points toward the nearest remaining key — or toward the
+  door once all three are taken. No menus, no reading required.
 - **Progression:** 3 handcrafted areas with distinct code-generated palettes
-  and decoration shapes (e.g. meadow → cave → sunset hills).
+  and decoration shapes (e.g. meadow → cave → sunset hills). After the last
+  area's door, a finale celebration loops home to a fresh meadow; gems carry
+  over as a lifetime score while keys reset per area. Launching always starts
+  in the meadow. Every area is walkable end to end — no height change larger
+  than two tiles anywhere a child must walk.
 
 ## Controls
 
