@@ -1,5 +1,5 @@
 extends Node
-## AudioFactory — synthesized SFX behind the stub interface (Audio track P1).
+## AudioFactory — synthesized SFX + ambient loops (Audio track P1+P2).
 ##
 ## Registered as the `AudioFactory` autoload. All 9 one-shot SFX are
 ## pre-generated once at startup as 8-bit mono AudioStreamWAV buffers (see
@@ -7,10 +7,13 @@ extends Node
 ## never regenerate. play() is polyphonic with a voice cap: at most
 ## Tuning.AUDIO_MAX_VOICES one-shots overlap and the oldest voice is stolen
 ## first, so a mashing 4-year-old can never clip or drop the ambient.
-## Unknown or empty names are safe no-ops. get_ambient() stays null until
-## Phase 2 adds the per-area ambient loops behind the same interface.
+## Unknown or empty SFX names are safe no-ops. The three per-area ambient
+## loops (see Tuning.AUDIO_AMBIENT) pre-generate the same way and are served
+## by get_ambient(), sharing rendering with AudioManager so both surfaces
+## stay byte-identical; unknown or empty areas fall back to meadow.
 
 var _sfx_cache := {}
+var _ambient_cache := {}
 var _pool: Array[AudioStreamPlayer] = []
 var _voice_seq: Array[int] = []
 var _play_counter := 0
@@ -18,6 +21,7 @@ var _play_counter := 0
 
 func _ready() -> void:
 	warm_sfx()
+	warm_ambient()
 	_ensure_pool()
 
 
@@ -47,7 +51,8 @@ func sfx_names() -> Array[String]:
 	return names
 
 
-## How many SFX buffers are cached (9 once warmed).
+## How many SFX buffers are cached (9 once warmed; ambient loops are counted
+## separately by ambient_cache_size()).
 func cache_size() -> int:
 	return _sfx_cache.size()
 
@@ -122,9 +127,72 @@ func play(sfx_name: String) -> void:
 	player.play()
 
 
-## Returns the ambient loop stream for an area, or null until Phase 2.
-func get_ambient(_area_name: String) -> AudioStream:
-	return null
+## Pre-generates every ambient loop once; repeat calls reuse the cache.
+## Rendering is shared with AudioManager.synthesize_ambient (no duplicated
+## synthesis), so factory and manager loops are byte-identical.
+func warm_ambient() -> void:
+	for area_name in Tuning.AUDIO_AMBIENT_NAMES:
+		if not _ambient_cache.has(area_name):
+			_ambient_cache[area_name] = AudioManager.synthesize_ambient(area_name)
+
+
+## True when a loop is cached for this area (unknown names read false).
+func has_ambient(area_name: String) -> bool:
+	return _ambient_cache.has(area_name)
+
+
+## Returns the cached loop for an area; unknown or empty names fall back to
+## the meadow loop. Warms on demand, so it never returns null afterwards.
+func get_ambient(area_name: String) -> AudioStreamWAV:
+	if _ambient_cache.is_empty():
+		warm_ambient()
+	return _ambient_cache.get(_resolve_area(area_name)) as AudioStreamWAV
+
+
+## Logical names of all cached loops, in tuning order.
+func ambient_names() -> Array[String]:
+	var names: Array[String] = []
+	for area_name in Tuning.AUDIO_AMBIENT_NAMES:
+		if _ambient_cache.has(area_name):
+			names.append(area_name)
+	return names
+
+
+## How many loops are cached (3 once warmed).
+func ambient_cache_size() -> int:
+	return _ambient_cache.size()
+
+
+## Deterministic snapshot summary of one loop for assert_snapshot pins:
+## byte length, checksum, leading bytes, peak deviation from silence, and
+## the loop points. Returns an empty Dictionary for unknown names.
+func ambient_signature(area_name: String) -> Dictionary:
+	if not _ambient_cache.has(area_name):
+		return {}
+	var stream: AudioStreamWAV = _ambient_cache.get(area_name) as AudioStreamWAV
+	var bytes := stream.data
+	var checksum := 0
+	var peak := 0
+	for b in bytes:
+		checksum = (checksum + b) % 1000003
+		peak = maxi(peak, absi(b - 128))
+	var head: Array[int] = []
+	for i in mini(8, bytes.size()):
+		head.append(bytes[i])
+	return {
+		"name": area_name,
+		"bytes": bytes.size(),
+		"checksum": checksum,
+		"head": head,
+		"peak": peak,
+		"loop_mode": stream.loop_mode,
+		"loop_end": stream.loop_end,
+	}
+
+
+## Unknown or empty areas read as the meadow loop (shared rule).
+func _resolve_area(area_name: String) -> String:
+	return AudioManager.canonical_area(area_name)
 
 
 func _ensure_pool() -> void:

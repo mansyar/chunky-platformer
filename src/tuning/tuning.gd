@@ -212,3 +212,41 @@ const AUDIO_SFX := {
 		"wobble_depth": 0.0,
 	},
 }
+
+# Audio ambience (audio_synthesis_20261027 Phase 2): one gentle loop per
+# area plus the crossfade + ducking mix. Loops render at the shared sample
+# rate so SFX + loops stay sub-second together; every chord frequency and
+# every tremolo rate completes whole cycles inside AUDIO_AMBIENT_DURATION
+# so each loop wraps click-free.
+const AUDIO_AMBIENT_NAMES: Array[String] = ["meadow", "cave", "sunset"]
+const AUDIO_AMBIENT_DURATION := 2.0
+const AUDIO_AMBIENT_VOLUME := 0.3
+# Gentle area change: outgoing and incoming loops overlap for this long.
+const AUDIO_CROSSFADE_TIME := 0.8
+# While a one-shot SFX plays the loop steps back by this many dB, then
+# restores; notify_sfx_played holds the duck for AUDIO_DUCK_TIME.
+const AUDIO_DUCK_DB := 6.0
+const AUDIO_DUCK_TIME := 0.5
+# Per-area voice: three-tone chord in Hz (bright meadow major, hollow low
+# cave fifth + octave, warm sunset major) under a slow breathing tremolo
+# (rate Hz completes whole cycles too, depth 0..1 keeps it gentle).
+const AUDIO_AMBIENT := {
+	"meadow":
+	{
+		"freqs": [262.0, 330.0, 392.0],
+		"lfo_rate": 1.0,
+		"lfo_depth": 0.25,
+	},
+	"cave":
+	{
+		"freqs": [110.0, 165.0, 220.0],
+		"lfo_rate": 0.5,
+		"lfo_depth": 0.3,
+	},
+	"sunset":
+	{
+		"freqs": [196.0, 247.0, 294.0],
+		"lfo_rate": 1.5,
+		"lfo_depth": 0.2,
+	},
+}
