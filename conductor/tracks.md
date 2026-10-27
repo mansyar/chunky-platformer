@@ -5,3 +5,4 @@
 - [x] **Track: Collect & Play - gems with juice, pixel-digit HUD counter, endless timed respawn** *Link: [collect_play_20261008](tracks/collect_play_20261008/index.md)*
 - [x] **Track: Goal Loop - keys, doors, anti-frustration hints, and three connected areas** *Link: [goal_loop_20261008](tracks/goal_loop_20261008/index.md)*
 - [x] **Track: Gem Economy + Gift Machine** - [20261027-gem-shop](./archive/20261027-gem-shop/index.md) - feature - medium
+- [ ] **Track: Audio Synthesis** — [20261027-audio-synthesis](./tracks/20261027-audio-synthesis/index.md) — feature — high
