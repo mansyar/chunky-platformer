@@ -33,7 +33,7 @@
 - **Depends on:** Phase 1
 - **Covers:** FR-3, FR-4, FR-5, FR-6, FR-7, NFR-1, NFR-2, NFR-3, NFR-5, AC-3, AC-4, AC-5, AC-6, AC-7
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P2.T1: Machine node + interaction** — covers: FR-3, FR-6
   - [ ] **P2.T1.1: Machine instance per area, tap detection, dispense pop + confetti + auto-wear**
