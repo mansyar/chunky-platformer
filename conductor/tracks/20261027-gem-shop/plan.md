@@ -106,7 +106,7 @@ Review fixes are appended by `conductor-review` as:
 - **Covers:** F1, F2, F3 (FR-2, AC-2)
 - **Touches:** `src/levels/area_builder.gd`, `src/ui/gem_counter.gd` (delete), `src/ui/machine_tag.gd`, `src/ui/wallet_hud.gd`, `tests/test_gem_counter.gd` (delete), `tests/test_gem_integration.gd`, `tests/test_gem_budget.gd`, `tests/test_game_transition.gd`, `tests/test_area_builder.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **R1.T1: Remove legacy GemCounter; WalletHud is the sole badge** — covers: F1
 - [ ] **R1.T2: Pip clamp + icon-size palette consistency** — covers: F2, F3
