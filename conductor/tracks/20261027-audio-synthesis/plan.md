@@ -75,17 +75,21 @@ The primary appends after acceptance:
 - **Verification:** `gd-tools test --coverage --min 80`
 - **Status:** in_progress
 
-- [ ] **P3.T1: Wire movement + bounce** — covers: FR-5
-  - [ ] **P3.T1.1: Robot jump / land** — jump SFX on takeoff (land squash silent or soft thud only if already exists)
-  - [ ] **P3.T1.2: Trampoline bounce** — bounce SFX on auto-impulse, mash-safe
-- [ ] **P3.T2: Wire collect + goal loop** — covers: FR-5
-  - [ ] **P3.T2.1: Gem / key / door** — gem pop, key chime, door rising chime on unlock
-  - [ ] **P3.T2.2: Hint-safe** — sounds never block hint sparkles or pointing
-- [ ] **P3.T3: Wire gift machine + finale + ambient** — covers: FR-5, FR-4
-  - [ ] **P3.T3.1: Gift dispense / wiggle / bonus** — gift_pop, gift_wiggle, gift_bonus paths
-  - [ ] **P3.T3.2: Finale + area ambient switch** — celebrate flourish + crossfade on transition / loop-home
-- [ ] **P3.T4: Live verification** — covers: AC-5, AC-6, AC-7
-  - [ ] **P3.T4.1: Wiring tests** — signal-spy tests proving each moment calls `play()` / swaps ambient
+- [x] **P3.T1: Wire movement + bounce** — covers: FR-5
+  - [x] **P3.T1.1: Robot jump / land** — jump SFX on takeoff (land squash silent or soft thud only if already exists)
+  - [x] **P3.T1.2: Trampoline bounce** — bounce SFX on auto-impulse, mash-safe
+- [x] **P3.T2: Wire collect + goal loop** — covers: FR-5
+  - [x] **P3.T2.1: Gem / key / door** — gem pop, key chime, door rising chime on unlock
+  - [x] **P3.T2.2: Hint-safe** — sounds never block hint sparkles or pointing
+- [x] **P3.T3: Wire gift machine + finale + ambient** — covers: FR-5, FR-4
+  - [x] **P3.T3.1: Gift dispense / wiggle / bonus** — gift_pop, gift_wiggle, gift_bonus paths
+  - [x] **P3.T3.2: Finale + area ambient switch** — celebrate flourish + crossfade on transition / loop-home
+- [x] **P3.T4: Live verification** — covers: AC-5, AC-6, AC-7
+  - [x] **P3.T4.1: Wiring tests** — signal-spy tests proving each moment calls `play()` / swaps ambient
+
+**Result:** verified
+**Checkpoint:** f3e4d2f
+**Evidence:** conductor/tracks/20261027-audio-synthesis/verification/phase-3.md
 
 <!--
 Review fixes are appended by `conductor-review` as:
