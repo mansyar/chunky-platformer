@@ -98,6 +98,84 @@ func test_a_second_door_bump_during_the_fade_is_ignored() -> void:
 	assert_eq(game.area_index, 1, "exactly one swap happened.")
 
 
+# --- resume-mid-adventure (Phase 2: FR-2, FR-7; AC-1) ---------------------------
+
+
+func _boot() -> Game:
+	# Boot WITHOUT clearing: the save on disk is the setup (a reboot).
+	var game: Game = load(GAME_SCRIPT).new()
+	add_child(game)
+	return game
+
+
+func test_boot_restores_saved_cave_at_spawn_with_collections() -> void:
+	SaveGame.clear()
+	var wallet := Wallet.new()
+	wallet.add(5)
+	var wardrobe := Wardrobe.new()
+	wardrobe.own(Cosmetics.HAT_SPROUT)
+	wardrobe.wear(Cosmetics.HAT_SPROUT)
+	assert_true(
+		SaveGame.save_game(wallet, wardrobe, {}, SaveGame.SAVE_PATH, 1),
+		"setup: a mid-cave save is on disk."
+	)
+	var game := _boot()
+	assert_eq(game.area_index, 1, "boot resumes the saved area index.")
+	assert_eq(_area(game).area_name(), "cave", "boot builds the cave, not the meadow.")
+	assert_eq(
+		_area(game).robot.position,
+		AreaLayout.cave().robot_spawn,
+		"resume starts at the cave spawn, not an exact XY."
+	)
+	assert_eq(game.wallet.balance(), 5, "the wallet survives the reboot.")
+	assert_eq(game.wardrobe.worn(), Cosmetics.HAT_SPROUT, "the worn look survives the reboot.")
+
+
+func test_resumed_area_starts_with_fresh_keys() -> void:
+	# Keys reset per area (FR-7): even a save carrying gem-taken flags must
+	# boot an area whose key chase starts at 0/3.
+	SaveGame.clear()
+	var flags: Array[bool] = []
+	for i: int in range(AreaLayout.GEMS_PER_AREA):
+		flags.append(i < 2)
+	assert_true(
+		SaveGame.save_game(Wallet.new(), Wardrobe.new(), {"cave": flags}, SaveGame.SAVE_PATH, 1),
+		"setup: a mid-cave save with gems taken is on disk."
+	)
+	var game := _boot()
+	assert_eq(_area(game).area_name(), "cave", "boot builds the saved cave.")
+	assert_eq(_area(game).goal_state.keys_taken(), 0, "the resumed cave wants keys again.")
+	assert_eq(_area(game).key_counter.count(), 0, "and the badge starts empty.")
+
+
+# --- persist index on swap + finale (Phase 2: FR-5, FR-6; AC-4) ----------------
+
+
+func test_door_transition_persists_the_new_area_index() -> void:
+	var game := _game()
+	_enter_door(game)
+	_step_through(game)
+	assert_eq(SaveGame.load_game()["area_index"], 1, "meadow door saves the cave index.")
+	_enter_door(game)
+	_step_through(game)
+	assert_eq(SaveGame.load_game()["area_index"], 2, "cave door saves the sunset index.")
+
+
+func test_finale_saves_meadow_and_reboot_starts_meadow() -> void:
+	var game := _game()
+	_enter_door(game)
+	_step_through(game)
+	_enter_door(game)
+	_step_through(game)
+	_enter_door(game)
+	_step_through(game)
+	assert_eq(game.area_index, 0, "the finale loops home to the meadow.")
+	assert_eq(SaveGame.load_game()["area_index"], 0, "the finale commits area 0.")
+	var reboot := _boot()
+	assert_eq(reboot.area_index, 0, "a reboot after the finale starts in the meadow.")
+	assert_eq(reboot.builder.area_name(), "meadow", "the rebuilt area is the meadow.")
+
+
 # --- what survives the swap -------------------------------------------------
 
 
