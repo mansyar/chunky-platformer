@@ -1,4 +1,5 @@
 # Project Context
+<!-- conductor-version: 2 -->
 
 ## Definition
 
@@ -15,3 +16,8 @@
 
 - [Tracks Registry](./tracks.md)
 - [Tracks Directory](./tracks/)
+
+## Capabilities
+
+- [Phase Executor](../.opencode/agents/conductor-phase.md)
+- [Reviewer](../.opencode/agents/conductor-reviewer.md)

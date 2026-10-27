@@ -2,231 +2,250 @@
 
 ## Guiding Principles
 
-1.  **The Plan is the Source of Truth:** All work must be tracked in `plan.md`
-2.  **The Tech Stack is Deliberate:** Changes to the tech stack must be
-    documented in `tech-stack.md` *before* implementation
-3.  **Test-Driven Development — for logic-bearing code:** Write unit tests
-    before implementing game logic (physics tuners, save/load, hint logic,
-    collectible state, door/key state, AssetFactory generation logic).
-    Purely visual code (pixel-drawing DSL internals, frame data, palette
-    records) is exempt from TDD; it is verified via deterministic snapshot
-    tests instead (see Testing Requirements).
-4.  **High Code Coverage — scoped to logic:** Aim for >80% coverage of
-    logic-bearing modules via `gd-tools test --coverage --min 80`.
-    Art/frame-data generation code is excluded from the gate.
-5.  **User Experience First:** Every decision prioritizes the 4-year-old
-    player (see `product-guidelines.md`)
-6.  **Non-Interactive & CI-Aware:** Prefer non-interactive commands. Use
-    `CI=true` for watch-mode tools to ensure single execution.
+1. **The plan is the source of truth.** Every phase, task, result, checkpoint,
+   and evidence link lives in `plan.md`.
+2. **The tech stack is deliberate.** A change to the stack is recorded in
+   `tech-stack.md` before the implementation depends on it.
+3. **Verification is agent-executed.** The phase subagent runs the configured
+   checks and writes evidence. The user is not asked to manually verify routine
+   work.
+4. **Evidence over assertion.** A phase is complete only when the configured
+   checks pass and the evidence file exists.
+5. **No silent debt.** A finding is fixed, explicitly accepted with a reason, or
+   tracked as an issue. It is never quietly ignored.
+6. **Stay inside the phase contract.** `Touches` defines the expected blast
+   radius. A required deviation is allowed, recorded, and reviewed.
+7. **Non-interactive and CI-aware.** Prefer commands that terminate. Use
+   `CI=true` for watch-mode tools where the ecosystem supports it.
 
-## Task Workflow
+## Workflow Config
 
-All tasks follow a strict lifecycle:
-
-### Standard Task Workflow
-
-1.  **Select Task:** Choose the next available task from `plan.md` in
-    sequential order
-
-2.  **Mark In Progress:** Before beginning work, edit `plan.md` and change
-    the task from `[ ]` to `[~]`
-
-3.  **Define Verification First (Red Phase for logic tasks):**
-
-    -   **Logic-bearing tasks:** Create a test suite extending `GdToolsTest`.
-        Write tests that define expected behavior and acceptance criteria.
-        **CRITICAL:** Run `gd-tools test` and confirm they fail as expected
-        before implementing.
-    -   **Visual/asset tasks:** Define expected outputs as a deterministic
-        snapshot (`assert_snapshot`) or golden comparison first, then
-        implement generation to match.
-    -   **Scene/layout tasks** (TileMap layouts, node placement): verify via
-        the phase's manual verification plan instead of unit tests.
-
-4.  **Implement to Pass (Green Phase):** Write the minimum code necessary
-    to make the failing tests/snapshots pass.
-
-5.  **Refactor (Optional but Recommended):** Improve clarity and remove
-    duplication with passing tests as the safety net; re-run tests.
-
-6.  **Verify Coverage (logic tasks):** Run
-    `gd-tools test --coverage --min 80 --show-uncovered`. Target >80% for
-    new logic-bearing code.
-
-7.  **Document Deviations:** If implementation differs from tech stack:
-
-    -   **STOP** implementation
-    -   Update `tech-stack.md` with the new design
-    -   Add a dated note explaining the change
-    -   Resume implementation
-
-8.  **Commit Code Changes:**
-
-    -   Stage all changes related to the task.
-    -   Commit with a conventional message, e.g.
-        `feat(movement): Add hold-to-move robot controller`.
-
-9.  **Attach Task Summary with Git Notes:**
-
-    -   **Step 9.1:** Get the commit hash: `git log -1 --format="%H"`
-    -   **Step 9.2:** Draft a summary: task name, changes, files touched,
-        and the core "why".
-    -   **Step 9.3:** Attach it: `git notes add -m "<note content>" <hash>`
-
-10. **Get and Record Task Commit SHA:**
-
-    -   **Step 10.1:** Update `plan.md`: change the task from `[~]` to `[x]`
-        and append the first 7 characters of the commit hash.
-    -   **Step 10.2:** Write the updated `plan.md`.
-
-11. **Commit Plan Update:**
-
-    -   Commit with e.g. `conductor(plan): Mark task 'X' as complete`.
-
-### Task Correction & Plan Amendment Workflows
-
-1.  **In-Flight Refinements:** Minor gaps found while a task is `[~]` are
-    fixed directly in the active stream, with passing tests before commit.
-2.  **Code Review Corrections (`conductor-review`):** The review agent
-    appends a `Review Fixes` phase to `plan.md` for tracked corrections.
-3.  **Logical State Reversions (`conductor-revert`):** Fundamentally flawed
-    tasks are reverted via git and reset to `[ ]` in `plan.md`.
-
-### Phase Completion Verification and Checkpointing Protocol
-
-**Trigger:** Immediately after a task that concludes a phase in `plan.md`.
-
-1.  **Announce Protocol Start** to the user.
-
-2.  **Ensure Test Coverage for Phase Changes:**
-
-    -   Determine phase scope via the previous phase's checkpoint SHA from
-        `plan.md` (or all commits if none exists).
-    -   List changed files: `git diff --name-only <sha> HEAD`.
-    -   For each **logic-bearing** `.gd` file changed, verify a test suite
-        exists; create one if missing (match existing suite naming/style).
-        Pure visual/frame-data files are exempt but must have their
-        snapshots still passing.
-
-3.  **Execute Automated Tests with Proactive Debugging:**
-
-    -   Announce the exact command first, e.g.
-        **Command:** `gd-tools test --coverage --min 80`
-    -   On failure: inform the user, propose fixes (maximum two attempts),
-        then stop and ask for guidance if still failing.
-
-4.  **Propose a Detailed, Actionable Manual Verification Plan:**
-
-    Analyze `product.md`, `product-guidelines.md`, and `plan.md` to produce
-    step-by-step manual verification (e.g. *"Run the scene with F5; hold
-    right arrow; confirm Robo walks at constant speed and the camera
-    follows; tap Space; confirm jump with forgiving coyote time"*).
-
-5.  **Await Explicit User Feedback** — pause until the user confirms.
-
-6.  **Identify Target Commit** (last functional commit of the phase; no
-    empty checkpoint commits).
-
-7.  **Attach Auditable Verification Report** via `git notes` to that commit.
-
-8.  **Record Phase Checkpoint SHA:** Append `[checkpoint: <sha>]` to the
-    phase heading in `plan.md` and write it.
-
-9.  **Commit Plan Update:**
-    `conductor(plan): Mark phase '<PHASE NAME>' as complete`.
-
-10. **Announce Completion** to the user.
-
-## Quality Gates
-
-Before marking any task complete, verify:
-
-- [ ] All tests/snapshots pass (`gd-tools test`)
-- [ ] Logic-bearing coverage meets >80% (`gd-tools test --coverage --min 80`)
-- [ ] Code follows style guides (`gd-tools format --check`, `gd-tools lint`)
-- [ ] All public functions/methods documented (GDScript doc comments)
-- [ ] Static typing used where practical
-- [ ] No security issues (no network I/O, no external file loading)
-- [ ] Works at target frame rate on mid-range hardware (delta-time-safe)
-- [ ] Tuning values live in the constants/config file, not scattered
-- [ ] Documentation updated if needed
+```yaml
+project:
+  type: "game"
+  languages: ["GDScript"]
+commands:
+  setup: "pip install gd-tools-cli && gd-tools init"
+  dev: "godot --path ."
+  test: "gd-tools test"
+  coverage: "gd-tools test --coverage --min 80"
+  lint: "gd-tools lint"
+  format: "gd-tools format"
+  typecheck: "godot --headless --check-only --path ."
+  build: "godot --headless --import --path ."
+  verify_phase: "gd-tools test --coverage --min 80"
+coverage:
+  gate: 80
+  scope: "new-code"
+verification:
+  layers: ["static", "unit", "integration", "visual"]
+  retry: 2
+  manual_exceptions: ["android-device-testing", "playtest-with-4-year-old", "windows-android-export"]
+git:
+  base_branch: "master"
+  fetch: true
+  commit_style: "conventional"
+  task_commits: true
+  phase_squash: true
+review:
+  strict: true
+  issues:
+    enabled: true
+    auto_create: false
+    min_severity: "medium"
+    group_low: true
+    labels: ["tech-debt", "conductor"]
+pr:
+  enabled: true
+  tool: "gh"
+  base: "master"
+  media: "always"
+  watch_ci: false
+  watch_timeout_minutes: 15
+  merge_method: "squash"
+```
 
 ## Development Commands
 
 ### Setup
 
 ```bash
-pip install gd-tools-cli      # gd-tools CLI (requires Python 3.10+, Godot 4.5+)
-godot --version               # verify Godot binary on PATH or GODOT_BIN
-gd-tools init                 # bootstrap test/coverage addons + configs
+pip install gd-tools-cli && gd-tools init
 ```
 
 ### Daily Development
 
 ```bash
-gd-tools test                 # run test suites (GdToolsTest runtime)
-gd-tools test --watch         # re-run affected suites on save
-gd-tools test --coverage --min 80   # tests + coverage gate
-gd-tools lint                 # gdlint
-gd-tools format               # gdformat
-godot --path .                # run the game (or open in editor)
+# Start the game (or open the project in the Godot editor)
+godot --path .
+
+# Run tests
+gd-tools test
+
+# Run coverage
+gd-tools test --coverage --min 80
+
+# Lint
+gd-tools lint
+
+# Format
+gd-tools format
+
+# Typecheck (GDScript parse check via headless editor)
+godot --headless --check-only --path .
+
+# Build (headless import check; exports are manual via the editor for Windows/Android)
+godot --headless --import --path .
 ```
 
 ### Before Committing
 
 ```bash
-gd-tools format --check && gd-tools lint && gd-tools test
+gd-tools format --check && gd-tools lint && gd-tools test --coverage --min 80
 ```
 
-## Testing Requirements
+## Phase & Task Workflow
 
-### Unit Testing (logic-bearing code only)
+Implementation is executed one phase at a time by a phase subagent. The primary
+agent owns `plan.md`, `metadata.json`, the registry, and review artifacts.
 
-- Suites extend `GdToolsTest` (gd-tools native runtime), live in `tests/`,
-  named `test_<subject>.gd`.
-- Cover: movement/physics tuning math, save/load round-trips and corrupt
-  file recovery, key/door state machines, hint-timer logic, gem respawn
-  logic, AssetFactory output completeness (asset spec coverage).
-- Test both success and failure paths; use doubles/spies for engine-bound
-  collaborators where needed.
-- **Exempt from unit tests:** pixel-drawing helpers' visual output, frame
-  data arrays, palette records, scene layouts.
+### Task Lifecycle
 
-### Snapshot Testing (visual generation)
+1. Read the phase contract in `plan.md`, the relevant requirements in `spec.md`,
+   and the applicable style guides.
+2. Work through the phase's tasks in order.
+3. Test-first for logic-bearing code: write or update the failing `GdToolsTest`
+   suite before the implementation (physics tuners, save/load, hint logic,
+   collectible state, door/key state, AssetFactory generation logic). Purely
+   visual code (pixel-drawing DSL internals, frame data, palette records) is
+   verified via deterministic snapshots (`assert_snapshot`) instead.
+4. Implement the smallest change that satisfies the task.
+5. Run the targeted checks for the task.
+6. Commit the task with a conventional commit message.
+7. Report the task's status and commit SHA to the primary agent.
 
-- Generated textures/audio are deterministic; pin key outputs with
-  `assert_snapshot` (gd-tools) so palette/DSL changes that accidentally
-  alter visuals fail loudly. Update with `--snapshot-update` when changes
-  are intentional.
+The subagent does **not** edit `plan.md`. The primary marks tasks complete after
+it accepts the phase.
 
-### Integration Testing
+### Deviations
 
-- Scene-level tests for core flows: robot enters trampoline Area2D → gets
-  launched; door with 3 keys → opens; hint timer fires after inactivity.
+- If the phase goal requires a file outside `Touches`, make the smallest
+  necessary change and record it in the report under `deviations`.
+- If the work requires a product or design decision, stop and report `blocked`.
+- Do not silently expand scope, add a dependency, or migrate unrelated code.
 
-### Device Testing
+### Phase Completion
 
-- Test on Windows desktop (keyboard) and Android export (touch) before
-  phase checkpoints involving input or performance.
-- Verify 60 FPS behavior and delta-time correctness, especially physics.
+1. Run the phase's `Verification` command exactly as written in `plan.md`.
+2. Run `verify_phase` when it is configured and different from the phase command.
+3. Write the evidence file using the configured evidence path.
+4. Return the structured report to the primary agent.
+5. Do not merge, rebase, reset, push, open a PR, or edit Conductor state files.
 
-## Code Review Process
+## Verification Strategy
 
-### Self-Review Checklist
+### Layers
 
-1.  **Functionality** — works as specified; no frustration states introduced
-2.  **Code Quality** — style guide, DRY, clear names, comments where needed
-3.  **Testing** — logic tests comprehensive; snapshots current; coverage ≥80%
-4.  **Safety** — no network I/O, no external asset loads, safe save handling
-5.  **Performance** — no per-frame allocations in hot paths; delta-time safe
-6.  **Toddler Experience** — touch targets oversized; feedback immediate;
-    no reading required; nothing loud or startling
+- **Static:** lint (`gd-tools lint`), format check (`gd-tools format --check`),
+  GDScript parse check (`godot --headless --check-only --path .`), import check
+  (`godot --headless --import --path .`)
+- **Unit:** logic-bearing behavior and edge cases (`gd-tools test`) — movement
+  tuning math, save/load round-trips and corrupt recovery, key/door state
+  machines, hint-timer logic, gem respawn, AssetFactory spec completeness
+- **Integration:** module boundaries and scene flows via the same native
+  runtime — robot enters trampoline Area2D and launches, door with 3 keys
+  opens, hint timer fires after inactivity
+- **Visual:** deterministic snapshot comparison (`assert_snapshot`) for
+  generated textures, audio buffers, HUD digits, and palette output
+
+### Commands
+
+| Layer | Command | Required |
+| --- | --- | --- |
+| static | `gd-tools lint` | yes |
+| static | `gd-tools format --check` | yes |
+| unit | `gd-tools test` | yes |
+| coverage | `gd-tools test --coverage --min 80` | yes |
+| integration | `gd-tools test` | yes |
+| visual | `gd-tools test` | yes |
+
+### Services and Fixtures
+
+- **Services:** none (no database, no network, no ports)
+- **Containers:** none
+- **Database:** none (save format is JSON via `FileAccess` to `user://`)
+- **Fixtures/seed data:** area layout records (`AreaLayout`) and palette
+  records in code; corrupt-save fixtures for recovery tests
+- **Environment variables:** `GODOT_BIN` when the Godot binary is not on `PATH`
+- **Start/stop commands:** `godot --path .` to run the game; close the window
+  to stop
+
+### Pass Criteria
+
+- Every required command exits `0`.
+- The coverage gate (80, new-code scope) is met for logic-bearing modules.
+  Art/frame-data generation code is excluded from the gate.
+- Every acceptance criterion has a test or a documented evidence artifact.
+- No new Critical or High review findings remain.
+
+### Evidence
+
+Write a report to:
+
+```text
+conductor/tracks/<track-id>/verification/phase-<n>.md
+```
+
+Include: title; track, phase, date, branch, base and head commits; result
+(`verified`, `failed`, `blocked`, or `partial`); a commands table (layer,
+command, exit, summary); an acceptance-criteria table (ID, criterion, evidence,
+status); evidence paths; deviations; and notes. Put binaries, screenshots, and
+large reports under `.conductor/evidence/`; that directory is gitignored. The
+report itself is committed with the track.
+
+### Fallback Ladder
+
+1. Run the full configured layer.
+2. If the Godot binary is missing, set `GODOT_BIN` or install Godot 4.7+ and
+   re-run.
+3. If a device-only check cannot run (Android tablet, touch input), run the
+   narrowest reliable desktop subset and mark the phase `partial` with the
+   reason.
+4. Stop and ask the user (via the question tool) only for credentials, hardware,
+   or an external approval.
+
+### Retry Policy
+
+- A failed check may be fixed and re-run at most **2** times.
+- If it still fails, report `failed` with the command and output.
+- Never mark a phase `verified` when a required check did not run.
+
+### Human-Only Exceptions
+
+- Android tablet testing (touch controls, 60 FPS on mid-range hardware)
+- Playtest session with a real 4-year-old and the resulting tuning pass
+- Windows/Android export verification from the Godot editor
+
+## Quality Gates
+
+Before a phase is accepted:
+
+- [ ] Required tests pass (`gd-tools test`)
+- [ ] Coverage gate is met for new logic-bearing code (`gd-tools test --coverage --min 80`)
+- [ ] Lint and format checks pass (`gd-tools lint`, `gd-tools format --check`)
+- [ ] GDScript parse check passes (`godot --headless --check-only --path .`)
+- [ ] Code follows the applicable `conductor/code_styleguides/`
+- [ ] No secrets, credentials, or PII are introduced (no network I/O, no external asset loads)
+- [ ] Public behavior is documented when it changed
+- [ ] Tuning values live in the constants/config file, not scattered
+- [ ] Toddler experience holds: oversized touch targets, immediate feedback, no reading required
+- [ ] Evidence is written and linked in `plan.md`
 
 ## Commit Guidelines
 
 ### Message Format
 
-```
+```text
 <type>(<scope>): <description>
 
 [optional body]
@@ -236,53 +255,69 @@ gd-tools format --check && gd-tools lint && gd-tools test
 
 ### Types
 
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation only
-- `style`: Formatting only
-- `refactor`: Neither fixes a bug nor adds a feature
-- `test`: Adding missing tests
-- `chore`: Maintenance tasks
+- `feat`: new feature
+- `fix`: bug fix
+- `docs`: documentation only
+- `style`: formatting
+- `refactor`: behavior-preserving change
+- `test`: tests only
+- `chore`: maintenance
 
 ### Examples
 
 ```bash
-git commit -m "feat(movement): Add hold-to-move robot controller"
-git commit -m "fix(save): Recover gracefully from corrupt progress file"
-git commit -m "test(hint): Cover 30-second inactivity hint trigger"
+git commit -m "feat(movement): add hold-to-move robot controller"
+git commit -m "fix(save): recover gracefully from corrupt progress file"
+git commit -m "test(hint): cover 30-second inactivity hint trigger"
 ```
+
+Task-level commits are made by the phase subagent. The primary squashes them
+into one phase commit on acceptance, unless a foreign commit landed in the range.
+The plan update is a separate state commit.
 
 ## Definition of Done
 
-A task is complete when:
+A track is complete when:
 
-1.  All code implemented to specification
-2.  Logic tests written and passing (or snapshots current for visual tasks)
-3.  Logic-bearing coverage meets the project threshold
-4.  Code passes lint/format checks
-5.  Implementation notes added to `plan.md`
-6.  Changes committed with a proper message
-7.  Git note with task summary attached to the commit
+1. Every phase is `verified` with a checkpoint and evidence.
+2. The integrated verification on the track branch passes.
+3. Review is `PASS`, or every finding is fixed, accepted with a reason, or
+   tracked as an issue. No Critical or High finding remains unresolved without an
+   explicit user override recorded in `review.md`.
+4. Post-review documentation sync is complete.
+5. The registry and `metadata.json` show the track as complete.
+6. When a remote exists, the branch is pushed. When `pr.enabled` is true, a PR
+   is open or `pr_state: "unavailable"` records that PR creation could not run.
+   When `pr.enabled` is false, no PR is expected.
 
 ## Emergency Procedures
 
 ### Critical Bug Found During Playtest
 
-1.  Create a fix task in `plan.md` (do not fix outside the workflow)
-2.  Write a failing test reproducing the bug (logic) or define expected
-    snapshot/behavior (visual)
-3.  Implement the minimal fix; verify with the real 4-year-old tester
+1. Create a fix task in `plan.md` (do not fix outside the workflow).
+2. Write a failing test reproducing the bug (logic) or define expected
+   snapshot/behavior (visual).
+3. Implement the minimal fix; verify with the real 4-year-old tester.
 
 ### Save Data Corruption
 
-1.  Stop further save writes
-2.  Reproduce with a corrupt-file test case
-3.  Ensure fallback to fresh start never crashes and never loses the whole
-    session experience
-4.  Document in `plan.md`
+1. Stop further save writes.
+2. Reproduce with a corrupt-file test case.
+3. Ensure fallback to fresh start never crashes and never loses the whole
+   session experience.
+4. Document in `plan.md`.
+
+### Security Breach
+
+1. No networked services exist in v1; confirm no external asset or data channel
+   was introduced.
+2. Rotate any exposed secret and review access logs.
+3. Patch the vulnerability and add a regression test.
+4. Document the incident and update the recovery procedure.
 
 ## Continuous Improvement
 
-- Review the workflow after each playtest checkpoint
-- Update tuning constants based on real kid behavior; document in `plan.md`
-- Keep things simple and maintainable
+- Review this workflow after each track.
+- Update commands and verification layers when the tooling changes.
+- Record recurring review findings as process improvements.
+- Keep the process as small as the project allows.

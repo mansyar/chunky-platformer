@@ -4,5 +4,32 @@
   "status": "new",
   "created": "2026-10-08",
   "updated": "2026-10-08",
-  "description": "Godot project scaffold + code-generated art pipeline (pixel DSL, asset spec, AssetFactory, proof scene)"
+  "description": "Godot project scaffold + code-generated art pipeline (pixel DSL, asset spec, AssetFactory, proof scene)",
+  "priority": "medium",
+  "depends_on": [],
+  "spec": "spec.md",
+  "plan": "plan.md",
+  "branch": null,
+  "base_branch": "master",
+  "base_sha": null,
+  "progress": {
+    "phases_total": 0,
+    "phases_verified": 0,
+    "tasks_total": 0,
+    "tasks_done": 0
+  },
+  "last_checkpoint": null,
+  "review_verdict": null,
+  "review_rounds": 0,
+  "doc_sync": "pending",
+  "pr_url": null,
+  "pr_state": null,
+  "reverted_at": null,
+  "revert_commit": null,
+  "revert_pr_url": null,
+  "archived_at": null,
+  "archive_path": null,
+  "legacy": true,
+  "migrated_at": "2026-10-27T06:19:36Z",
+  "migrated_from": "1.x"
 }
