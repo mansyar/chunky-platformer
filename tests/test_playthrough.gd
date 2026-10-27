@@ -16,6 +16,9 @@ func _ensure_actions() -> void:
 
 
 func _open_game() -> Node:
+	# A Game boot resumes the save on disk: start from a clean slate so the
+	# playthrough always opens in the meadow.
+	SaveGame.clear()
 	var game: Node = (load(GAME_SCENE) as PackedScene).instantiate()
 	add_child(game)
 	_ensure_actions()
