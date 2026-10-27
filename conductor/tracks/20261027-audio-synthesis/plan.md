@@ -44,7 +44,7 @@ The primary appends after acceptance:
 - **Covers:** FR-2, FR-4, FR-6, NFR-1, NFR-2, AC-2, AC-4, AC-6, AC-7
 - **Touches:** `src/systems/audio_manager.gd`, `tests/test_audio_ambient.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P2.T1: Ambient composition** — covers: FR-2
   - [ ] **P2.T1.1: Meadow / cave / sunset loops** — tone-layered, slow tempo, loop-enabled WAV
