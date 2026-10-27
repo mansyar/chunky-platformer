@@ -44,16 +44,20 @@ The primary appends after acceptance:
 - **Covers:** FR-2, FR-4, FR-6, NFR-1, NFR-2, AC-2, AC-4, AC-6, AC-7
 - **Touches:** `src/systems/audio_manager.gd`, `tests/test_audio_ambient.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P2.T1: Ambient composition** — covers: FR-2
-  - [ ] **P2.T1.1: Meadow / cave / sunset loops** — tone-layered, slow tempo, loop-enabled WAV
-  - [ ] **P2.T1.2: Distinct-yet-gentle check** — spectral softness guard, snapshots per area
-- [ ] **P2.T2: Crossfade + duck manager** — covers: FR-4
-  - [ ] **P2.T2.1: Area crossfade (~0.8s)** — supersede-safe, no player leak, no hard cut
-  - [ ] **P2.T2.2: SFX ducking** — ambient −6 dB under one-shots, restores cleanly
-- [ ] **P2.T3: Ambient tests** — covers: FR-4, FR-6
-  - [ ] **P2.T3.1: get_ambient + cache tests** — correct loop per area, unknown-area fallback, no regen on repeat
+- [x] **P2.T1: Ambient composition** — covers: FR-2
+  - [x] **P2.T1.1: Meadow / cave / sunset loops** — tone-layered, slow tempo, loop-enabled WAV
+  - [x] **P2.T1.2: Distinct-yet-gentle check** — spectral softness guard, snapshots per area
+- [x] **P2.T2: Crossfade + duck manager** — covers: FR-4
+  - [x] **P2.T2.1: Area crossfade (~0.8s)** — supersede-safe, no player leak, no hard cut
+  - [x] **P2.T2.2: SFX ducking** — ambient −6 dB under one-shots, restores cleanly
+- [x] **P2.T3: Ambient tests** — covers: FR-4, FR-6
+  - [x] **P2.T3.1: get_ambient + cache tests** — correct loop per area, unknown-area fallback, no regen on repeat
+
+**Result:** verified (1 rework: AudioFactory.get_ambient delegation + stub-pin retirement)
+**Checkpoint:** 9129195
+**Evidence:** conductor/tracks/20261027-audio-synthesis/verification/phase-2.md
 
 <!--
 The primary appends after acceptance:
