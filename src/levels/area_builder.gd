@@ -34,6 +34,11 @@ var wardrobe: Wardrobe
 ## The area's gift machine (null until built).
 var machine: GiftMachine
 
+## Ambient loop owner, set by the game root after build (null in bare-builder
+## tests). One-shot handlers duck the loop through it; play() alone still
+## sounds when it is absent, so headless and unit tests stay safe.
+var audio_manager: AudioManager
+
 ## Per-gem taken flags for this build, indexed by gem_id.
 var _taken: Array[bool] = []
 
@@ -245,6 +250,7 @@ func _on_key_taken(_key: Key) -> void:
 	key_counter.set_count(goal_state.keys_taken())
 	# Progress buys silence: the trail is gone the instant a key is banked.
 	hint.progressed()
+	_play_sfx("key")
 
 
 func _build_hint() -> void:
@@ -268,6 +274,7 @@ func _on_door_unlocked(_door: Door) -> void:
 	# gets the same celebration a gem would.
 	PopEffect.spawn(_layout_world(), door.global_position, _accent())
 	robot.celebrate()
+	_play_sfx("door")
 
 
 func _layout_world() -> Node:
@@ -295,6 +302,7 @@ func _on_gem_collected(gem: Gem) -> void:
 	if wallet != null:
 		wallet.add(1)
 	robot.celebrate()
+	_play_sfx("gem")
 
 
 func _accent() -> Color:
@@ -319,16 +327,34 @@ func _build_machine(world: Node2D) -> void:
 	machine.hint_targets = gems
 	machine.dispensed.connect(_on_machine_dispensed)
 	machine.bonus.connect(_on_machine_bonus)
+	machine.wiggled.connect(_on_machine_wiggled)
 
 
 func _on_machine_dispensed(_cosmetic_id: String) -> void:
 	PopEffect.spawn(_layout_world(), machine.global_position + Vector2(0.0, -32.0), _accent())
 	robot.celebrate()
+	_play_sfx("gift_pop")
 
 
 func _on_machine_bonus() -> void:
 	PopEffect.spawn(_layout_world(), machine.global_position + Vector2(0.0, -32.0), _accent())
 	robot.celebrate()
+	_play_sfx("gift_bonus")
+
+
+func _on_machine_wiggled() -> void:
+	# Sound-only: a kind wiggle when the wallet is empty. The hint sparkle
+	# (machine.hinted) fires independently, so the trail is never blocked.
+	_play_sfx("gift_wiggle")
+
+
+## Sound-only: plays a one-shot and ducks the area loop while it rings.
+## Never touches gameplay state, so hints, progress, and physics are
+## unaffected (hint-safe by construction).
+func _play_sfx(sfx_name: String) -> void:
+	AudioFactory.play(sfx_name)
+	if audio_manager != null:
+		audio_manager.notify_sfx_played()
 
 
 func _build_robot(world: Node2D) -> Robot:

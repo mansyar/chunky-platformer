@@ -32,3 +32,6 @@ func bounce(character: CharacterBody2D) -> void:
 	if character.velocity.y < 0.0:
 		return
 	character.velocity.y = -Tuning.BOUNCE_IMPULSE
+	# Sound-only: a soft boing on the auto-impulse. The factory voice cap
+	# keeps mashing polyphonic without clipping; physics above is untouched.
+	AudioFactory.play("bounce")
