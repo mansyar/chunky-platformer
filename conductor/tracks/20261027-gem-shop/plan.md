@@ -33,16 +33,20 @@
 - **Depends on:** Phase 1
 - **Covers:** FR-3, FR-4, FR-5, FR-6, FR-7, NFR-1, NFR-2, NFR-3, NFR-5, AC-3, AC-4, AC-5, AC-6, AC-7
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P2.T1: Machine node + interaction** — covers: FR-3, FR-6
-  - [ ] **P2.T1.1: Machine instance per area, tap detection, dispense pop + confetti + auto-wear**
-  - [ ] **P2.T1.2: Empty-wallet wiggle + hint sparkle toward nearest uncollected gem**
-- [ ] **P2.T2: Tiered pricing + surprise order** — covers: FR-4
-  - [ ] **P2.T2.1: Prices 1/2/3 as numerals + pips; cheapest-unowned-first order**
-- [ ] **P2.T3: Cosmetic set + wear/cycle** — covers: FR-5, FR-7
-  - [ ] **P2.T3.1: 6 code-generated cosmetics (3 hats, 2 trails, 1 color; 12-gem set)**
-  - [ ] **P2.T3.2: No-duplicates until complete; free bonus celebration after; tap-Robo cycles owned looks**
+- [x] **P2.T1: Machine node + interaction** — covers: FR-3, FR-6
+  - [x] **P2.T1.1: Machine instance per area, tap detection, dispense pop + confetti + auto-wear**
+  - [x] **P2.T1.2: Empty-wallet wiggle + hint sparkle toward nearest uncollected gem**
+- [x] **P2.T2: Tiered pricing + surprise order** — covers: FR-4
+  - [x] **P2.T2.1: Prices 1/2/3 as numerals + pips; cheapest-unowned-first order**
+- [x] **P2.T3: Cosmetic set + wear/cycle** — covers: FR-5, FR-7
+  - [x] **P2.T3.1: 6 code-generated cosmetics (3 hats, 2 trails, 1 color; 12-gem set)**
+  - [x] **P2.T3.2: No-duplicates until complete; free bonus celebration after; tap-Robo cycles owned looks**
+
+**Result:** verified
+**Checkpoint:** 2f0c7ae
+**Evidence:** conductor/tracks/20261027-gem-shop/verification/phase-2.md
 
 <!--
 Review fixes are appended by `conductor-review` as:
