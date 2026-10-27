@@ -48,21 +48,22 @@ The primary appends after acceptance:
 - **Covers:** FR-2, FR-5, FR-6, NFR-1, NFR-4, AC-1, AC-4
 - **Touches:** `src/levels/game.gd`, `tests/test_game*.gd`, `tests/test_goal*.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P2.T1: Restore saved area on boot and save on swap** — covers: FR-2, FR-1
-  - [ ] **P2.T1.1: Boot reads area_index and builds that area at spawn**
-  - [ ] **P2.T1.2: Area swap persists new index; resumed area rebuilds keys fresh**
-- [ ] **P2.T2: Finale loop saves area 0** — covers: FR-5, FR-6
-  - [ ] **P2.T2.1: Final-door celebration loops home and commits area 0**
-  - [ ] **P2.T2.2: Live smoke proves cave resume and finale-to-meadow in editor**
+- [x] **P2.T1: Restore saved area on boot and save on swap** — covers: FR-2, FR-1
+  - [x] **P2.T1.1: Boot reads area_index and builds that area at spawn**
+  - [x] **P2.T1.2: Area swap persists new index; resumed area rebuilds keys fresh**
+- [x] **P2.T2: Finale loop saves area 0** — covers: FR-5, FR-6
+  - [x] **P2.T2.1: Final-door celebration loops home and commits area 0**
+  - [x] **P2.T2.2: Live smoke proves cave resume and finale-to-meadow in editor**
 
-<!--
-The primary appends after acceptance:
-**Result:** verified
-**Checkpoint:** <short-sha>
+**Result:** verified — boot resumes saved area at spawn with fresh keys; swaps and
+finale persist the correct index. Full gate exit 0 (383/383 incl. 12 snapshots;
+95.1%/94.0% vs min 80), lint + format clean. Live AC-1/AC-7 proof recorded;
+screenshot binaries not persistable from the phase toolset (limitation noted).
+**Checkpoint:** `25c51cf`
 **Evidence:** conductor/tracks/20261028-resume-mid-adventure/verification/phase-2.md
--->
+(with Primary verification section)
 
 ## Phase 3: Doc sync + integrated verification
 
@@ -71,7 +72,7 @@ The primary appends after acceptance:
 - **Covers:** FR-7, NFR-1, NFR-4, AC-6, AC-7
 - **Touches:** `conductor/product.md`, `conductor/tracks/20261028-resume-mid-adventure/verification/`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P3.T1: Resolve product.md resume contradiction** — covers: FR-7
   - [ ] **P3.T1.1: Persistence/progression names resume-in-saved-area with fresh keys**

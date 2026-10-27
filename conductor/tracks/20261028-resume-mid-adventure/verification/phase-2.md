@@ -86,3 +86,24 @@ New tests in `tests/test_game_transition.gd` (4):
   if the track wants files on disk.
 - `tests/test_game_transition.gd` now holds 12 test methods (lint cap is 20) —
   fine, no split needed.
+
+## Primary verification (2026-10-28)
+
+- **Touches diff vs phase base `20a6380`:** `src/levels/game.gd` (in glob),
+  `tests/test_game_transition.gd` (matches `test_game*` glob),
+  `tests/test_playthrough.gd` (OUTSIDE glob — ACCEPTED as D1: test-only one-liner
+  adding the `SaveGame.clear()` clean-slate convention every other Game-booting
+  suite already follows; mirrors the authorized Phase 1 R1 test-only precedent),
+  `verification/phase-2.md` (evidence, always allowed). No changes to
+  `save_game.gd` (frozen Phase 1 API), `product.md` (Phase 3), or other phases.
+  Game diff is 3 minimal edits: `_restore_save` resumes `area_index`,
+  `_ready` builds `_build_area(area_index)`, `_save` commits the live index
+  (`save_game(wallet, wardrobe, _taken, SAVE_PATH, area_index)`).
+- **Rerun (primary, full gate):** `gd-tools test --coverage --min 80` → exit 0,
+  383/383 passed, 12 snapshots matched, 95.1% lines / 94.0% branches (gate 80).
+  `gd-tools lint` → exit 0, no issues. `gd-tools format --check` → exit 0,
+  71/71 formatted. Matches the subagent's report exactly.
+- **AC:** AC-1 PASS (boot-to-cave test + live reboot proof), AC-4 PASS
+  (finale-saves-0 + reboot-starts-meadow test), AC-6 untouched per scope,
+  AC-7 PASS with the noted screenshot-persistence limitation.
+- **Verdict: Phase 2 VERIFIED.** Dependency gate for Phase 3 is satisfied.
