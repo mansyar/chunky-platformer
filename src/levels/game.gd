@@ -28,6 +28,11 @@ var wallet: Wallet
 ## Owned/worn looks are loaded from disk at boot and rewritten on change.
 var wardrobe: Wardrobe
 
+## Persistent ambient loop owner. The manager lives here (not in the builder)
+## so area swaps crossfade instead of cutting: the builder is freed on every
+## transition, but this node survives. Builders get a reference for ducking.
+var audio_manager: AudioManager
+
 ## Per-area gem-taken flags, keyed by area name. A collected gem stays
 ## collected on revisit: the rebuilt area pre-collects these indices. Loaded
 ## from disk at boot, rewritten with the wallet on every save.
@@ -38,6 +43,9 @@ func _ready() -> void:
 	wallet = Wallet.new()
 	wardrobe = Wardrobe.new()
 	_restore_save()
+	audio_manager = AudioManager.new()
+	audio_manager.name = "AudioManager"
+	add_child(audio_manager)
 	transition = AreaTransition.new()
 	transition.name = "Transition"
 	add_child(transition)
@@ -95,6 +103,10 @@ func _build_area(index: int) -> void:
 	if _taken.has(layout.area_name):
 		flags = _taken[layout.area_name]
 	builder.build(layout, wallet, flags, wardrobe)
+	builder.audio_manager = audio_manager
+	# The loop follows the area: crossfades on every swap, including the
+	# finale loop-home (which rebuilds area 0 and lands here too).
+	audio_manager.switch_ambient(layout.area_name)
 	builder.door.entered.connect(_on_door_entered)
 	area_changed.emit(index)
 	_save()
@@ -116,6 +128,10 @@ func _on_door_entered(_door: Door) -> void:
 	if area_index == _area_count() - 1:
 		celebrated.emit()
 		builder.robot.celebrate()
+		# Sound-only: the finale flourish. Ducking lets it ring over the
+		# meadow loop that follows on the loop-home rebuild.
+		AudioFactory.play("celebrate")
+		audio_manager.notify_sfx_played()
 	transition.begin(_sky_of(area_index), _sky_of((_area_count() + area_index + 1) % _area_count()))
 
 

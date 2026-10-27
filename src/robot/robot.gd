@@ -219,6 +219,10 @@ func update_jump(delta: float, on_floor: bool, jump_just_pressed: bool) -> void:
 		velocity.y = -Tuning.JUMP_IMPULSE
 		_coyote_left = 0.0
 		_buffer_left = 0.0
+		# Sound-only: a soft whoosh on takeoff. AudioFactory.play outside the
+		# tree is a safe no-op, so pure-logic tests stay silent and physics
+		# above is untouched.
+		AudioFactory.play("jump")
 
 
 func update_gravity(delta: float, on_floor: bool) -> void:
