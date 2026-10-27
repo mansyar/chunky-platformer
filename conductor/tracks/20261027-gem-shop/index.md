@@ -8,6 +8,7 @@
 **Priority:** `medium`
 **Branch:** `feat/20261027-gem-shop`
 **Depends on:** `none`
+**Status:** `complete` — all 4 implementation phases + review-fix phase verified; review `PASS` (round 2).
 
 ## Artifacts
 
