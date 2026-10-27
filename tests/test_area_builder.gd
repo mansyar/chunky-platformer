@@ -151,9 +151,7 @@ func test_builder_creates_a_world_with_the_expected_parts() -> void:
 	assert_not_null(level.find_child("World", true, false), "the builder makes a World.")
 	assert_not_null(level.find_child("Robo", true, false), "the builder places Robo.")
 	assert_not_null(level.find_child("FollowCamera", true, false), "the builder frames the camera.")
-	assert_not_null(
-		level.find_child("GemCounter", true, false), "the builder shows the gem counter."
-	)
+	assert_not_null(level.find_child("WalletHud", true, false), "the builder shows the wallet HUD.")
 
 
 func test_builder_paints_exactly_the_cells_the_layout_describes() -> void:

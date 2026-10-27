@@ -40,8 +40,8 @@ const LAND_SQUASH_TIME := 0.15  # seconds the squash frame holds after landing
 ## Camera
 const CAMERA_SMOOTHING := 8.0  # lerp weight for follow smoothing
 
-# Collect & Play (collect_play_20261008)
-const GEM_RESPAWN_TIME := 10.0  # seconds a collected gem stays hidden
+# Collect & Carry (gem_shop_20261027): gems are a fixed per-area budget with
+# no respawn. See AreaLayout.GEMS_PER_AREA for the per-area count.
 const GEM_BOB_AMPLITUDE := 3.0  # idle bob height in pixels
 # Idle bob angular speed in rad/s (~2 second period).
 const GEM_BOB_SPEED := 3.0
@@ -77,3 +77,27 @@ const CELEBRATE_SQUASH := Vector2(1.25, 0.75)  # peak squash on the sprite
 const COUNTER_SCALE := 4.0  # 8x12 digit glyph -> 32x48 on screen
 const COUNTER_MARGIN := Vector2(48, 40)  # top-left inset in screen pixels
 const COUNTER_BUMP_TIME := 0.25  # counter squash-pulse duration in seconds
+
+# Gift machine + cosmetics (gem_shop_20261027 Phase 2): one friendly machine
+# per area turns banked gems into surprise looks. Prices are numerals + gem
+# pips (no words); the surprise order is cheapest-unowned-first — the kindest
+# math — with duplicates only after the 6-item set is complete. The bonus
+# celebration after that is free.
+const GIFT_TIER_1 := 1
+const GIFT_TIER_2 := 2
+const GIFT_TIER_3 := 3
+const COSMETIC_SET_TOTAL := 12
+# World-space tap zone (diameter 48 * camera zoom 4 = 192 screen px, well
+# above the 64px minimum touch target).
+const MACHINE_TAP_RADIUS := 24.0
+# Kind wiggle on an empty-wallet tap: duration in seconds + peak tilt.
+const MACHINE_WIGGLE_TIME := 0.4
+const MACHINE_WIGGLE_TILT := 0.12
+# Dispense pop length; doubles as the tap serializer (one gift at a time).
+const MACHINE_DISPENSE_TIME := 0.45
+# Minimum screen-space touch target both ways (machine tap, Robo tap).
+const MACHINE_TOUCH_MIN := 64.0
+# Trail dots drawn behind Robo, and the sunny body tint, per worn cosmetic.
+const TRAIL_BUBBLES_COLOR := Color(0.65, 0.9, 1.0)
+const TRAIL_SPARKLE_COLOR := Color(1.0, 0.85, 0.35)
+const ROBO_SUNNY_TINT := Color(1.1, 1.0, 0.8)

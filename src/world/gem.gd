@@ -1,23 +1,22 @@
 class_name Gem
 extends Area2D
-## Collectible gem: auto-collects on touch, respawns forever after a delay.
+## Collectible gem: auto-collects on touch, stays collected (no respawn).
 ##
 ## Code-assembled per the Foundation pattern (no hand-authored scenes).
-## Collection is pure joy: hide, wait, respawn, repeat — no counters here,
-## the HUD owns the count.
+## Each area holds a fixed set of gems (see AreaLayout.GEMS_PER_AREA);
+## a collected gem never comes back — not on a timer, not on revisit.
+## The per-area taken flags live in the game root; the wallet owns the count.
 
 signal collected(gem: Gem)
-signal respawned(gem: Gem)
-
-## Seconds a collected gem stays hidden. Passed to Timer.start() at both
-## call sites; injectable so tests run fast, production uses
-## Tuning.GEM_RESPAWN_TIME.
-var respawn_delay := Tuning.GEM_RESPAWN_TIME
 
 ## Area palette, set by the level before the gem enters the tree. Gems tint
 ## themselves to their own area - the cave's purple gems must not be meadow
 ## yellow.
 var palette := "meadow"
+
+## Index into the layout's gem_spots, assigned by the builder so the game
+## root can record per-area taken flags.
+var gem_id := -1
 
 var _sprite: Sprite2D
 var _bob_time := 0.0
@@ -37,11 +36,8 @@ func _ready() -> void:
 	shape.shape = circle
 	add_child(shape)
 
-	var timer := Timer.new()
-	timer.name = "RespawnTimer"
-	timer.one_shot = true
-	timer.timeout.connect(_on_respawn_timer_timeout)
-	add_child(timer)
+	if _is_collected:
+		_sprite.visible = false
 
 	body_entered.connect(_on_body_entered)
 
@@ -54,7 +50,8 @@ static func bob_offset(time: float) -> float:
 
 func update_bob(delta: float) -> void:
 	_bob_time += delta
-	_sprite.position.y = bob_offset(_bob_time)
+	if _sprite != null:
+		_sprite.position.y = bob_offset(_bob_time)
 
 
 func _process(delta: float) -> void:
@@ -66,31 +63,23 @@ func is_collected() -> bool:
 
 
 ## Collect the gem. Idempotent: repeated calls while hidden do nothing.
-## The sensor stays live while hidden so the respawn can check whether
-## Robo has stepped off the spot.
+## There is no respawn — the art stays hidden until the area is rebuilt
+## with fresh taken flags (a revisit keeps the taken flags, so zero restore).
 func collect() -> void:
 	if _is_collected:
 		return
 	_is_collected = true
-	_sprite.visible = false
-	var timer := get_node("RespawnTimer") as Timer
-	timer.start(respawn_delay)
+	if _sprite != null:
+		_sprite.visible = false
 	collected.emit(self)
 
 
-func _on_respawn_timer_timeout() -> void:
-	# Wait until the body that took the gem has stepped off: a gem must
-	# never pop back underneath Robo and pop straight off again (free gems
-	# would inflate the counter and the gem would look like it never left).
-	# Only movers count — static geometry such as the bridge above a gem is
-	# irrelevant and would block the respawn forever.
-	for body: Node2D in get_overlapping_bodies():
-		if body is CharacterBody2D:
-			(get_node("RespawnTimer") as Timer).start(respawn_delay)
-			return
-	_is_collected = false
-	_sprite.visible = true
-	respawned.emit(self)
+## Mark the gem pre-collected before it enters the tree (revisit path).
+## No signal is emitted: nothing was earned, the gem simply stays hidden.
+func start_collected() -> void:
+	_is_collected = true
+	if _sprite != null:
+		_sprite.visible = false
 
 
 func _on_body_entered(body: Node2D) -> void:

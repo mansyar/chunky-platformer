@@ -10,12 +10,19 @@ extends CharacterBody2D
 
 var facing := 1
 
+## Session wardrobe borrowed from the builder: tap-Robo wears the next owned
+## look (null until an area wires it; taps are then gentle no-ops).
+var wardrobe: Wardrobe
+
 ## Seconds of pointing pose remaining. Zero means Robo is not pointing.
 var point_hold_left := 0.0
 
 var _coyote_left := 0.0
 var _buffer_left := 0.0
 var _sprite: AnimatedSprite2D
+var _hat: Sprite2D
+var _trail_id := ""
+var _drawn_facing := 1
 var _celebrate_tween: Tween
 var _land_left := 0.0
 var _was_on_floor := true  # Robo spawns standing; a real jump still squashes on landing
@@ -24,6 +31,8 @@ var _was_on_floor := true  # Robo spawns standing; a real jump still squashes on
 func _ready() -> void:
 	_build_collision()
 	_build_sprite()
+	_build_hat()
+	input_event.connect(_on_input_event)
 
 
 func _build_collision() -> void:
@@ -54,6 +63,72 @@ func _build_sprite() -> void:
 	_sprite.offset = Vector2(0, -2)
 	_sprite.play("idle")
 	add_child(_sprite)
+
+
+## The cosmetic hat slot: a 16x12 topper floating above Robo's head, hidden
+## until a hat look is worn.
+func _build_hat() -> void:
+	_hat = Sprite2D.new()
+	_hat.name = "Hat"
+	_hat.position = Vector2(0, -16)
+	_hat.visible = false
+	add_child(_hat)
+
+
+## Tap-Robo cycles owned looks: wear the next owned gift, wrapping around.
+## Returns the newly worn id ("" when there is nothing to cycle between).
+func tap() -> String:
+	if wardrobe == null:
+		return ""
+	var worn_id := wardrobe.cycle_next()
+	return worn_id
+
+
+## Re-read the wardrobe's worn look and dress Robo to match: hats become the
+## topper sprite, trails become dots drawn behind him, the sunny color tints
+## his body. Called on every wardrobe change plus once at build time.
+func refresh_look(_worn_id: String = "") -> void:
+	var worn_id := ""
+	if wardrobe != null:
+		worn_id = wardrobe.worn()
+	_hat.visible = false
+	_trail_id = ""
+	modulate = Color.WHITE
+	if worn_id.is_empty():
+		queue_redraw()
+		return
+	match Cosmetics.kind_of(worn_id):
+		Cosmetics.KIND_HAT:
+			_hat.texture = AssetFactory.get_texture(worn_id)
+			_hat.visible = true
+		Cosmetics.KIND_TRAIL:
+			_trail_id = worn_id
+		Cosmetics.KIND_COLOR:
+			modulate = Tuning.ROBO_SUNNY_TINT
+	queue_redraw()
+
+
+## Trail dots live behind Robo, mirrored by facing; only redrawn when the
+## look or facing changes, never per frame.
+func _draw() -> void:
+	if _trail_id.is_empty():
+		return
+	var dot := Tuning.TRAIL_BUBBLES_COLOR
+	if _trail_id == Cosmetics.TRAIL_SPARKLE:
+		dot = Tuning.TRAIL_SPARKLE_COLOR
+	for i: int in range(3):
+		var back := -float(_drawn_facing) * (12.0 + float(i) * 7.0)
+		draw_circle(Vector2(back, 6.0 - float(i) * 2.0), 2.5 - float(i) * 0.5, dot)
+
+
+func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		var press := event as InputEventMouseButton
+		if press.pressed and press.button_index == MOUSE_BUTTON_LEFT:
+			tap()
+	elif event is InputEventScreenTouch:
+		if (event as InputEventScreenTouch).pressed:
+			tap()
 
 
 func _add_anim(
@@ -108,6 +183,10 @@ func update_animation(delta: float, on_floor: bool, moving: bool) -> void:
 	if _sprite.animation != anim:
 		_sprite.play(anim)
 	_sprite.flip_h = facing < 0
+	if _drawn_facing != facing:
+		# Trails mirror behind Robo; redraw only on the flip, not per frame.
+		_drawn_facing = facing
+		queue_redraw()
 
 
 ## Visual-only celebration for collecting something: a quick squash and

@@ -15,6 +15,8 @@ const GAME_SCRIPT := "res://src/levels/game.gd"
 
 
 func _game() -> Game:
+	# Phase 3 persists to disk: a Game boot must start from a clean slate.
+	SaveGame.clear()
 	var game: Game = load(GAME_SCRIPT).new()
 	add_child(game)
 	return game
@@ -99,14 +101,15 @@ func test_a_second_door_bump_during_the_fade_is_ignored() -> void:
 # --- what survives the swap -------------------------------------------------
 
 
-func test_the_gem_counter_persists_across_areas() -> void:
+func test_the_wallet_balance_persists_across_areas() -> void:
 	# Gems are a lifetime delight counter, not a per-area score. A child who
-	# collected eight gems must still see eight after the door.
+	# collected seven gems must still see seven after the door.
 	var game := _game()
-	_area(game).counter.set_count(7)
+	game.wallet.add(7)
 	_enter_door(game)
 	_step_through(game)
-	assert_eq(_area(game).counter.count(), 7, "the gem total rides along.")
+	assert_eq(_area(game).wallet_hud.balance(), 7, "the HUD total rides along.")
+	assert_eq(game.wallet.balance(), 7, "the session wallet rides along.")
 
 
 # --- the full loop ----------------------------------------------------------

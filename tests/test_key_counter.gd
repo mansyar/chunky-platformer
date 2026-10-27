@@ -1,7 +1,7 @@
 extends GdToolsTest
 ## Tests for the key counter badge (Phase 2).
 ##
-## The badge sits beside the gem counter and reads "how many of the three keys
+## The badge sits beside the wallet HUD and reads "how many of the three keys
 ## do I have left to find". It must be legible at a glance and must never show
 ## a number that is not a subset of the keys the child has actually taken.
 
@@ -88,26 +88,28 @@ func test_counter_bumps_on_change() -> void:
 	assert_ne(
 		_panel(counter).scale,
 		Vector2.ONE,
-		"the badge pulses when a key lands, like the gem counter."
+		"the badge pulses when a key lands, like the wallet HUD."
 	)
 
 
-func test_counter_sits_below_the_gem_counter_in_the_corner() -> void:
+func test_counter_sits_below_the_wallet_hud_in_the_corner() -> void:
 	var counter := _counter()
 	var icon := _icon(counter)
 	assert_lt(icon.global_position.x, 200, "in the top-left corner.")
-	assert_gt(icon.global_position.y, 60, "below the gem counter badge.")
+	assert_gt(icon.global_position.y, 60, "below the wallet HUD badge.")
 	assert_lt(icon.global_position.y, 400, "and well clear of the bottom UI.")
 
 
-func test_counter_and_gem_counter_do_not_overlap() -> void:
+func test_counter_and_wallet_hud_do_not_overlap() -> void:
 	# Two badges stacked in one corner must not collide, and their baselines
 	# must line up so the block reads as one tidy panel.
-	var gems := GemCounter.new()
+	var gem_wallet := Wallet.new()
+	gem_wallet.add(12)
+	var gems := WalletHud.new()
 	gems.palette = "meadow"
 	add_child(gems)
+	gems.bind(gem_wallet)
 	var keys := _counter()
-	gems.set_count(12)
 	keys.set_count(3)
 	var gem_bottom: float = (gems.find_child("Icon", true, false) as Sprite2D).global_position.y
 	var key_bottom: float = _icon(keys).global_position.y

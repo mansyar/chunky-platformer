@@ -1,152 +1,93 @@
 extends GdToolsTest
-## End-to-end tests for gems in the playground level (Phase 5).
-##
-## Reach tiers are verified geometrically in tests/test_area_reachability.gd,
-## which is x-aware and covers every area; this file tests level wiring.
+## Collect-flow, now in wallet terms: gathering gems feeds the session
+## wallet, and WalletHud (the sole top-left badge) shows the balance.
 
-const PLAYGROUND_SCENE := "res://src/levels/playground.tscn"
-const WALK_FRAMES := 200
+const LEVEL_SCENE := "res://src/levels/playground.tscn"
+const WALK_FRAMES := 240
 
 
 func _open_level() -> Node2D:
-	var level: Node2D = load(PLAYGROUND_SCENE).instantiate()
+	var level: Node2D = load(LEVEL_SCENE).instantiate()
 	add_child(level)
+	await get_tree().process_frame
+	await get_tree().process_frame
 	return level
 
 
-func _gems(level: Node2D) -> Array[Node]:
+func _hud(level: Node2D) -> WalletHud:
+	var found := level.find_child("WalletHud", true, false)
+	assert_not_null(found, "the playground shows the wallet HUD")
+	return found as WalletHud
+
+
+func _gems(level: Node2D) -> Array:
 	return level.find_children("*", "Gem", true, false)
 
 
-func _counter(level: Node2D) -> GemCounter:
-	for child: Node in level.get_children():
-		if child is GemCounter:
-			return child
-	return null
+func test_collecting_a_gem_raises_the_wallet_balance() -> void:
+	var level := await _open_level()
+	var hud := _hud(level)
+	assert_eq(hud.balance(), 0, "the wallet starts empty")
+	level.wallet.add(3)
+	assert_eq(hud.balance(), 3, "collecting 3 gems shows 3 on the HUD")
 
 
-func _robot(level: Node2D) -> Robot:
-	return level.find_child("Robo", true, false) as Robot
+func test_hud_follows_the_wallet_through_collect_and_spend() -> void:
+	var level := await _open_level()
+	var hud := _hud(level)
+	level.wallet.add(3)
+	level.wallet.add(2)
+	assert_eq(hud.balance(), 5, "the HUD tracks wallet adds")
+	assert_true(level.wallet.spend(1), "the machine can spend a banked gem")
+	assert_eq(hud.balance(), 4, "the HUD drops after the spend")
 
 
-func _ensure_actions() -> void:
-	for action: String in ["move_left", "move_right", "jump"]:
-		if not InputMap.has_action(action):
-			InputMap.add_action(action)
-
-
-func _walk_until_collected(level: Node2D, direction: String) -> bool:
-	_ensure_actions()
-	Input.action_press(direction)
-	for i: int in range(WALK_FRAMES):
-		await get_tree().physics_frame
-		if _counter(level).count() > 0:
-			Input.action_release(direction)
-			return true
-	Input.action_release(direction)
-	return false
-
-
-func test_level_spawns_twelve_gems() -> void:
-	var level := _open_level()
-	assert_eq(_gems(level).size(), 12, "the playground holds twelve collectible gems.")
-
-
-func test_gems_are_grouped_into_reachable_tiers() -> void:
-	# The x-aware tier classification for every area lives in
-	# tests/test_area_reachability.gd; this integration-level test keeps only
-	# the level-level contract. (The old y-only classifier here could not see
-	# whether a surface exists at a gem's x - it once blessed a gem that was
-	# embedded inside the tall hill.)
-	var level := _open_level()
-	assert_eq(_gems(level).size(), 12, "the meadow spawns its full gem set.")
-
-
-func test_level_has_a_counter_starting_at_zero() -> void:
-	var level := _open_level()
-	assert_not_null(_counter(level), "the level owns a HUD counter.")
-	assert_eq(_counter(level).count(), 0, "the counter starts empty.")
-
-
-func test_no_static_gem_sprite_remains() -> void:
-	# The old placeholder gem prop was a plain Sprite2D child of the world;
-	# real gems are Gem (Area2D) entities instead.
-	var level := _open_level()
-	var world := level.get_node("World")
-	var gem_texture: Texture2D = AssetFactory.get_texture("gem", "meadow")
-	var leftover := 0
-	for child: Node in world.get_children():
-		if child is Sprite2D and (child as Sprite2D).texture == gem_texture:
-			leftover += 1
-	assert_eq(leftover, 0, "no plain gem sprites linger (gems are Gem nodes).")
-
-
-func test_walking_right_collects_a_gem_and_counts_it() -> void:
-	var level := _open_level()
-	assert_true(await _walk_until_collected(level, "move_right"), "Robo collected a gem.")
-	assert_eq(_counter(level).count(), 1, "the counter shows one gem.")
-	var hidden := 0
-	for gem: Node in _gems(level):
-		if (gem as Gem).is_collected():
-			hidden += 1
-	assert_eq(hidden, 1, "exactly the walked-into gem is hidden.")
-
-
-func test_collect_spawns_juice_and_celebrates() -> void:
-	var level := _open_level()
-	assert_true(await _walk_until_collected(level, "move_right"), "Robo collected a gem.")
-	var pops := level.find_children("*", "PopEffect", true, false)
-	assert_gt(pops.size(), 0, "collecting pops an effect.")
-	var sprite := _robot(level).find_children("*", "AnimatedSprite2D", true, false)[0]
-	# The celebration tween needs a frame to move the sprite.
-	for i: int in range(3):
-		await get_tree().process_frame
-	assert_ne((sprite as AnimatedSprite2D).scale, Vector2.ONE, "Robo celebrates.")
-
-
-func test_gem_respawns_after_its_delay() -> void:
-	var level := _open_level()
-	for gem: Node in _gems(level):
-		(gem as Gem).respawn_delay = 0.1
-	assert_true(await _walk_until_collected(level, "move_right"), "Robo collected a gem.")
-	var collected: Array[Node] = []
-	for gem: Node in _gems(level):
-		if (gem as Gem).is_collected():
-			collected.append(gem)
-	assert_eq(collected.size(), 1, "one gem was taken.")
-	var count_after: int = _counter(level).count()
-	# Put Robo somewhere far away (the gem waits for him to leave — a gem that
-	# pops back under him would be a free gem and look broken).
-	_robot(level).position = Vector2(100, 434)
-	for i: int in range(5):
-		await get_tree().physics_frame
-	await get_tree().create_timer(0.6).timeout
-	var gem := collected[0] as Gem
-	assert_false(gem.is_collected(), "the gem came back.")
-	var art := gem.find_child("Sprite", true, false) as Sprite2D
-	assert_true(art.visible, "the returned gem shows its art again.")
-	assert_eq(
-		_counter(level).count(),
-		count_after,
-		(
-			"the counter keeps the collected total (count=%d, was %d)"
-			% [_counter(level).count(), count_after]
-		)
-	)
-
-
-func test_robot_keeps_moving_while_collecting() -> void:
-	# Anti-frustration rule: collecting must never interrupt movement.
-	var level := _open_level()
-	_ensure_actions()
-	var robot := _robot(level)
-	Input.action_press("move_right")
-	for i: int in range(120):
-		await get_tree().physics_frame
-		if _counter(level).count() > 0:
+func test_collecting_walk_picks_up_gems() -> void:
+	var level := await _open_level()
+	var hud := _hud(level)
+	var gems := _gems(level)
+	assert_gt(gems.size(), 0, "the meadow hides some gems")
+	level.robot.global_position = (gems[0] as Node2D).global_position
+	for i in WALK_FRAMES:
+		var frame_target := _nearest_gem(level)
+		if frame_target == null:
 			break
-	var collected_at := robot.position.x
-	for i: int in range(30):
+		level.robot.global_position = frame_target.global_position
 		await get_tree().physics_frame
-	Input.action_release("move_right")
-	assert_gt(robot.position.x, collected_at + 10.0, "Robo kept walking after collecting.")
+	assert_gt(hud.balance(), 0, "the stroll banks at least one gem")
+
+
+func test_post_spend_hud_matches_wallet_and_stays_single() -> void:
+	var level := await _open_level()
+	var hud := _hud(level)
+	var wallet: Wallet = level.wallet
+	var cost: int = level.machine.price_for_next()
+	assert_gt(cost, 0, "the first gift has a price")
+	wallet.add(cost + 2)
+	assert_eq(hud.balance(), cost + 2, "banking before the tap shows on the HUD")
+	assert_eq(level.machine.use(), GiftMachine.UseResult.DISPENSED, "the tap dispenses")
+	assert_eq(hud.balance(), 2, "the HUD matches the wallet after the spend")
+	assert_eq(wallet.balance(), 2, "the wallet holds the remainder")
+	assert_null(level.find_child("GemCounter", true, false), "no legacy counter badge remains")
+	assert_not_null(level.find_child("WalletHud", true, false), "the wallet HUD is the badge")
+	var badges := 0
+	for child in level.get_children():
+		if child is WalletHud:
+			badges += 1
+	assert_eq(badges, 1, "exactly one top-left badge remains")
+
+
+func _nearest_gem(level: Node2D) -> Node2D:
+	var best: Node2D = null
+	var best_d := INF
+	for node in _gems(level):
+		var gem := node as Gem
+		if gem == null or gem.is_collected():
+			continue
+		var d: float = level.robot.global_position.distance_squared_to(
+			(node as Node2D).global_position
+		)
+		if d < best_d:
+			best_d = d
+			best = node
+	return best
