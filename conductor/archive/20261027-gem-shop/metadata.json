@@ -23,7 +23,7 @@
   "review_rounds": 2,
   "doc_sync": "done",
   "pr_url": "https://github.com/mansyar/chunky-platformer/pull/1",
-  "pr_state": "open",
+  "pr_state": "merged",
   "reverted_at": null,
   "revert_commit": null,
   "revert_pr_url": null,
