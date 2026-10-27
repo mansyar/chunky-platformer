@@ -43,3 +43,22 @@
 
 None — single test-only change inside the authorized rework Touches; no game
 code, plan, metadata, or registry edits.
+
+## Primary verification (2026-10-27, primary agent)
+
+- **Touches conformance:** rework diff `ecbfad5..HEAD` is exactly
+  `tests/test_audio_ambient.gd` (authorized R1 expansion) + `verification/phase-1-r1.md`
+  (evidence). No game code, no plan/metadata/registry edits. ACCEPT.
+- **Independent rerun (primary, after subagent):** `gd-tools test --coverage --min 80`
+  → exit 0, 379/379 passed, 95.1% lines / 94.0% branches (gate 80 met);
+  `gd-tools lint` → no issues; `gd-tools format --check` → 71/71. Matches subagent table.
+- **AC confirmation:** AC-2/3/5 save tests green inside the passing gate run (save
+  18/18 + save_v2 6/6 suites verified separately earlier); cold-start completeness
+  asserts (`cache_size() == 9`, `ambient_cache_size() == 3`) remain unconditional,
+  so the timing-test change weakens nothing about synthesis correctness.
+- **Commit note (minor deviation):** phase code stays as three atomic conventional
+  commits (`5ce9b5b`, `78adc2d`, `3fd1d1b`) instead of one squashed phase commit —
+  they are adjacent in intent, unpushed, and reviewable as-is; squashing around the
+  interleaved `chore(tools)` + `conductor(state|plan)` commits adds rebase risk
+  with no review benefit. Evidence commit `de355e0` kept separate per convention.
+- **Verdict: Phase 1 VERIFIED.** Phase 2 dependency gate satisfied.
