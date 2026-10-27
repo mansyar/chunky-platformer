@@ -14,7 +14,7 @@
 - **Covers:** FR-1, FR-3, FR-6, NFR-1, NFR-4, NFR-5, AC-1, AC-3, AC-6, AC-7
 - **Touches:** `src/factory/audio_factory.gd`, `src/tuning/tuning.gd`, `tests/test_audio_synthesis.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P1.T1: Audio tuning constants** — covers: FR-1
   - [ ] **P1.T1.1: Sample format + volume table** — 22050 Hz mono, per-SFX duration / pitch / volume in tuning
