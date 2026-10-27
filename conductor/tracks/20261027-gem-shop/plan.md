@@ -14,7 +14,7 @@
 - **Covers:** FR-1, FR-2, NFR-4, AC-1, AC-2
 - **Touches:** `src/systems/wallet.*`, `src/world/gem.*`, `src/ui/wallet_hud.*`, `src/levels/*layout*`, `src/tuning/tuning.gd`, `tests/test_wallet*`, `tests/test_gem_budget*`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P1.T1: Wallet model + HUD** — covers: FR-2
   - [ ] **P1.T1.1: Wallet state (add/spend/balance, never negative, changed signal)**
