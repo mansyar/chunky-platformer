@@ -19,26 +19,59 @@ var builder: AreaBuilder
 var transition: AreaTransition
 
 ## Session wallet: collected gems accumulate here and survive every swap
-## (quitting to title keeps the balance; save to disk arrives in Phase 3).
+## (quitting to title keeps the balance); the balance is loaded from disk at
+## boot and rewritten on every change (save_game_20261027 Phase 3).
 var wallet: Wallet
 
 ## Session wardrobe: gifted looks accumulate here and survive every swap,
 ## exactly like the wallet (owned by the game root, borrowed by the area).
+## Owned/worn looks are loaded from disk at boot and rewritten on change.
 var wardrobe: Wardrobe
 
 ## Per-area gem-taken flags, keyed by area name. A collected gem stays
-## collected on revisit: the rebuilt area pre-collects these indices.
+## collected on revisit: the rebuilt area pre-collects these indices. Loaded
+## from disk at boot, rewritten with the wallet on every save.
 var _taken: Dictionary = {}
 
 
 func _ready() -> void:
 	wallet = Wallet.new()
 	wardrobe = Wardrobe.new()
+	_restore_save()
 	transition = AreaTransition.new()
 	transition.name = "Transition"
 	add_child(transition)
 	transition.faded_out.connect(_swap_area)
 	_build_area(0)
+	wallet.changed.connect(_save)
+	wardrobe.changed.connect(_save)
+
+
+## Load-at-boot: refill the wallet, re-own the wardrobe in save order, and
+## pick up the gem-taken flags. A corrupt save boots fresh (see SaveGame).
+func _restore_save() -> void:
+	var state := SaveGame.load_game()
+	var balance := int(state.get("wallet", 0))
+	if balance > 0:
+		wallet.add(balance)
+	var owned: Array = state.get("owned", [])
+	for gift_id in owned:
+		wardrobe.own(str(gift_id))
+	var worn := str(state.get("worn", ""))
+	if not worn.is_empty():
+		wardrobe.wear(worn)
+	_taken = (state.get("taken", {}) as Dictionary).duplicate(true)
+
+
+## Progress autosave (FR-9): every wallet/wardrobe change and every area
+## swap rewrites the file. Live gem flags are pulled from the builder first
+## so a force-quit keeps the current area's collects too.
+func _save(_changed: Variant = null) -> void:
+	if wallet == null or wardrobe == null:
+		return
+	if builder != null:
+		_taken[builder.area_name()] = builder.taken_flags()
+	SaveGame.save_game(wallet, wardrobe, _taken)
 
 
 func _process(delta: float) -> void:
@@ -64,6 +97,7 @@ func _build_area(index: int) -> void:
 	builder.build(layout, wallet, flags, wardrobe)
 	builder.door.entered.connect(_on_door_entered)
 	area_changed.emit(index)
+	_save()
 
 
 func _swap_area() -> void:

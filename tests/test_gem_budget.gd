@@ -97,6 +97,8 @@ func test_collecting_three_shows_three() -> void:
 
 func test_leaving_and_returning_restores_zero_gems() -> void:
 	# AC-1: collect everything, leave, return -> zero restored.
+	# Phase 3 persists to disk: a Game boot must start from a clean slate.
+	SaveGame.clear()
 	var game: Game = load(GAME_SCRIPT).new()
 	add_child(game)
 	var first := game.builder

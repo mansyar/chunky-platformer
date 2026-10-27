@@ -356,6 +356,8 @@ func test_machine_art_reads_as_a_present() -> void:
 
 
 func test_game_carries_wardrobe_across_areas() -> void:
+	# Phase 3 persists to disk: a Game boot must start from a clean slate.
+	SaveGame.clear()
 	var game: Node = load("res://src/levels/game.gd").new()
 	add_child(game)
 	assert_not_null(game.wardrobe, "the game owns the session wardrobe.")

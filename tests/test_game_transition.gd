@@ -15,6 +15,8 @@ const GAME_SCRIPT := "res://src/levels/game.gd"
 
 
 func _game() -> Game:
+	# Phase 3 persists to disk: a Game boot must start from a clean slate.
+	SaveGame.clear()
 	var game: Game = load(GAME_SCRIPT).new()
 	add_child(game)
 	return game
