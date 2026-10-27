@@ -70,7 +70,7 @@ Review fixes are appended by `conductor-review` as:
 - **Covers:** FR-8, FR-9, AC-8, AC-9
 - **Touches:** `src/systems/save_game.*`, `src/levels/game.*` (load-at-boot, save triggers), `tests/test_save_game*`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P3.T1: SaveGame read/write + version field + corrupt fallback** — covers: FR-8
   - [ ] **P3.T1.1: user:// JSON schema (wallet, owned/worn, gem flags, version) with round-trip tests**
