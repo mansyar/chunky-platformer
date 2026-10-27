@@ -70,13 +70,17 @@ Review fixes are appended by `conductor-review` as:
 - **Covers:** FR-8, FR-9, AC-8, AC-9
 - **Touches:** `src/systems/save_game.*`, `src/levels/game.*` (load-at-boot, save triggers), `tests/test_save_game*`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P3.T1: SaveGame read/write + version field + corrupt fallback** — covers: FR-8
-  - [ ] **P3.T1.1: user:// JSON schema (wallet, owned/worn, gem flags, version) with round-trip tests**
-  - [ ] **P3.T1.2: Corrupt/missing/future-version handling (fresh boot, no crash, no text)**
-- [ ] **P3.T2: Autosave triggers** — covers: FR-9
-  - [ ] **P3.T2.1: Save on collect, dispense, and area transition (mtime/content tests)**
+- [x] **P3.T1: SaveGame read/write + version field + corrupt fallback** — covers: FR-8
+  - [x] **P3.T1.1: user:// JSON schema (wallet, owned/worn, gem flags, version) with round-trip tests**
+  - [x] **P3.T1.2: Corrupt/missing/future-version handling (fresh boot, no crash, no text)**
+- [x] **P3.T2: Autosave triggers** — covers: FR-9
+  - [x] **P3.T2.1: Save on collect, dispense, and area transition (mtime/content tests)**
+
+**Result:** verified
+**Checkpoint:** f0818fd
+**Evidence:** conductor/tracks/20261027-gem-shop/verification/phase-3.md
 
 ## Phase 4: Live Verification + Evidence
 
