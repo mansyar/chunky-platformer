@@ -101,3 +101,114 @@ const MACHINE_TOUCH_MIN := 64.0
 const TRAIL_BUBBLES_COLOR := Color(0.65, 0.9, 1.0)
 const TRAIL_SPARKLE_COLOR := Color(1.0, 0.85, 0.35)
 const ROBO_SUNNY_TINT := Color(1.1, 1.0, 0.8)
+
+# Audio synthesis (audio_synthesis_20261027 Phase 1): every SFX is a
+# pre-generated 8-bit mono AudioStreamWAV. Short one-shots stay instantly
+# regenerable; volumes stay conservative so 8 stacked voices never startle.
+const AUDIO_SAMPLE_RATE := 22050
+const AUDIO_FORMAT_BITS := 8
+const AUDIO_CHANNELS := 1
+# Polyphonic voice cap: at most this many one-shots overlap; the oldest
+# voice is stolen first so mashing never clips and never drops ambient.
+const AUDIO_MAX_VOICES := 8
+# Soft-envelope shape: a short linear attack plus a cosine release over the
+# tail fraction, so no buffer starts or ends with a harsh transient.
+const AUDIO_ATTACK_TIME := 0.012
+const AUDIO_RELEASE_FRACTION := 0.35
+# Per-SFX voice: duration in seconds, linear pitch sweep (start/end Hz),
+# peak linear volume (conservative: never above 0.4), and an optional
+# gentle vibrato (rate Hz + depth Hz, both 0 when unused) for boing/wiggle.
+const AUDIO_SFX_NAMES: Array[String] = [
+	"jump",
+	"bounce",
+	"gem",
+	"key",
+	"door",
+	"celebrate",
+	"gift_pop",
+	"gift_wiggle",
+	"gift_bonus",
+]
+const AUDIO_SFX := {
+	"jump":
+	{
+		"duration": 0.25,
+		"freq_start": 300.0,
+		"freq_end": 620.0,
+		"volume": 0.35,
+		"wobble_rate": 0.0,
+		"wobble_depth": 0.0,
+	},
+	"bounce":
+	{
+		"duration": 0.32,
+		"freq_start": 180.0,
+		"freq_end": 420.0,
+		"volume": 0.38,
+		"wobble_rate": 10.0,
+		"wobble_depth": 60.0,
+	},
+	"gem":
+	{
+		"duration": 0.18,
+		"freq_start": 880.0,
+		"freq_end": 1320.0,
+		"volume": 0.32,
+		"wobble_rate": 0.0,
+		"wobble_depth": 0.0,
+	},
+	"key":
+	{
+		"duration": 0.30,
+		"freq_start": 660.0,
+		"freq_end": 990.0,
+		"volume": 0.32,
+		"wobble_rate": 0.0,
+		"wobble_depth": 0.0,
+	},
+	"door":
+	{
+		"duration": 0.60,
+		"freq_start": 523.0,
+		"freq_end": 784.0,
+		"volume": 0.34,
+		"wobble_rate": 0.0,
+		"wobble_depth": 0.0,
+	},
+	"celebrate":
+	{
+		"duration": 0.80,
+		"freq_start": 523.0,
+		"freq_end": 1046.0,
+		"volume": 0.38,
+		"wobble_rate": 5.0,
+		"wobble_depth": 30.0,
+	},
+	"gift_pop":
+	{
+		"duration": 0.20,
+		"freq_start": 700.0,
+		"freq_end": 1050.0,
+		"volume": 0.34,
+		"wobble_rate": 0.0,
+		"wobble_depth": 0.0,
+	},
+	"gift_wiggle":
+	{
+		"duration": 0.40,
+		"freq_start": 450.0,
+		"freq_end": 550.0,
+		"volume": 0.32,
+		"wobble_rate": 7.0,
+		"wobble_depth": 80.0,
+	},
+	"gift_bonus":
+	{
+		"duration": 0.70,
+		"freq_start": 880.0,
+		"freq_end": 1760.0,
+		"volume": 0.36,
+		"wobble_rate": 0.0,
+		"wobble_depth": 0.0,
+	},
+}
