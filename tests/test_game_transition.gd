@@ -103,10 +103,12 @@ func test_the_gem_counter_persists_across_areas() -> void:
 	# Gems are a lifetime delight counter, not a per-area score. A child who
 	# collected eight gems must still see eight after the door.
 	var game := _game()
-	_area(game).counter.set_count(7)
+	game.wallet.add(7)
+	_area(game).counter.set_count(game.wallet.balance())
 	_enter_door(game)
 	_step_through(game)
 	assert_eq(_area(game).counter.count(), 7, "the gem total rides along.")
+	assert_eq(game.wallet.balance(), 7, "the session wallet rides along.")
 
 
 # --- the full loop ----------------------------------------------------------

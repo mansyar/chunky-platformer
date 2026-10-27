@@ -40,8 +40,8 @@ const LAND_SQUASH_TIME := 0.15  # seconds the squash frame holds after landing
 ## Camera
 const CAMERA_SMOOTHING := 8.0  # lerp weight for follow smoothing
 
-# Collect & Play (collect_play_20261008)
-const GEM_RESPAWN_TIME := 10.0  # seconds a collected gem stays hidden
+# Collect & Carry (gem_shop_20261027): gems are a fixed per-area budget with
+# no respawn. See AreaLayout.GEMS_PER_AREA for the per-area count.
 const GEM_BOB_AMPLITUDE := 3.0  # idle bob height in pixels
 # Idle bob angular speed in rad/s (~2 second period).
 const GEM_BOB_SPEED := 3.0

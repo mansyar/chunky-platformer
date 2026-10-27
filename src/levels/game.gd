@@ -18,11 +18,17 @@ var area_index := 0
 var builder: AreaBuilder
 var transition: AreaTransition
 
-## Lifetime gem total, carried across every swap.
-var _gem_total := 0
+## Session wallet: collected gems accumulate here and survive every swap
+## (quitting to title keeps the balance; save to disk arrives in Phase 3).
+var wallet: Wallet
+
+## Per-area gem-taken flags, keyed by area name. A collected gem stays
+## collected on revisit: the rebuilt area pre-collects these indices.
+var _taken: Dictionary = {}
 
 
 func _ready() -> void:
+	wallet = Wallet.new()
 	transition = AreaTransition.new()
 	transition.name = "Transition"
 	add_child(transition)
@@ -37,16 +43,21 @@ func _process(delta: float) -> void:
 
 func _build_area(index: int) -> void:
 	if builder != null:
-		_gem_total = builder.counter.count()
+		_taken[builder.area_name()] = builder.taken_flags()
 		builder.queue_free()
+		# queue_free() defers release, so drop the child now: the new area
+		# must own the "Area" name and the old tree must not linger a frame.
+		remove_child(builder)
 	area_index = index
 	builder = AreaBuilder.new()
 	builder.name = "Area"
 	add_child(builder)
-	builder.build(AreaLayout.all()[index])
+	var layout := AreaLayout.all()[index]
+	var flags: Array[bool] = []
+	if _taken.has(layout.area_name):
+		flags = _taken[layout.area_name]
+	builder.build(layout, wallet, flags)
 	builder.door.entered.connect(_on_door_entered)
-	# A fresh counter starts at zero, so the lifetime total slots straight in.
-	builder.counter.set_count(_gem_total)
 	area_changed.emit(index)
 
 

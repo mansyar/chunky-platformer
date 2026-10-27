@@ -20,6 +20,12 @@ const KEY_TIERS := ["walk", "jump", "bounce"]
 ## walk key would gate progress behind a jump.
 const KEYS_PER_AREA := 3  # one per KEY_TIERS entry
 
+## Fixed gem budget: every area holds exactly this many hand-placed gems.
+## Collected gems stay collected on revisit (no respawn); the per-area counts
+## below are the budget. Reachability pins the mix: >=6 walk, >=2 jump,
+## >=2 bounce (see test_every_gem_falls_into_a_reachable_tier).
+const GEMS_PER_AREA := 10
+
 var area_name := ""
 var palette := ""
 var cols := 0
@@ -91,6 +97,8 @@ func validate() -> PackedStringArray:
 					at_tier += 1
 			if at_tier != 1:
 				problems.append("expected one key per tier, %s has %d" % [tier, at_tier])
+	if not gem_spots.is_empty() and gem_spots.size() != GEMS_PER_AREA:
+		problems.append("expected %d gem spots, found %d" % [GEMS_PER_AREA, gem_spots.size()])
 	return problems
 
 
@@ -122,15 +130,14 @@ static func meadow() -> AreaLayout:
 	l.platforms = [{"width": 144.0, "at": Vector2(280, 400)}]
 	l.walls = [-4.0, 644.0]
 	l.gem_spots = [
+		# Fixed budget: 10 gems (6 walk + 2 jump + 2 bounce).
 		# walk tier - plain walking pickups
 		Vector2(60, 436),
 		Vector2(140, 436),
 		Vector2(240, 500),
 		Vector2(380, 500),
-		Vector2(400, 468),
 		Vector2(416, 436),
 		Vector2(520, 372),
-		Vector2(600, 372),
 		# jump tier - one clean jump apex (48px) above a surface
 		Vector2(270, 464),
 		Vector2(560, 336),
@@ -180,15 +187,14 @@ static func cave() -> AreaLayout:
 	]
 	l.walls = [-4.0, 644.0]
 	l.gem_spots = [
+		# Fixed budget: 10 gems (6 walk + 2 jump + 2 bounce).
 		# walk tier - plain walking pickups
 		Vector2(88, 404),
 		Vector2(176, 436),
-		Vector2(216, 468),
 		Vector2(296, 500),
 		Vector2(376, 500),
 		Vector2(288, 388),  # on the bridge, reached via the elevator
 		Vector2(440, 468),
-		Vector2(472, 436),
 		# jump tier - one clean jump apex (48px) above a surface
 		Vector2(120, 368),
 		Vector2(536, 368),
@@ -242,14 +248,13 @@ static func sunset() -> AreaLayout:
 	]
 	l.walls = [-4.0, 644.0]
 	l.gem_spots = [
+		# Fixed budget: 10 gems (6 walk + 2 jump + 2 bounce).
 		# walk tier - plain walking pickups
 		Vector2(40, 468),
-		Vector2(104, 468),
 		Vector2(160, 436),
 		Vector2(192, 404),
 		Vector2(280, 372),
 		Vector2(328, 372),
-		Vector2(384, 404),
 		Vector2(576, 436),
 		# jump tier - one clean jump apex (48px) above a surface
 		Vector2(344, 336),

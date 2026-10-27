@@ -1,9 +1,10 @@
 extends GdToolsTest
-## Tests for the Gem entity and its collect/respawn state machine (Phase 2).
+## Tests for the Gem entity and its collect state machine (Phase 2, updated
+## by gem_shop_20261027 Phase 1: fixed budget, no respawn).
 ##
-## The gem is a code-assembled Area2D: overlap collects it, a timer respawns
-## it forever. The bob is pure sine math tested without frames; collection
-## and respawn are tested with real physics/tree where overlap is involved.
+## The gem is a code-assembled Area2D: overlap collects it and it stays
+## collected. The bob is pure sine math tested without frames; collection
+## is tested with real physics/tree where overlap is involved.
 
 const GEM_SCRIPT := "res://src/world/gem.gd"
 
@@ -102,44 +103,24 @@ func test_collected_gem_hides_its_art() -> void:
 	assert_false(sprite.visible, "collected gem hides its art.")
 
 
-func test_gem_waits_for_the_body_to_leave_before_respawning() -> void:
-	# A gem must not pop back under the body that just took it.
+func test_collected_gem_stays_collected_forever() -> void:
+	# Fixed budget (gem_shop_20261027): no timed respawn. A collected gem
+	# stays hidden until the area is rebuilt with fresh taken flags.
 	var gem := _gem()
-	gem.respawn_delay = 0.05
-	var body := _body_at(Vector2.ZERO)
 	gem.collect()
-	await get_tree().create_timer(0.2).timeout
-	assert_true(gem.is_collected(), "gem stays hidden while Robo stands on the spot.")
-	body.queue_free()
 	await get_tree().create_timer(0.3).timeout
-	assert_false(gem.is_collected(), "gem returns once the spot is clear.")
+	assert_true(gem.is_collected(), "the gem stays hidden: no timed respawn.")
 
 
-func test_gem_respawns_after_its_delay() -> void:
-	var gem := _gem()
-	gem.respawn_delay = 0.1
-	var fired := [false]
-	gem.respawned.connect(func(_g: Area2D) -> void: fired[0] = true)
-	gem.collect()
-	assert_false(fired[0], "respawn does not fire immediately.")
-	await get_tree().create_timer(0.3).timeout
-	assert_true(fired[0], "gem respawns after its delay.")
-	assert_false(gem.is_collected(), "respawned gem is collectable again.")
-	var sprite := gem.find_child("Sprite", true, false) as Sprite2D
-	assert_true(sprite.visible, "respawned gem shows its art again.")
-
-
-func test_collect_respawn_cycle_repeats() -> void:
-	var gem := _gem()
-	gem.respawn_delay = 0.05
+func test_start_collected_hides_without_a_signal() -> void:
+	# Revisit path: the builder pre-collects taken gems silently.
+	var pre: Area2D = load(GEM_SCRIPT).new()
+	(pre as Gem).start_collected()
 	var count := [0]
-	gem.collected.connect(func(_g: Area2D) -> void: count[0] += 1)
-	for cycle: int in range(3):
-		gem.collect()
-		assert_eq(count[0], cycle + 1, "cycle %d collected." % (cycle + 1))
-		await get_tree().create_timer(0.15).timeout
-		assert_false(gem.is_collected(), "cycle %d respawned." % (cycle + 1))
-	assert_eq(count[0], 3, "three full cycles collected three times.")
+	(pre as Gem).collected.connect(func(_g: Area2D) -> void: count[0] += 1)
+	add_child(pre)
+	assert_true((pre as Gem).is_collected(), "the gem starts hidden.")
+	assert_eq(count[0], 0, "pre-collecting emits nothing.")
 
 
 func test_collect_signal_carries_the_gem() -> void:

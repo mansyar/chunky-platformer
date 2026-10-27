@@ -39,6 +39,10 @@ exclude = [
     ".godot",
     ".gd-tools",
     ".git",
+    # Coverage injector cannot parse this file (Godot error 43 on injected
+    # trackers) and it is untouched input glue: exclude from measurement.
+    # Tech debt: re-include once gd-tools handles the construct.
+    "src/input/touch_controls.gd",
 ]
 test_dirs = [
     "test",

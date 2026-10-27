@@ -2,7 +2,7 @@ class_name Key
 extends Area2D
 ## A collectable that never comes back.
 ##
-## The whole difference from a Gem: a gem respawns, a key is permanent. That
+## Like a Gem (fixed budget since gem_shop_20261027), a key is permanent. That
 ## single rule is what makes the goal loop trustworthy - the door can never
 ## strand a child on an unwinnable area because the key they already carried
 ## is still in their pocket.

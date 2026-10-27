@@ -47,9 +47,9 @@ func _walk_until_collected(level: Node2D, direction: String) -> bool:
 	return false
 
 
-func test_level_spawns_twelve_gems() -> void:
+func test_level_spawns_the_full_budget() -> void:
 	var level := _open_level()
-	assert_eq(_gems(level).size(), 12, "the playground holds twelve collectible gems.")
+	assert_eq(_gems(level).size(), AreaLayout.GEMS_PER_AREA, "the playground holds its gem budget.")
 
 
 func test_gems_are_grouped_into_reachable_tiers() -> void:
@@ -59,7 +59,7 @@ func test_gems_are_grouped_into_reachable_tiers() -> void:
 	# whether a surface exists at a gem's x - it once blessed a gem that was
 	# embedded inside the tall hill.)
 	var level := _open_level()
-	assert_eq(_gems(level).size(), 12, "the meadow spawns its full gem set.")
+	assert_eq(_gems(level).size(), AreaLayout.GEMS_PER_AREA, "the meadow spawns its full gem set.")
 
 
 func test_level_has_a_counter_starting_at_zero() -> void:
@@ -104,10 +104,10 @@ func test_collect_spawns_juice_and_celebrates() -> void:
 	assert_ne((sprite as AnimatedSprite2D).scale, Vector2.ONE, "Robo celebrates.")
 
 
-func test_gem_respawns_after_its_delay() -> void:
+func test_collected_gem_stays_collected() -> void:
+	# Fixed budget: no timed respawn. The taken gem stays hidden and the
+	# counter keeps its total.
 	var level := _open_level()
-	for gem: Node in _gems(level):
-		(gem as Gem).respawn_delay = 0.1
 	assert_true(await _walk_until_collected(level, "move_right"), "Robo collected a gem.")
 	var collected: Array[Node] = []
 	for gem: Node in _gems(level):
@@ -115,16 +115,14 @@ func test_gem_respawns_after_its_delay() -> void:
 			collected.append(gem)
 	assert_eq(collected.size(), 1, "one gem was taken.")
 	var count_after: int = _counter(level).count()
-	# Put Robo somewhere far away (the gem waits for him to leave — a gem that
-	# pops back under him would be a free gem and look broken).
 	_robot(level).position = Vector2(100, 434)
 	for i: int in range(5):
 		await get_tree().physics_frame
 	await get_tree().create_timer(0.6).timeout
 	var gem := collected[0] as Gem
-	assert_false(gem.is_collected(), "the gem came back.")
+	assert_true(gem.is_collected(), "the gem stays hidden: no respawn.")
 	var art := gem.find_child("Sprite", true, false) as Sprite2D
-	assert_true(art.visible, "the returned gem shows its art again.")
+	assert_false(art.visible, "the taken gem keeps its art hidden.")
 	assert_eq(
 		_counter(level).count(),
 		count_after,

@@ -114,7 +114,9 @@ func test_a_full_playthrough_loops_home_after_sunset() -> void:
 
 func test_the_gem_counter_persists_across_areas() -> void:
 	var game := _open_game()
-	game.builder.counter.set_count(7)
+	# The wallet is the source of truth; the badge mirrors it.
+	game.wallet.add(7)
+	game.builder.counter.set_count(game.wallet.balance())
 	await _finish_area(game)
 	# Grabbing keys can incidentally collect gems on the way, so the score to
 	# carry is whatever the counter holds just before the fade, not 7.

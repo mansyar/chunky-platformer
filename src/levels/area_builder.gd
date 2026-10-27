@@ -19,10 +19,17 @@ const SCREEN := Vector2(1280, 720)
 ## Handles to the parts a caller needs to wire up (gems, transitions, hints).
 var robot: Robot
 var counter: GemCounter
+var wallet_hud: WalletHud
 var goal_state: GoalState
 var door: Door
 var key_counter: KeyCounter
 var hint: HintSystem
+
+## Session wallet fed by gem collects (null until build with one).
+var wallet: Wallet
+
+## Per-gem taken flags for this build, indexed by gem_id.
+var _taken: Array[bool] = []
 
 ## The area's live keys, kept so the hint can re-resolve its target the moment
 ## one is taken rather than holding a stale reference.
@@ -38,9 +45,18 @@ func area_name() -> String:
 
 ## Build the given layout under this node. Returns the level's bounds so a
 ## caller can clamp a camera or check that the level is the expected size.
-func build(layout: AreaLayout) -> Rect2:
+## The optional wallet receives one gem per collect; the optional taken
+## flags pre-collect gems (revisit path: nothing is restored).
+func build(layout: AreaLayout, p_wallet: Wallet = null, taken: Array[bool] = []) -> Rect2:
 	_layout = layout
 	_keys.clear()  # a rebuild must not inherit the previous area's keys
+	if p_wallet == null:
+		wallet = Wallet.new()
+	else:
+		wallet = p_wallet
+	_taken.clear()
+	for i: int in range(layout.gem_spots.size()):
+		_taken.append(i < taken.size() and taken[i])
 	_build_sky()
 	var world := Node2D.new()
 	world.name = "World"
@@ -56,8 +72,21 @@ func build(layout: AreaLayout) -> Rect2:
 	counter.name = "GemCounter"
 	counter.palette = layout.palette
 	add_child(counter)
+	# Legacy counter mirrors the session wallet so the old badge keeps working
+	# until Phase 2 replaces its meaning.
+	counter.set_count(wallet.balance())
+	wallet_hud = WalletHud.new()
+	wallet_hud.name = "WalletHud"
+	wallet_hud.palette = layout.palette
+	add_child(wallet_hud)
+	wallet_hud.bind(wallet)
 	add_child(TouchControls.new())
 	return bounds()
+
+
+## Per-gem taken flags for this area (a copy; index = gem_id).
+func taken_flags() -> Array[bool]:
+	return _taken.duplicate()
 
 
 ## The world's walkable extent in pixels, derived from the layout rather than
@@ -231,26 +260,27 @@ func _layout_world() -> Node:
 
 
 func _build_gems(world: Node2D) -> void:
-	for spot: Vector2 in _layout.gem_spots:
+	for i: int in range(_layout.gem_spots.size()):
 		var gem := Gem.new()
-		gem.position = spot
+		gem.position = _layout.gem_spots[i]
 		gem.palette = _layout.palette
+		gem.gem_id = i
+		if i < _taken.size() and _taken[i]:
+			gem.start_collected()
 		gem.collected.connect(_on_gem_collected)
-		gem.respawned.connect(_on_gem_respawned)
 		world.add_child(gem)
 
 
 func _on_gem_collected(gem: Gem) -> void:
 	# Juice must never interrupt play: the ring pops, the counter bumps, Robo
 	# squashes - and his velocity is untouched.
+	if gem.gem_id >= 0 and gem.gem_id < _taken.size():
+		_taken[gem.gem_id] = true
 	PopEffect.spawn(gem.get_parent(), gem.global_position, _accent())
+	if wallet != null:
+		wallet.add(1)
 	counter.increment()
 	robot.celebrate()
-
-
-func _on_gem_respawned(gem: Gem) -> void:
-	# The returning gem announces itself with the same sparkle burst.
-	PopEffect.spawn(gem.get_parent(), gem.global_position, _accent())
 
 
 func _accent() -> Color:
