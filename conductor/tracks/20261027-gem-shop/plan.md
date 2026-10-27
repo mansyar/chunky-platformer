@@ -89,8 +89,12 @@ Review fixes are appended by `conductor-review` as:
 - **Covers:** AC-10, NFR-1, NFR-4
 - **Touches:** `conductor/tracks/20261027-gem-shop/verification/*`, `.conductor/evidence/*` (gitignored)
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P4.T1: Live pass + evidence pack** — covers: AC-10
-  - [ ] **P4.T1.1: session ready, touched scenes open (hierarchy sane), screenshots captured**
-  - [ ] **P4.T1.2: project_run smoke (game starts, machine usable, back to stopped); coverage gate ≥80 new-code**
+- [x] **P4.T1: Live pass + evidence pack** — covers: AC-10
+  - [x] **P4.T1.1: session ready, touched scenes open (hierarchy sane), screenshots captured**
+  - [x] **P4.T1.2: project_run smoke (game starts, machine usable, back to stopped); coverage gate ≥80 new-code**
+
+**Result:** verified
+**Checkpoint:** d0e615f
+**Evidence:** conductor/tracks/20261027-gem-shop/verification/phase-4.md
