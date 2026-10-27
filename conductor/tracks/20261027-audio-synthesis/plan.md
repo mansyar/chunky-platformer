@@ -14,17 +14,21 @@
 - **Covers:** FR-1, FR-3, FR-6, NFR-1, NFR-4, NFR-5, AC-1, AC-3, AC-6, AC-7
 - **Touches:** `src/factory/audio_factory.gd`, `src/tuning/tuning.gd`, `tests/test_audio_synthesis.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P1.T1: Audio tuning constants** — covers: FR-1
-  - [ ] **P1.T1.1: Sample format + volume table** — 22050 Hz mono, per-SFX duration / pitch / volume in tuning
-  - [ ] **P1.T1.2: Voice-cap + safety limits** — cap 8, unknown-name guard values
-- [ ] **P1.T2: WAV synth engine** — covers: FR-1, FR-6
-  - [ ] **P1.T2.1: Soft-envelope generator** — sine + attack/decay, no harsh transients, snapshot helper
-  - [ ] **P1.T2.2: Pre-generate + cache 9 SFX** — jump, bounce, gem, key, door, celebrate, gift_pop, gift_wiggle, gift_bonus at startup
-- [ ] **P1.T3: play() semantics** — covers: FR-3
-  - [ ] **P1.T3.1: Polyphonic pool with cap** — oldest-steal, no clipping, unknown-name safe no-op
-  - [ ] **P1.T3.2: TDD suites + snapshots** — per-SFX non-silence, format, snapshot determinism
+- [x] **P1.T1: Audio tuning constants** — covers: FR-1
+  - [x] **P1.T1.1: Sample format + volume table** — 22050 Hz mono, per-SFX duration / pitch / volume in tuning
+  - [x] **P1.T1.2: Voice-cap + safety limits** — cap 8, unknown-name guard values
+- [x] **P1.T2: WAV synth engine** — covers: FR-1, FR-6
+  - [x] **P1.T2.1: Soft-envelope generator** — sine + attack/decay, no harsh transients, snapshot helper
+  - [x] **P1.T2.2: Pre-generate + cache 9 SFX** — jump, bounce, gem, key, door, celebrate, gift_pop, gift_wiggle, gift_bonus at startup
+- [x] **P1.T3: play() semantics** — covers: FR-3
+  - [x] **P1.T3.1: Polyphonic pool with cap** — oldest-steal, no clipping, unknown-name safe no-op
+  - [x] **P1.T3.2: TDD suites + snapshots** — per-SFX non-silence, format, snapshot determinism
+
+**Result:** verified
+**Checkpoint:** e7a9c10
+**Evidence:** conductor/tracks/20261027-audio-synthesis/verification/phase-1.md
 
 <!--
 The primary appends after acceptance:
