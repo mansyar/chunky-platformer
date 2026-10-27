@@ -111,6 +111,7 @@ func test_save_file_is_versioned_json() -> void:
 	assert_true(raw.has("owned"), "owned gifts are stored.")
 	assert_true(raw.has("worn"), "the worn look is stored.")
 	assert_true(raw.has("taken"), "gem-taken flags are stored.")
+	assert_true(raw.has("area_index"), "the area index is stored.")
 	SaveGame.clear(TEMP_PATH)
 
 
@@ -329,3 +330,6 @@ func test_area_transition_rewrites_the_save() -> void:
 		"the meadow collect survived the swap on disk."
 	)
 	SaveGame.clear()
+
+# V2 area_index persist/clamp and V1 migration live in test_save_game_v2.gd:
+# this suite is at the lint cap of 20 public methods.
