@@ -11,9 +11,9 @@ moment triggers the right sound. All 373 tests pass (95.0% lines /
 
 - **ID:** `20261027-audio-synthesis`
 - **Type:** `feature`
-- **Spec:** [`conductor/tracks/20261027-audio-synthesis/spec.md`](conductor/tracks/20261027-audio-synthesis/spec.md)
-- **Plan:** [`conductor/tracks/20261027-audio-synthesis/plan.md`](conductor/tracks/20261027-audio-synthesis/plan.md)
-- **Review:** [`conductor/tracks/20261027-audio-synthesis/review.md`](conductor/tracks/20261027-audio-synthesis/review.md)
+- **Spec:** [`conductor/archive/20261027-audio-synthesis/spec.md`](conductor/archive/20261027-audio-synthesis/spec.md)
+- **Plan:** [`conductor/archive/20261027-audio-synthesis/plan.md`](conductor/archive/20261027-audio-synthesis/plan.md)
+- **Review:** [`conductor/archive/20261027-audio-synthesis/review.md`](conductor/archive/20261027-audio-synthesis/review.md)
 
 ## What happened
 
