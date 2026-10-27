@@ -14,7 +14,14 @@
 - **Covers:** FR-1, FR-3, FR-4, NFR-2, NFR-3, AC-2, AC-3, AC-5
 - **Touches:** `src/systems/save_game.gd`, `tests/test_save_game*.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** blocked
+
+**Result:** blocked — code complete (commits `5ce9b5b`, `78adc2d`), all phase AC tests
+green, coverage 95.1%/94.0% (gate met), lint/format clean; but the Verification
+command exits 1 on pre-existing `test_audio_ambient` wall-clock timing test that fails
+only under coverage instrumentation (passes standalone + non-coverage runs; untouched
+by this track). Awaiting unblock decision — see evidence.
+**Evidence:** conductor/tracks/20261028-resume-mid-adventure/verification/phase-1.md
 
 - [ ] **P1.T1: V2 schema with area_index persist + clamp** — covers: FR-1, FR-4
   - [ ] **P1.T1.1: Extend to_dict/sanitize with area_index and range clamp**
