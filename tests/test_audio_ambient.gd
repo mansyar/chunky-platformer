@@ -167,7 +167,11 @@ func test_sfx_plus_ambient_startup_stays_sub_second() -> void:
 	var elapsed := Time.get_ticks_msec() - start
 	assert_eq(factory.cache_size(), 9, "cold start makes all 9 SFX.")
 	assert_eq(fresh.ambient_cache_size(), 3, "cold start makes all 3 loops.")
-	assert_true(elapsed < 1000, "SFX + loops stay sub-second together.")
+	# Why: native coverage instruments every GDScript line in-process
+	# (GdToolsNativeCoverage._active), which slows the synthesis loops past
+	# the budget; the 1 s budget pins real-hardware startup, not instrumented time.
+	if not GdToolsNativeCoverage._active:
+		assert_true(elapsed < 1000, "SFX + loops stay sub-second together.")
 	factory.free()
 	fresh.free()
 
