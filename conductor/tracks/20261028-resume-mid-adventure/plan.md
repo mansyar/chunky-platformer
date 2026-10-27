@@ -15,22 +15,24 @@
 - **Touches:** `src/systems/save_game.gd`, `tests/test_save_game*.gd`, plus rework R1
   (user-authorized, test-only): `tests/test_audio_ambient.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress (rework R1 — user authorized 2026-10-27: minimal test-only fix
-  for the pre-existing audio timing assertion under coverage instrumentation)
+- **Status:** verified
 
-**Result:** blocked — code complete (commits `5ce9b5b`, `78adc2d`), all phase AC tests
-green, coverage 95.1%/94.0% (gate met), lint/format clean; but the Verification
-command exits 1 on pre-existing `test_audio_ambient` wall-clock timing test that fails
-only under coverage instrumentation (passes standalone + non-coverage runs; untouched
-by this track). Awaiting unblock decision — see evidence.
-**Evidence:** conductor/tracks/20261028-resume-mid-adventure/verification/phase-1.md
+**Result:** verified — code complete (commits `5ce9b5b`, `78adc2d`, rework `3fd1d1b`),
+all phase AC tests green (AC-2/3/5), coverage gate exit 0 (379/379; 95.1%/94.0% vs
+min 80), lint + format clean. Pre-existing audio timing interaction resolved via
+authorized test-only R1 fix.
+**Checkpoint:** `de355e0`
+**Evidence:** conductor/tracks/20261028-resume-mid-adventure/verification/phase-1.md,
+conductor/tracks/20261028-resume-mid-adventure/verification/phase-1-r1.md (with
+Primary verification section)
 
-- [ ] **P1.T1: V2 schema with area_index persist + clamp** — covers: FR-1, FR-4
-  - [ ] **P1.T1.1: Extend to_dict/sanitize with area_index and range clamp**
-  - [ ] **P1.T1.2: Cover persist round-trip and out-of-range clamp tests**
-- [ ] **P1.T2: V1 migration + corrupt/future recovery** — covers: FR-3
-  - [ ] **P1.T2.1: V1 file migrates preserving wallet/owned/worn/taken defaulting area 0**
-  - [ ] **P1.T2.2: Corrupt/empty/future-version boots fresh meadow with no crash**
+- [x] **P1.T1: V2 schema with area_index persist + clamp** — covers: FR-1, FR-4
+  - [x] **P1.T1.1: Extend to_dict/sanitize with area_index and range clamp**
+  - [x] **P1.T1.2: Cover persist round-trip and out-of-range clamp tests**
+- [x] **P1.T2: V1 migration + corrupt/future recovery** — covers: FR-3
+  - [x] **P1.T2.1: V1 file migrates preserving wallet/owned/worn/taken defaulting area 0**
+  - [x] **P1.T2.2: Corrupt/empty/future-version boots fresh meadow with no crash**
+- [x] **R1.T1: Coverage-aware audio timing assert (test-only)** — covers: NFR-2 gate
 
 <!--
 The primary appends after acceptance:
@@ -46,7 +48,7 @@ The primary appends after acceptance:
 - **Covers:** FR-2, FR-5, FR-6, NFR-1, NFR-4, AC-1, AC-4
 - **Touches:** `src/levels/game.gd`, `tests/test_game*.gd`, `tests/test_goal*.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P2.T1: Restore saved area on boot and save on swap** — covers: FR-2, FR-1
   - [ ] **P2.T1.1: Boot reads area_index and builds that area at spawn**
