@@ -44,6 +44,11 @@ const SPEC: Array = [
 	{"name": "key", "kind": "prop", "size": TILE_SIZE, "palette": "area"},
 	{"name": "door_locked", "kind": "prop", "size": Vector2i(32, 48), "palette": "area"},
 	{"name": "door_open", "kind": "prop", "size": Vector2i(32, 48), "palette": "area"},
+	# --- gift machine + wearable hats (gem_shop_20261027 Phase 2) ---
+	{"name": "gift_machine", "kind": "prop", "size": Vector2i(32, 48), "palette": "area"},
+	{"name": "hat_sprout", "kind": "prop", "size": Vector2i(16, 12), "palette": "robot"},
+	{"name": "hat_star", "kind": "prop", "size": Vector2i(16, 12), "palette": "robot"},
+	{"name": "hat_crown", "kind": "prop", "size": Vector2i(16, 12), "palette": "robot"},
 	{"name": "touch_left", "kind": "ui", "size": Vector2i(24, 24), "palette": "robot"},
 	{"name": "touch_right", "kind": "ui", "size": Vector2i(24, 24), "palette": "robot"},
 	{"name": "touch_jump", "kind": "ui", "size": Vector2i(24, 24), "palette": "robot"},

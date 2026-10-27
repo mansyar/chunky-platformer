@@ -61,6 +61,10 @@ var props: Array[Dictionary] = []
 
 var robot_spawn := Vector2.ZERO
 
+## Friendly gift machine spot (gem_shop_20261027 Phase 2): seated on a
+## walkable surface near the spawn, clear of gems, keys, pads, and the door.
+var machine_at := Vector2.ZERO
+
 
 ## Collect every reason this layout is unusable, so a caller can report all
 ## the problems at once instead of one per run.
@@ -155,6 +159,7 @@ static func meadow() -> AreaLayout:
 	l.door_at = Vector2(520, 360)
 	l.props = []
 	l.robot_spawn = Vector2(300, 498)
+	l.machine_at = Vector2(88, 424)  # low hill plateau, left of the walk gems
 	return l
 
 
@@ -212,6 +217,7 @@ static func cave() -> AreaLayout:
 	l.door_at = Vector2(596, 392)
 	l.props = []
 	l.robot_spawn = Vector2(240, 498)
+	l.machine_at = Vector2(40, 392)  # left plateau, clear of pad + bounce arc
 	return l
 
 
@@ -273,6 +279,7 @@ static func sunset() -> AreaLayout:
 	l.door_at = Vector2(600, 424)
 	l.props = []
 	l.robot_spawn = Vector2(80, 466)
+	l.machine_at = Vector2(120, 456)  # left shoulder, right of spawn + walk key
 	return l
 
 

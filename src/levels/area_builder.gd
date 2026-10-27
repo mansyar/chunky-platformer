@@ -28,6 +28,13 @@ var hint: HintSystem
 ## Session wallet fed by gem collects (null until build with one).
 var wallet: Wallet
 
+## Session wardrobe fed by the gift machine (null until build with one).
+## Like the wallet it is owned by the caller and carried across area swaps.
+var wardrobe: Wardrobe
+
+## The area's gift machine (null until built).
+var machine: GiftMachine
+
 ## Per-gem taken flags for this build, indexed by gem_id.
 var _taken: Array[bool] = []
 
@@ -46,14 +53,24 @@ func area_name() -> String:
 ## Build the given layout under this node. Returns the level's bounds so a
 ## caller can clamp a camera or check that the level is the expected size.
 ## The optional wallet receives one gem per collect; the optional taken
-## flags pre-collect gems (revisit path: nothing is restored).
-func build(layout: AreaLayout, p_wallet: Wallet = null, taken: Array[bool] = []) -> Rect2:
+## flags pre-collect gems (revisit path: nothing is restored). The optional
+## wardrobe receives the machine's gifts (a fresh one is made when omitted).
+func build(
+	layout: AreaLayout,
+	p_wallet: Wallet = null,
+	taken: Array[bool] = [],
+	p_wardrobe: Wardrobe = null
+) -> Rect2:
 	_layout = layout
 	_keys.clear()  # a rebuild must not inherit the previous area's keys
 	if p_wallet == null:
 		wallet = Wallet.new()
 	else:
 		wallet = p_wallet
+	if p_wardrobe == null:
+		wardrobe = Wardrobe.new()
+	else:
+		wardrobe = p_wardrobe
 	_taken.clear()
 	for i: int in range(layout.gem_spots.size()):
 		_taken.append(i < taken.size() and taken[i])
@@ -65,9 +82,15 @@ func build(layout: AreaLayout, p_wallet: Wallet = null, taken: Array[bool] = [])
 	_build_interactives(world)
 	_build_props(world)
 	robot = _build_robot(world)
+	# Tap-Robo cycles owned looks: the wardrobe lives here (session state from
+	# the game root) and Robo only borrows it for taps + wear.
+	robot.wardrobe = wardrobe
+	wardrobe.changed.connect(robot.refresh_look)
+	robot.refresh_look()
 	_build_goal(world)
 	_build_camera(world)
 	_build_gems(world)
+	_build_machine(world)
 	counter = GemCounter.new()
 	counter.name = "GemCounter"
 	counter.palette = layout.palette
@@ -285,6 +308,36 @@ func _on_gem_collected(gem: Gem) -> void:
 
 func _accent() -> Color:
 	return Palettes.AREA_PALETTES[_layout.palette]["accent"]
+
+
+## One friendly gift machine per area, seated on its layout spot and fed by
+## the session wallet + wardrobe. Its hint sparkle points at this area's
+## live gems, and every dispense earns Robo's celebration.
+func _build_machine(world: Node2D) -> void:
+	machine = GiftMachine.new()
+	machine.name = "GiftMachine"
+	machine.position = _layout.machine_at
+	machine.palette = _layout.palette
+	machine.wallet = wallet
+	machine.wardrobe = wardrobe
+	world.add_child(machine)
+	var gems: Array[Node2D] = []
+	for child: Node in world.get_children():
+		if child is Gem:
+			gems.append(child)
+	machine.hint_targets = gems
+	machine.dispensed.connect(_on_machine_dispensed)
+	machine.bonus.connect(_on_machine_bonus)
+
+
+func _on_machine_dispensed(_cosmetic_id: String) -> void:
+	PopEffect.spawn(_layout_world(), machine.global_position + Vector2(0.0, -32.0), _accent())
+	robot.celebrate()
+
+
+func _on_machine_bonus() -> void:
+	PopEffect.spawn(_layout_world(), machine.global_position + Vector2(0.0, -32.0), _accent())
+	robot.celebrate()
 
 
 func _build_robot(world: Node2D) -> Robot:

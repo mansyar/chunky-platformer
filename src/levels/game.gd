@@ -22,6 +22,10 @@ var transition: AreaTransition
 ## (quitting to title keeps the balance; save to disk arrives in Phase 3).
 var wallet: Wallet
 
+## Session wardrobe: gifted looks accumulate here and survive every swap,
+## exactly like the wallet (owned by the game root, borrowed by the area).
+var wardrobe: Wardrobe
+
 ## Per-area gem-taken flags, keyed by area name. A collected gem stays
 ## collected on revisit: the rebuilt area pre-collects these indices.
 var _taken: Dictionary = {}
@@ -29,6 +33,7 @@ var _taken: Dictionary = {}
 
 func _ready() -> void:
 	wallet = Wallet.new()
+	wardrobe = Wardrobe.new()
 	transition = AreaTransition.new()
 	transition.name = "Transition"
 	add_child(transition)
@@ -56,7 +61,7 @@ func _build_area(index: int) -> void:
 	var flags: Array[bool] = []
 	if _taken.has(layout.area_name):
 		flags = _taken[layout.area_name]
-	builder.build(layout, wallet, flags)
+	builder.build(layout, wallet, flags, wardrobe)
 	builder.door.entered.connect(_on_door_entered)
 	area_changed.emit(index)
 

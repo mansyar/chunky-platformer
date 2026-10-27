@@ -391,6 +391,43 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				ops.append(
 					_rect(Rect2i(11 - i, 8 + i * 2, 2 + i * 2, 2), p.get("eye", Color.WHITE))
 				)
+		# Gift machine (gem_shop_20261027 Phase 2): a chunky gumball-style box
+		# with a dark dispense slot and a bow on top — a present, not a vendor.
+		"gift_machine":
+			ops = [
+				_rect(Rect2i(6, 12, 20, 32), g),
+				_rect(Rect2i(6, 12, 20, 6), ac),
+				_rect(Rect2i(13, 22, 6, 8), gd),
+				_rect(Rect2i(4, 42, 24, 4), gd),
+				_rect(Rect2i(10, 5, 4, 4), ac),
+				_rect(Rect2i(18, 5, 4, 4), ac),
+				_disc(Vector2i(16, 8), 3, ac),
+				_outline(Rect2i(6, 12, 20, 32), gd),
+			]
+		# Wearable hats (gem_shop_20261027 Phase 2): 16x12 toppers that sit on
+		# Robo's head, drawn from the robot palette so they match its body.
+		"hat_sprout":
+			ops = [
+				_rect(Rect2i(7, 4, 2, 6), g),
+				_rect(Rect2i(3, 2, 5, 3), ac),
+				_rect(Rect2i(8, 5, 5, 3), ac),
+				_rect(Rect2i(3, 9, 10, 3), gd),
+			]
+		"hat_star":
+			ops = [
+				_rect(Rect2i(7, 0, 2, 11), ac),
+				_rect(Rect2i(3, 4, 10, 3), ac),
+				_disc(Vector2i(8, 5), 4, ac),
+				_disc(Vector2i(8, 5), 1, gd),
+			]
+		"hat_crown":
+			ops = [
+				_rect(Rect2i(3, 7, 10, 3), ac),
+				_rect(Rect2i(3, 4, 2, 4), ac),
+				_rect(Rect2i(7, 4, 2, 4), ac),
+				_rect(Rect2i(11, 4, 2, 4), ac),
+				_rect(Rect2i(3, 10, 10, 1), gd),
+			]
 		_:
 			push_warning("AssetFactory: no generator for asset '%s'." % asset_name)
 	return ops
