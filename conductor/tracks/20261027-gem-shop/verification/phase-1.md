@@ -52,3 +52,13 @@ so there are no new screenshots to capture.
 - Coverage: 94.8% lines / 97.2% instrumented lines ≥ 80% gate, but the command exits 1 because the coverage injector cannot instrument `src/input/touch_controls.gd` (untouched, pre-existing). Recommend the primary treat this as tech-debt/environmental and waive or file an issue rather than blocking the phase on it.
 - Live checks unavailable in this environment (no MCP tools); recommend the primary run the editor session-live + screenshot + smoke pass in Phase 4, which owns live verification.
 - New files: `src/systems/wallet.gd`, `src/ui/wallet_hud.gd`, `tests/test_wallet.gd`, `tests/test_gem_budget.gd` (+ auto-generated `.uid` sidecars).
+
+## Primary verification (primary agent, 2026-10-27)
+
+- **Working tree:** `git status --porcelain` clean after phase commits; only intended files changed.
+- **Files changed** (`292b8ea..HEAD`): `src/systems/wallet.gd`, `src/ui/wallet_hud.gd`, `src/world/gem.gd`, `src/tuning/tuning.gd`, `src/levels/area_builder.gd`, `src/levels/area_layout.gd` (in `Touches`), plus accepted deviations `src/levels/game.gd`, `src/world/key.gd` (one doc-comment line), updated tests (`test_gem`, `test_gem_integration`, `test_game_transition`, `test_playthrough`), and `gd-tools.toml` (coverage exclusion, user-ordered). All deviations reviewed: smallest necessary changes, no drive-bys.
+- **Verification (rerun by primary):** `gd-tools test --coverage --min 80` → exit 0, 281/281 passed, 97.2% lines ≥ 80 gate. The earlier exit-1 was purely the coverage injector failing on untouched `src/input/touch_controls.gd`; excluded per user order (upstream gd-tools issue material prepared).
+- **Static:** `gd-tools lint` → no issues; `gd-tools format --check` → 59/59 formatted. CLI typecheck retired project-wide per user direction (18+ min wall, lock-blocked beside the live editor; duplicates the editor LSP on :6005) — see `conductor/workflow.md`. Substitutes recorded: editor log shows zero script errors; the green suite compiles and executes every touched script; live run error-free.
+- **Acceptance criteria:** AC-1/AC-2 test names verified present and passing (`test_leaving_and_returning_restores_zero_gems`, `test_collecting_three_shows_three`, `test_balance_survives_rebuilds_within_the_session`).
+- **Live (godot-ai MCP, session `chunky-platformer` ready):** editor scene opens (`/Game` root; content is code-built at runtime, as designed); `project_run` main scene → live, 999 frames, zero errors → clean `stop`; game screenshot inspected: wallet badge (gem icon + "0") top-left, 10 fixed gems in level, robot/touch buttons/keys render correctly. Subagent's "live checks unavailable" note is superseded by this pass.
+- **Result:** verified.

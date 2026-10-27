@@ -14,21 +14,18 @@
 - **Covers:** FR-1, FR-2, NFR-4, AC-1, AC-2
 - **Touches:** `src/systems/wallet.*`, `src/world/gem.*`, `src/ui/wallet_hud.*`, `src/levels/*layout*`, `src/tuning/tuning.gd`, `tests/test_wallet*`, `tests/test_gem_budget*`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P1.T1: Wallet model + HUD** — covers: FR-2
-  - [ ] **P1.T1.1: Wallet state (add/spend/balance, never negative, changed signal)**
-  - [ ] **P1.T1.2: Wallet HUD numerals + gem icon (big, readable, ≥64px targets n/a)**
-- [ ] **P1.T2: Fixed gem budget per area** — covers: FR-1
-  - [ ] **P1.T2.1: Remove timed respawn; collected stays collected on revisit**
-  - [ ] **P1.T2.2: ~10 hand-placed gems per area in layouts (documented counts)**
+- [x] **P1.T1: Wallet model + HUD** — covers: FR-2
+  - [x] **P1.T1.1: Wallet state (add/spend/balance, never negative, changed signal)**
+  - [x] **P1.T1.2: Wallet HUD numerals + gem icon (big, readable, ≥64px targets n/a)**
+- [x] **P1.T2: Fixed gem budget per area** — covers: FR-1
+  - [x] **P1.T2.1: Remove timed respawn; collected stays collected on revisit**
+  - [x] **P1.T2.2: ~10 hand-placed gems per area in layouts (documented counts)**
 
-<!--
-The primary appends after acceptance:
 **Result:** verified
-**Checkpoint:** <short-sha>
+**Checkpoint:** eea1e1e
 **Evidence:** conductor/tracks/20261027-gem-shop/verification/phase-1.md
--->
 
 ## Phase 2: Gift Machine + Cosmetics
 
