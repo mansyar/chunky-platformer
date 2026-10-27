@@ -73,7 +73,7 @@ The primary appends after acceptance:
 - **Covers:** FR-5, NFR-2, NFR-3, AC-5, AC-6, AC-7
 - **Touches:** `src/robot/robot.gd`, `src/world/*.gd`, `src/levels/game.gd`, `src/levels/area_builder.gd`, `tests/test_audio_wiring.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P3.T1: Wire movement + bounce** — covers: FR-5
   - [ ] **P3.T1.1: Robot jump / land** — jump SFX on takeoff (land squash silent or soft thud only if already exists)
