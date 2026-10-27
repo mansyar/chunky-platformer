@@ -12,9 +12,11 @@
 - **Goal:** `area_index` persists in schema V2 with V1 migration, clamping, and safe recovery.
 - **Depends on:** none
 - **Covers:** FR-1, FR-3, FR-4, NFR-2, NFR-3, AC-2, AC-3, AC-5
-- **Touches:** `src/systems/save_game.gd`, `tests/test_save_game*.gd`
+- **Touches:** `src/systems/save_game.gd`, `tests/test_save_game*.gd`, plus rework R1
+  (user-authorized, test-only): `tests/test_audio_ambient.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** blocked
+- **Status:** in_progress (rework R1 — user authorized 2026-10-27: minimal test-only fix
+  for the pre-existing audio timing assertion under coverage instrumentation)
 
 **Result:** blocked — code complete (commits `5ce9b5b`, `78adc2d`), all phase AC tests
 green, coverage 95.1%/94.0% (gate met), lint/format clean; but the Verification
