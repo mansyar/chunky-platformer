@@ -18,7 +18,6 @@ const SCREEN := Vector2(1280, 720)
 
 ## Handles to the parts a caller needs to wire up (gems, transitions, hints).
 var robot: Robot
-var counter: GemCounter
 var wallet_hud: WalletHud
 var goal_state: GoalState
 var door: Door
@@ -91,13 +90,6 @@ func build(
 	_build_camera(world)
 	_build_gems(world)
 	_build_machine(world)
-	counter = GemCounter.new()
-	counter.name = "GemCounter"
-	counter.palette = layout.palette
-	add_child(counter)
-	# Legacy counter mirrors the session wallet so the old badge keeps working
-	# until Phase 2 replaces its meaning.
-	counter.set_count(wallet.balance())
 	wallet_hud = WalletHud.new()
 	wallet_hud.name = "WalletHud"
 	wallet_hud.palette = layout.palette
@@ -295,14 +287,13 @@ func _build_gems(world: Node2D) -> void:
 
 
 func _on_gem_collected(gem: Gem) -> void:
-	# Juice must never interrupt play: the ring pops, the counter bumps, Robo
-	# squashes - and his velocity is untouched.
+	# Juice must never interrupt play: the ring pops, the wallet bumps the
+	# HUD via changed, Robo squashes - and his velocity is untouched.
 	if gem.gem_id >= 0 and gem.gem_id < _taken.size():
 		_taken[gem.gem_id] = true
 	PopEffect.spawn(gem.get_parent(), gem.global_position, _accent())
 	if wallet != null:
 		wallet.add(1)
-	counter.increment()
 	robot.celebrate()
 
 

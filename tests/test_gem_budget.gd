@@ -91,7 +91,6 @@ func test_collecting_three_shows_three() -> void:
 	for i: int in range(3):
 		(gems[i] as Gem).collect()
 	assert_eq(wallet.balance(), 3, "the wallet holds three gems.")
-	assert_eq(builder.counter.count(), 3, "the legacy counter agrees.")
 	assert_eq(builder.wallet_hud.balance(), 3, "the badge reads 3 with the gem icon.")
 
 

@@ -81,7 +81,7 @@ func _baseline() -> float:
 
 
 func _icon_size() -> Vector2:
-	var texture := AssetFactory.get_texture("gem", "meadow")
+	var texture := AssetFactory.get_texture("gem", palette)
 	return Vector2(texture.get_width(), texture.get_height()) * Tuning.COUNTER_SCALE
 
 

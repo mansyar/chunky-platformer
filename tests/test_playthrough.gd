@@ -112,17 +112,17 @@ func test_a_full_playthrough_loops_home_after_sunset() -> void:
 	)
 
 
-func test_the_gem_counter_persists_across_areas() -> void:
+func test_the_wallet_balance_persists_across_areas() -> void:
 	var game := _open_game()
-	# The wallet is the source of truth; the badge mirrors it.
+	# The wallet is the source of truth; the HUD mirrors it.
 	game.wallet.add(7)
-	game.builder.counter.set_count(game.wallet.balance())
 	await _finish_area(game)
 	# Grabbing keys can incidentally collect gems on the way, so the score to
-	# carry is whatever the counter holds just before the fade, not 7.
-	var carried: int = game.builder.counter.count()
+	# carry is whatever the wallet holds just before the fade, not 7.
+	var carried: int = game.wallet.balance()
 	_ride_fade(game)
-	assert_eq(game.builder.counter.count(), carried, "the gem score rides the transition.")
+	assert_eq(game.wallet.balance(), carried, "the gem score rides the transition.")
+	assert_eq(game.builder.wallet_hud.balance(), carried, "the HUD rides the transition.")
 	assert_eq(game.builder.key_counter.count(), 0, "keys reset for the new area.")
 
 

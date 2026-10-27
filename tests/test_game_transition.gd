@@ -101,15 +101,14 @@ func test_a_second_door_bump_during_the_fade_is_ignored() -> void:
 # --- what survives the swap -------------------------------------------------
 
 
-func test_the_gem_counter_persists_across_areas() -> void:
+func test_the_wallet_balance_persists_across_areas() -> void:
 	# Gems are a lifetime delight counter, not a per-area score. A child who
-	# collected eight gems must still see eight after the door.
+	# collected seven gems must still see seven after the door.
 	var game := _game()
 	game.wallet.add(7)
-	_area(game).counter.set_count(game.wallet.balance())
 	_enter_door(game)
 	_step_through(game)
-	assert_eq(_area(game).counter.count(), 7, "the gem total rides along.")
+	assert_eq(_area(game).wallet_hud.balance(), 7, "the HUD total rides along.")
 	assert_eq(game.wallet.balance(), 7, "the session wallet rides along.")
 
 

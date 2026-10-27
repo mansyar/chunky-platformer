@@ -30,7 +30,7 @@ func _ready() -> void:
 
 ## Show a new price. Zero means the set is complete and the bonus is free.
 func set_price(value: int) -> void:
-	_price = clampi(value, 0, 9)
+	_price = clampi(value, 0, MAX_PIPS)
 	if is_node_ready():
 		_render()
 
