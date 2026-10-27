@@ -6,7 +6,7 @@
   "priority": "medium",
   "depends_on": [],
   "created_at": "2026-10-27T06:35:00Z",
-  "updated_at": "2026-10-27T08:25:22Z",
+  "updated_at": "2026-10-27T08:44:29Z",
   "spec": "spec.md",
   "plan": "plan.md",
   "branch": "feat/20261027-gem-shop",
@@ -18,7 +18,7 @@
     "tasks_total": 22,
     "tasks_done": 22
   },
-  "last_checkpoint": "d0e615f",
+  "last_checkpoint": "4d4e433",
   "review_verdict": "BLOCK",
   "review_rounds": 1,
   "doc_sync": "pending",
