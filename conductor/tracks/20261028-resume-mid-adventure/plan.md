@@ -92,7 +92,7 @@ full gate exit 0 (383/383, 95.1%/94.0%), lint + format clean; live pass green.
 - **Covers:** F1, F2
 - **Touches:** `conductor/tech-stack.md`, `tests/test_game_transition.gd`
 - **Verification:** `gd-tools test --coverage --min 80` plus `gd-tools lint` and `gd-tools format --check`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **R1.T1: Resolve F1 (tech-stack schema sketch)** — covers: F1
 - [ ] **R1.T2: Resolve F2 (cave-reboot taken assertions)** — covers: F2
