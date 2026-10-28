@@ -51,6 +51,46 @@
 
 ## Notes
 
-- Phase is chore/docs-only: zero gameplay, art, audio, tuning, or save changes. `git status` shows only the three session files + this evidence file.
+- Phase is chore/docs-only: zero gameplay, art, audio, tuning, or save changes.
 - Initial `project_run` reply flagged retained stale parse errors (`area_layout.gd` `TILE` scope) from before the run; the game reached `live` seconds later and the errors did not recur — pre-existing editor log noise, not a boot problem.
 - Real touchscreen validation is explicitly out of scope for this agent (no touchscreen hardware); Phase 2 performs it with the user per the protocol.
+
+## Primary verification
+
+Independent check by the primary on the same tree (phase diff:
+`session/{protocol,notes-template,baseline}.md` + this file — docs only,
+zero code changes):
+
+- `git status --porcelain`: clean except three regenerable Godot `.import`
+  sidecars under `conductor/archive/.../screenshots/` (editor cache from the
+  smoke test; repo tracks zero `.import` files) — removed; tree verified clean.
+- `git diff --name-only 6fd4c5d..HEAD`: exactly the 4 reported files, all
+  inside `Touches`. Commit range holds exactly the 2 reported commits
+  (`63cfe78`, `0e7801c`) — squash guard passed.
+- `gd-tools test --coverage --min 80` (primary, 3 runs): 403/404 each time;
+  the single failure is always
+  `test_audio_synthesis.test_pregeneration_at_startup_is_fast`
+  (wall-clock assertion `< 1000 ms` tripping under 82–94 s loaded-suite runs)
+  in **untouched audio code** — this phase changes no code at all.
+  - Isolated: `gd-tools test --test test_pregeneration_at_startup_is_fast`
+    → 1/1 passed in 0.03 s. Confirmed load flake, same signature as the
+    previous track's Phase 1.
+  - The subagent's in-phase run was green (404/404, 94.7%/94.0%, exit 0) and
+    is the recorded baseline; my runs reproduce 403/404 + flake under heavier
+    machine load (live editor + MCP active).
+  - No rework target exists (nothing to fix — docs-only diff); retry budget
+    exhausted on environment weather, not on a defect. Recorded here instead
+    of claimed green. Phase 3's final verification will re-run the gate when
+    the machine is quiet.
+- `gd-tools lint` → exit 0, no issues. `gd-tools format --check` → exit 0,
+  73/73 files.
+- FR-1 (setup) / FR-5 (baseline) / AC-1 (setup side) / NFR-3 / NFR-2 all met
+  per the evidence tables above; boot attested live (Area 1 playable, stopped
+  clean). No session data invented — template is blank.
+- Deviations accepted: file writes via the editor filesystem bridge
+  (identical bytes, verified on disk + committed); no committed screenshot
+  (tool limitation, live capture verified instead).
+
+Result: **verified** (with the load-flake record above). Primary checkpoint
+follows the squash.
+
