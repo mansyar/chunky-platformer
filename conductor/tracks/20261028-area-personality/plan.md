@@ -90,6 +90,6 @@ Review fixes are appended by `conductor-review` as:
 - **Covers:** F1
 - **Touches:** `src/factory/asset_spec.gd`, `tests/test_asset_spec.gd`
 - **Verification:** `gd-tools lint`, `gd-tools format --check`, targeted asset-spec tests
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **R1.T1: Resolve F1 (stale asset-count comments)** — covers: F1
