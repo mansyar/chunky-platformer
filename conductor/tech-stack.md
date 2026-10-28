@@ -67,10 +67,12 @@ each commit, per the workflow.)*
 ## Data & Persistence
 
 - **Save format:** JSON via `FileAccess` to `user://save_game.json`, versioned
-  schema `{"version": 1, "wallet", "owned", "worn", "taken"}` (wallet balance,
-  owned/worn cosmetics, per-area gem-taken flags). Corrupt/missing/foreign
+  schema `{"version": 2, "wallet", "owned", "worn", "taken", "area_index"}` (wallet balance,
+  owned/worn cosmetics, per-area gem-taken flags, last area index). Corrupt/missing/foreign
   file falls back to fresh start (bad fields repair in place). Autosaves on
-  wallet/wardrobe change and area transition.
+  wallet/wardrobe change and area transition. V1 files (no `area_index`) load and
+  migrate forward preserving collections with area defaulting to 0; unknown/future
+  versions boot fresh.
   *(2026-10-27 gem-economy track: replaced the planned keys/doors/position
   sketch above with the implemented schema.)*
 
