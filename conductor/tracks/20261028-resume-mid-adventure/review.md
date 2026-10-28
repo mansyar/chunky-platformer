@@ -128,3 +128,19 @@ tech-stack.md schema sketch pending via F1 (Phase R1).
 | Round | Verdict | Critical | High | Medium | Low | Fixed |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | BLOCK | 0 | 0 | 0 | 2 | 0 |
+| 2 | PASS | 0 | 0 | 0 | 0 | 2 |
+
+## Round 2 (re-review after Phase R1)
+
+- **Verdict: PASS** — F1 fixed (`conductor/tech-stack.md:70-75` V2 sketch with
+  migration line, no AC-6 contradiction); F2 fixed
+  (`tests/test_game_transition.gd:159-165` persist-to-disk + per-gem applied
+  assertions via `_is_collected`). No new findings at any severity.
+- Full Requirements table re-verified: FR-1..7, NFR-1..4, AC-1..7 all met.
+- Checks: coverage gate 383/383 95.1%/94.0% (phase + primary rerun), lint and
+  format clean (reviewer own rerun), build exit 0, live/smoke per phase evidence.
+
+## Doc sync
+
+`done` — product.md Progression/Persistence wording (P3.T1, user-approved);
+tech-stack.md V2 schema sketch (R1.T1). No pending sync.
