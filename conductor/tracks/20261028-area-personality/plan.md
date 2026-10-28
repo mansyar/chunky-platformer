@@ -46,7 +46,7 @@ The primary appends after acceptance:
 - **Covers:** FR-1, FR-2, FR-3, FR-4, FR-6, FR-7, NFR-1, NFR-5, AC-1, AC-2, AC-3, AC-4, AC-6, AC-7
 - **Touches:** `src/levels/area_layout.gd`, `src/levels/area_builder.gd`, `tests/test_area_*.gd`, `tests/test_playthrough.gd`, `tests/test_goal*.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P2.T1: Cave placement** — covers: FR-1
   - [ ] **P2.T1.1: Hand-place cave props coordinates in AreaLayout**
