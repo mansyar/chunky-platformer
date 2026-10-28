@@ -14,19 +14,23 @@
 - **Covers:** FR-1, FR-2, FR-4, FR-5, FR-6, NFR-1, AC-1, AC-2, AC-3, AC-4, AC-6
 - **Touches:** `src/input/quit_hold.gd` (new), `src/tuning/tuning.gd`, `src/levels/game.gd` (wire-up only), `tests/test_quit_hold.gd` (new)
 - **Verification:** `gd-tools test --coverage --min 80` + `gd-tools lint` + `gd-tools format --check`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P1.T1: Viewport-relative corner zone** — covers: FR-1
-  - [ ] **P1.T1.1: Zone computed from live viewport rect; recomputed on resize**
-  - [ ] **P1.T1.2: Radius + hold seconds as `tuning.gd` constants; non-16:9 resize tests**
-- [ ] **P1.T2: Hold state machine** — covers: FR-2, FR-4
-  - [ ] **P1.T2.1: Press-in-zone starts timer; release/drift resets silently, no residue**
-  - [ ] **P1.T2.2: Full 3s stationary hold fires once (save-flush + quit via injectable double)**
-- [ ] **P1.T3: App wiring** — covers: FR-2, FR-6
-  - [ ] **P1.T3.1: Real path calls save-flush then `get_tree().quit()`; flush failure still quits**
-  - [ ] **P1.T3.2: Esc key is inert (no quit, no state change)**
-- [ ] **P1.T4: Input non-interference** — covers: FR-5
-  - [ ] **P1.T4.1: Walk-hold + jump-tap traffic during/around a hold never fires quit and gameplay stays intact**
+**Result:** verified
+**Checkpoint:** 4ebd732
+**Evidence:** conductor/tracks/20261028-parent-gate-quit/verification/phase-1.md
+
+- [x] **P1.T1: Viewport-relative corner zone** — covers: FR-1
+  - [x] **P1.T1.1: Zone computed from live viewport rect; recomputed on resize**
+  - [x] **P1.T1.2: Radius + hold seconds as `tuning.gd` constants; non-16:9 resize tests**
+- [x] **P1.T2: Hold state machine** — covers: FR-2, FR-4
+  - [x] **P1.T2.1: Press-in-zone starts timer; release/drift resets silently, no residue**
+  - [x] **P1.T2.2: Full 3s stationary hold fires once (save-flush + quit via injectable double)**
+- [x] **P1.T3: App wiring** — covers: FR-2, FR-6
+  - [x] **P1.T3.1: Real path calls save-flush then `get_tree().quit()`; flush failure still quits**
+  - [x] **P1.T3.2: Esc key is inert (no quit, no state change)**
+- [x] **P1.T4: Input non-interference** — covers: FR-5
+  - [x] **P1.T4.1: Walk-hold + jump-tap traffic during/around a hold never fires quit and gameplay stays intact**
 
 <!--
 The primary appends after acceptance:
