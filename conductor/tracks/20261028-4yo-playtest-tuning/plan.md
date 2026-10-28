@@ -49,7 +49,7 @@ The primary appends after acceptance:
 - **Covers:** FR-1, FR-2, AC-1, AC-2, NFR-1, NFR-2
 - **Touches:** `conductor/tracks/20261028-4yo-playtest-tuning/session/notes.md`
 - **Verification:** Notes present and agent-checked against the template checklist (every section filled, verdicts explicit); zero code changes in this phase
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P2.T1: User runs the session** — covers: FR-1
   - [ ] **P2.T1.1: Run silent-observation session per protocol (≤15 min, Area 1, touch tablet)**
