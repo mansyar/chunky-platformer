@@ -82,3 +82,14 @@ Review fixes are appended by `conductor-review` as:
 
 - [ ] **R1.T1: Resolve <finding ID>** — covers: <finding ID>
 -->
+
+## Phase R1: Review Fixes
+
+- **Goal:** Resolve review finding F1 (stale asset-count comments).
+- **Depends on:** Phase 2
+- **Covers:** F1
+- **Touches:** `src/factory/asset_spec.gd`, `tests/test_asset_spec.gd`
+- **Verification:** `gd-tools lint`, `gd-tools format --check`, targeted asset-spec tests
+- **Status:** pending
+
+- [ ] **R1.T1: Resolve F1 (stale asset-count comments)** — covers: F1
