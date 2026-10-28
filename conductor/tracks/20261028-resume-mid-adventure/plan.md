@@ -72,12 +72,18 @@ screenshot binaries not persistable from the phase toolset (limitation noted).
 - **Covers:** FR-7, NFR-1, NFR-4, AC-6, AC-7
 - **Touches:** `conductor/product.md`, `conductor/tracks/20261028-resume-mid-adventure/verification/`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P3.T1: Resolve product.md resume contradiction** — covers: FR-7
-  - [ ] **P3.T1.1: Persistence/progression names resume-in-saved-area with fresh keys**
-- [ ] **P3.T2: Integrated verification + live evidence** — covers: AC-6, AC-7
-  - [ ] **P3.T2.1: Full suite green plus editor hierarchy/screenshot/smoke**
+- [x] **P3.T1: Resolve product.md resume contradiction** — covers: FR-7
+  - [x] **P3.T1.1: Persistence/progression names resume-in-saved-area with fresh keys**
+- [x] **P3.T2: Integrated verification + live evidence** — covers: AC-6, AC-7
+  - [x] **P3.T2.1: Full suite green plus editor hierarchy/screenshot/smoke**
+
+**Result:** verified — approved product.md wording on disk (commit `bccb3c4`);
+full gate exit 0 (383/383, 95.1%/94.0%), lint + format clean; live pass green.
+**Checkpoint:** `bccb3c4`
+**Evidence:** conductor/tracks/20261028-resume-mid-adventure/verification/phase-3.md
+(with Primary verification section)
 
 <!--
 Review fixes are appended by `conductor-review` as:

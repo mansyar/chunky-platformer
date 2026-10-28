@@ -112,3 +112,24 @@ NFR-4 holds (no menus/reading added; proposed wording keeps silent resume).
    verification`) so the phase has a persistent artifact.
 3. Then Phase 3 is verifiable as done: gate green + live green + AC-6 quotes
    on disk.
+
+## Primary verification (2026-10-28)
+
+- **P3.T1 (primary-completed):** the `edit`-permission denial was subagent-toolset
+  scoped — the primary applied the exact evidence-recorded two-hunk patch to
+  `conductor/product.md` after explicit user approval of the wording (workflow
+  4.14 doc-sync approval, 2026-10-28). Diff confirmed hunks-only (12+/6-),
+  commit `bccb3c4` `docs(product): resolve resume contradiction, keys fresh`.
+- **Touches conformance:** `conductor/product.md` (in glob) + this evidence file.
+  No `src/`/`tests/`/plan/metadata/registry changes this phase. ACCEPT.
+- **Rerun (primary, full gate after doc commit):** `gd-tools test --coverage
+  --min 80` → exit 0, 383/383 passed, 12 snapshots matched, 95.1% lines /
+  94.0% branches (gate 80). `gd-tools lint` → exit 0. `gd-tools format
+  --check` → exit 0, 71/71. Matches subagent report; no cross-session
+  interference this run.
+- **AC:** AC-6 PASS (approved wording on disk, before/after quoted above);
+  AC-7 PASS (subagent fresh live pass: ready, sane hierarchy, meadow
+  screenshot, smoke live→stopped); AC-1..AC-5 PASS carried (src/ untouched
+  since Phase 1/2, suite green).
+- **Verdict: Phase 3 VERIFIED.** All 3 phases verified; track ready for
+  integrated verification sign-off and review.
