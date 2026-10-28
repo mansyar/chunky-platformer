@@ -4,7 +4,7 @@ extends GdToolsTest
 ## The asset spec is the single source of truth for every generated visual.
 ## These tests lock the data contract: unique names, valid kinds and sizes,
 ## palette references that resolve, and the exact asset set promised by the
-## track spec (8 tiles, 8 robot frames, gem, key, door locked/open).
+## track spec (16 tiles, 8 robot frames, gem, key, door locked/open).
 
 const TILE_KINDS := ["tile", "deco", "background"]
 const FRAME_KIND := "frame"

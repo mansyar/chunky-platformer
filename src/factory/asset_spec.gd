@@ -19,7 +19,7 @@ const TILE_SIZE := Vector2i(16, 16)
 const ROBOT_FRAME_SIZE := Vector2i(32, 32)
 
 const SPEC: Array = [
-	# --- world tiles (8) ---
+	# --- world tiles + deco + sky (16: 7 base + 8 personality + sky) ---
 	{"name": "tile_solid", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
 	{"name": "tile_grass_top", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
 	{"name": "tile_platform", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
