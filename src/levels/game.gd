@@ -33,6 +33,11 @@ var wardrobe: Wardrobe
 ## transition, but this node survives. Builders get a reference for ducking.
 var audio_manager: AudioManager
 
+## Hidden parent gate: a 3s stationary hold in the extreme top-right corner
+## flushes the save and quits. Owned here so the flush sees the live
+## session; the gate never consumes gameplay input and Esc stays inert.
+var quit_hold: QuitHold
+
 ## Per-area gem-taken flags, keyed by area name. A collected gem stays
 ## collected on revisit: the rebuilt area pre-collects these indices. Loaded
 ## from disk at boot, rewritten with the wallet on every save.
@@ -46,6 +51,10 @@ func _ready() -> void:
 	audio_manager = AudioManager.new()
 	audio_manager.name = "AudioManager"
 	add_child(audio_manager)
+	quit_hold = QuitHold.new()
+	quit_hold.name = "QuitHold"
+	add_child(quit_hold)
+	quit_hold.save_flush = Callable(self, "_save")
 	transition = AreaTransition.new()
 	transition.name = "Transition"
 	add_child(transition)

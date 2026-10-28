@@ -250,3 +250,15 @@ const AUDIO_AMBIENT := {
 		"lfo_depth": 0.2,
 	},
 }
+
+# Parent gate (parent_gate_20261028): a hidden hold-to-quit in the extreme
+# top-right corner. A stationary hold of QUIT_HOLD_SECONDS inside a
+# QUIT_ZONE_RADIUS circle around the corner flushes the save and quits.
+const QUIT_ZONE_RADIUS := 64.0
+const QUIT_HOLD_SECONDS := 3.0
+# Hold feedback (parent_gate_20261028 Phase 2): the ring that fills at the
+# touch point plus the soft tick clock. One gentle tick per second keeps the
+# wait legible without nagging; the small ring stays fully on screen.
+const QUIT_TICK_INTERVAL := 1.0
+const QUIT_RING_RADIUS := 28.0
+const QUIT_RING_WIDTH := 6.0
