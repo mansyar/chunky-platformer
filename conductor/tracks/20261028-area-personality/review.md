@@ -82,7 +82,7 @@ None. No deferred findings, no follow-up issues proposed.
 
 | Round | Verdict | Findings | Fixed |
 | --- | --- | --- | --- |
-| 1 | PASS WITH FINDINGS | 1 Low (F1) | R1 (pending at record time) |
+| 1 | PASS WITH FINDINGS | 1 Low (F1) | R1 checkpoint `27a98b2` — F1 resolved, re-verified (lint/format/targeted suite green) |
 
 ## Doc sync
 

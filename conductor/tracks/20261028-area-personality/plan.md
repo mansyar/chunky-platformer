@@ -90,6 +90,13 @@ Review fixes are appended by `conductor-review` as:
 - **Covers:** F1
 - **Touches:** `src/factory/asset_spec.gd`, `tests/test_asset_spec.gd`
 - **Verification:** `gd-tools lint`, `gd-tools format --check`, targeted asset-spec tests
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **R1.T1: Resolve F1 (stale asset-count comments)** — covers: F1
+- [x] **R1.T1: Resolve F1 (stale asset-count comments)** — covers: F1
+
+<!--
+The primary appends after acceptance:
+**Result:** verified
+**Checkpoint:** 27a98b2
+**Evidence:** conductor/tracks/20261028-area-personality/verification/phase-R1.md
+-->
