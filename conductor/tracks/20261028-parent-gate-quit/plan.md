@@ -46,7 +46,7 @@ The primary appends after acceptance:
 - **Covers:** FR-3, NFR-2, NFR-3, NFR-4, AC-5
 - **Touches:** `src/input/quit_hold.gd`, `src/systems/audio_manager.gd` (tick/chime wiring only), `tests/test_quit_hold*.gd`, `.conductor/evidence/*` (screenshot, gitignored)
 - **Verification:** `gd-tools test --coverage --min 80` + lint/format + live checks (session ready, ring screenshot captured, smoke run started and stopped)
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P2.T1: Progress ring + audio feedback** — covers: FR-3
   - [ ] **P2.T1.1: Gradual ring fill at touch point (screen-safe, no flashes); silent on reset**
