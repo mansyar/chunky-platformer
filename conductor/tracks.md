@@ -9,3 +9,4 @@
 - [x] **Track: Resume-mid-adventure fix** - [20261028-resume-mid-adventure](./archive/20261028-resume-mid-adventure/index.md) - feature - high
 - [x] **Track: Area Personality Pass (cave & sunset deco)** — [20261028-area-personality](./archive/20261028-area-personality/index.md) — feature — medium
 - [x] **Track: 4yo Playtest + Tuning Loop** — [20261028-4yo-playtest-tuning](./archive/20261028-4yo-playtest-tuning/index.md) — chore — high
+- [ ] **Track: Parent Gate + Hold-to-Quit** — [20261028-parent-gate-quit](./tracks/20261028-parent-gate-quit/index.md) — feature — high
