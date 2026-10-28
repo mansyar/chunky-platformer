@@ -7,3 +7,4 @@
 - [x] **Track: Gem Economy + Gift Machine** - [20261027-gem-shop](./archive/20261027-gem-shop/index.md) - feature - medium
 - [x] **Track: Audio Synthesis** - [20261027-audio-synthesis](./archive/20261027-audio-synthesis/index.md) - feature - high
 - [x] **Track: Resume-mid-adventure fix** - [20261028-resume-mid-adventure](./archive/20261028-resume-mid-adventure/index.md) - feature - high
+- [ ] **Track: Area Personality Pass (cave & sunset deco)** — [20261028-area-personality](./tracks/20261028-area-personality/index.md) — feature — medium
