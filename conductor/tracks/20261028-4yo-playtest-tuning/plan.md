@@ -78,7 +78,7 @@ The primary appends after acceptance:
 - **Covers:** FR-3, FR-4, FR-5, AC-3, AC-4, AC-5, NFR-4
 - **Touches:** `src/tuning/tuning.gd`, `src/**/*.gd` (tiny fixes only), `tests/**/*.gd`, `conductor/tracks/20261028-4yo-playtest-tuning/session/*.md`
 - **Verification:** `gd-tools test --coverage --min 80`, `gd-tools lint`, `gd-tools format --check` all green + findings-disposition table complete
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P3.T1: Apply tuning / tiny fixes** — covers: FR-3
   - [ ] **P3.T1.1: Tuning-value changes with before/after rationale per finding**
