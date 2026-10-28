@@ -207,10 +207,14 @@ func _build_interactives(world: Node2D) -> void:
 
 
 func _build_props(world: Node2D) -> void:
+	# Personality on the wall behind the play: plain sprites, no collision,
+	# no gameplay reads. The bg layer (z_index -10) keeps gems, keys, the
+	# door, hint sparkles, and Robo above the decoration.
 	for prop: Dictionary in _layout.props:
 		var sprite := Sprite2D.new()
 		sprite.texture = AssetFactory.get_texture(prop["asset"], _layout.palette)
 		sprite.position = prop["at"]
+		sprite.z_index = -10
 		world.add_child(sprite)
 
 

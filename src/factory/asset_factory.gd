@@ -269,6 +269,17 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 	var gd: Color = p.get("ground_dark", p.get("body_dark", Color.BLACK))
 	var gr: Color = p.get("grass", p.get("accent", Color.BLACK))
 	var ac: Color = p.get("accent", Color.BLACK)
+	# Area-personality deco colors (cave glow set + sunset warm set). Each
+	# falls back to a core key so meadow (which never places these assets)
+	# still generates a sane image.
+	var cr: Color = p.get("crystal", ac)
+	var crd: Color = p.get("crystal_dark", gd)
+	var gl: Color = p.get("glow", Color(1, 1, 1))
+	var mo: Color = p.get("moss", gr)
+	var bu: Color = p.get("butte", g)
+	var bud: Color = p.get("butte_dark", gd)
+	var bl: Color = p.get("bloom", ac)
+	var pe: Color = p.get("pebble", g)
 	var ops: Array = []
 	# Digits come from the shared 3x5 font table instead of ten hand-drawn
 	# op lists: the bar-segment approach made 5/6/8/9 confusable at a glance.
@@ -320,6 +331,78 @@ func _ops_for(asset_name: String, p: Dictionary) -> Array:
 				_rect(Rect2i(7, 9, 2, 7), gr),
 				_disc(Vector2i(8, 6), 3, ac),
 				_disc(Vector2i(8, 6), 1, gd),
+			]
+		# Cave deco set (area-personality): chunky rounded glow shapes, no
+		# sharp tips — every spike ends in a disc.
+		"deco_crystal":
+			ops = [
+				_rect(Rect2i(3, 10, 10, 6), crd),
+				_rect(Rect2i(5, 5, 4, 6), cr),
+				_disc(Vector2i(7, 5), 2, cr),
+				_rect(Rect2i(10, 8, 3, 3), cr),
+				_disc(Vector2i(11, 8), 1, cr),
+				_rect(Rect2i(6, 6, 2, 3), gl),
+				_shade(Rect2i(3, 13, 10, 3), Color(gd, 0.5)),
+			]
+		"deco_stalactite":
+			ops = [
+				_rect(Rect2i(2, 0, 12, 3), crd),
+				_rect(Rect2i(4, 3, 4, 6), cr),
+				_disc(Vector2i(6, 8), 2, cr),
+				_rect(Rect2i(10, 3, 3, 4), cr),
+				_disc(Vector2i(11, 6), 2, cr),
+				_rect(Rect2i(5, 4, 2, 2), gl),
+			]
+		"deco_glowshroom":
+			ops = [
+				_rect(Rect2i(7, 9, 2, 7), gl),
+				_disc(Vector2i(8, 7), 5, cr),
+				_disc(Vector2i(6, 6), 1, gl),
+				_disc(Vector2i(10, 6), 1, gl),
+				_rect(Rect2i(4, 12, 8, 4), mo),
+			]
+		"deco_moss":
+			ops = [
+				_rect(Rect2i(2, 11, 12, 5), mo),
+				_disc(Vector2i(5, 11), 3, mo),
+				_disc(Vector2i(10, 11), 3, mo),
+				_disc(Vector2i(5, 10), 1, gl),
+				_disc(Vector2i(10, 10), 1, gl),
+				_shade(Rect2i(2, 14, 12, 2), Color(crd, 0.5)),
+			]
+		# Sunset deco set (area-personality): rounded terracotta butte dome,
+		# warm tuft with seed heads, chunky sunbloom, pale pebble pair.
+		"deco_butte":
+			ops = [
+				_disc(Vector2i(8, 10), 6, bu),
+				_rect(Rect2i(2, 10, 12, 6), bu),
+				_disc(Vector2i(6, 7), 2, bl),
+				_rect(Rect2i(5, 10, 6, 2), bud),
+				_rect(Rect2i(2, 13, 12, 3), bud),
+			]
+		"deco_sunset_tuft":
+			ops = [
+				_rect(Rect2i(7, 6, 2, 10), gr),
+				_rect(Rect2i(4, 9, 2, 7), gr),
+				_rect(Rect2i(10, 9, 2, 7), gr),
+				_disc(Vector2i(7, 6), 1, gr),
+				_disc(Vector2i(5, 7), 2, bl),
+				_disc(Vector2i(10, 7), 2, bl),
+			]
+		"deco_sunbloom":
+			ops = [
+				_rect(Rect2i(7, 9, 2, 7), gr),
+				_rect(Rect2i(4, 12, 3, 2), gr),
+				_rect(Rect2i(9, 13, 3, 2), gr),
+				_disc(Vector2i(8, 6), 4, bl),
+				_disc(Vector2i(8, 6), 2, ac),
+			]
+		"deco_pebble":
+			ops = [
+				_disc(Vector2i(5, 11), 4, pe),
+				_disc(Vector2i(11, 12), 3, pe),
+				_disc(Vector2i(4, 10), 1, gl),
+				_disc(Vector2i(10, 11), 1, gl),
 			]
 		"gem":
 			ops = [

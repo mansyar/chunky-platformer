@@ -19,7 +19,7 @@ const TILE_SIZE := Vector2i(16, 16)
 const ROBOT_FRAME_SIZE := Vector2i(32, 32)
 
 const SPEC: Array = [
-	# --- world tiles (8) ---
+	# --- world tiles + deco + sky (16: 7 base + 8 personality + sky) ---
 	{"name": "tile_solid", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
 	{"name": "tile_grass_top", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
 	{"name": "tile_platform", "kind": "tile", "size": TILE_SIZE, "palette": "area"},
@@ -27,6 +27,16 @@ const SPEC: Array = [
 	{"name": "deco_grass_tuft", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
 	{"name": "deco_rock", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
 	{"name": "deco_flower", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	# --- area-personality deco (cave: crystals + stalactites + extras) ---
+	{"name": "deco_crystal", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_stalactite", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_glowshroom", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_moss", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	# --- area-personality deco (sunset: buttes + tufts + extras) ---
+	{"name": "deco_butte", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_sunset_tuft", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_sunbloom", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
+	{"name": "deco_pebble", "kind": "deco", "size": TILE_SIZE, "palette": "area"},
 	# Screen-resolution vertical gradient: rendered 1:1 behind the scaled
 	# world, so gradient steps are one screen pixel and invisible.
 	{"name": "sky_strip", "kind": "background", "size": Vector2i(16, 720), "palette": "area"},

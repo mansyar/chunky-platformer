@@ -60,11 +60,21 @@ func test_robot_frames_share_one_generation() -> void:
 func test_tile_atlas_geometry() -> void:
 	var atlas: Image = _factory().get_tile_atlas("meadow").get_image()
 	assert_eq(atlas.get_width(), 64, "atlas is 4 tiles wide.")
-	assert_eq(atlas.get_height(), 32, "atlas is 2 tiles tall for 7 world tiles.")
+	assert_eq(atlas.get_height(), 64, "atlas is 4 tiles tall for 15 world tiles.")
 	assert_eq(
 		_factory().get_tile_atlas_coords("tile_solid", "meadow"),
 		Vector2i(0, 0),
 		"first atlas entry maps to the origin."
+	)
+	assert_eq(
+		_factory().get_tile_atlas_coords("deco_crystal", "meadow"),
+		Vector2i(3, 1),
+		"first personality deco follows the 7 base tiles."
+	)
+	assert_eq(
+		_factory().get_tile_atlas_coords("deco_pebble", "meadow"),
+		Vector2i(2, 3),
+		"last personality deco ends the 15-tile grid."
 	)
 	assert_eq(
 		_factory().get_tile_atlas_coords("sky_strip", "meadow"),
