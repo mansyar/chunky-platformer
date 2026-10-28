@@ -14,7 +14,7 @@
 - **Covers:** FR-1, FR-2, FR-4, FR-5, FR-6, NFR-1, AC-1, AC-2, AC-3, AC-4, AC-6
 - **Touches:** `src/input/quit_hold.gd` (new), `src/tuning/tuning.gd`, `src/levels/game.gd` (wire-up only), `tests/test_quit_hold.gd` (new)
 - **Verification:** `gd-tools test --coverage --min 80` + `gd-tools lint` + `gd-tools format --check`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P1.T1: Viewport-relative corner zone** — covers: FR-1
   - [ ] **P1.T1.1: Zone computed from live viewport rect; recomputed on resize**
