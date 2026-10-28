@@ -18,18 +18,22 @@
 - **Covers:** FR-1 (setup), FR-5 (baseline), AC-1 (setup), NFR-3
 - **Touches:** `conductor/tracks/20261028-4yo-playtest-tuning/session/*.md`
 - **Verification:** `gd-tools test --coverage --min 80` green + adult live-boot attested in `session/baseline.md`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P1.T1: Write session protocol** — covers: FR-1
-  - [ ] **P1.T1.1: Setup checklist (device, editor run, Area 1 fresh save, 15-min timer)**
-  - [ ] **P1.T1.2: Silent-observation rules (no instructions, rescue-only-on-hard-stuck, upset→stop)**
-  - [ ] **P1.T1.3: What to watch for (first input latency, stalls, gem/key discovery, door reach, engagement signals)**
-- [ ] **P1.T2: Write blank notes template** — covers: FR-2
-  - [ ] **P1.T2.1: Sections (setup, timeline, stalls/rescues, engagement, per-criterion verdicts, findings)**
-  - [ ] **P1.T2.2: Privacy guard (no names/video/photos — behavior only)**
-- [ ] **P1.T3: Record green baseline** — covers: FR-5
-  - [ ] **P1.T3.1: Run full suite + lint + format, log results in `session/baseline.md`**
-  - [ ] **P1.T3.2: Adult smoke-test of touchscreen editor run into Area 1, attest boot works**
+**Result:** verified
+**Checkpoint:** ed817ea
+**Evidence:** conductor/tracks/20261028-4yo-playtest-tuning/verification/phase-1.md
+
+- [x] **P1.T1: Write session protocol** — covers: FR-1
+  - [x] **P1.T1.1: Setup checklist (device, editor run, Area 1 fresh save, 15-min timer)**
+  - [x] **P1.T1.2: Silent-observation rules (no instructions, rescue-only-on-hard-stuck, upset→stop)**
+  - [x] **P1.T1.3: What to watch for (first input latency, stalls, gem/key discovery, door reach, engagement signals)**
+- [x] **P1.T2: Write blank notes template** — covers: FR-2
+  - [x] **P1.T2.1: Sections (setup, timeline, stalls/rescues, engagement, per-criterion verdicts, findings)**
+  - [x] **P1.T2.2: Privacy guard (no names/video/photos — behavior only)**
+- [x] **P1.T3: Record green baseline** — covers: FR-5
+  - [x] **P1.T3.1: Run full suite + lint + format, log results in `session/baseline.md`**
+  - [x] **P1.T3.2: Adult smoke-test of touchscreen editor run into Area 1, attest boot works**
 
 <!--
 The primary appends after acceptance:
