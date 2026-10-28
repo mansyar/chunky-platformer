@@ -14,28 +14,28 @@
 - **Covers:** FR-5, NFR-2, NFR-3, NFR-4, AC-5
 - **Touches:** `src/factory/asset_factory.gd`, `src/factory/asset_spec.gd`, `src/factory/palettes.gd`, `tests/test_asset_*.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P1.T1: Palette + asset-spec records** — covers: FR-5
-  - [ ] **P1.T1.1: Cave palette entries for crystal/stalactite/glow set**
-  - [ ] **P1.T1.2: Sunset palette entries for butte/tuft/warm set**
-  - [ ] **P1.T1.3: Asset-spec entries for all new prop textures**
-- [ ] **P1.T2: Cave generators** — covers: FR-5
-  - [ ] **P1.T2.1: Crystals via pixel-DSL (chunky, glowing)**
-  - [ ] **P1.T2.2: Stalactites (rounded, no sharp edges)**
-  - [ ] **P1.T2.3: Extra cave props to reach rich set (e.g. glow-shrooms / moss)**
-- [ ] **P1.T3: Sunset generators** — covers: FR-5
-  - [ ] **P1.T3.1: Rounded buttes via pixel-DSL**
-  - [ ] **P1.T3.2: Grass tufts (chunky, high-contrast)**
-  - [ ] **P1.T3.3: Extra sunset props to reach rich set (e.g. flowers / pebbles)**
-- [ ] **P1.T4: Snapshot + spec completeness** — covers: AC-5
-  - [ ] **P1.T4.1: Snapshot-pin all new textures**
-  - [ ] **P1.T4.2: Spec completeness test covers new entries**
+- [x] **P1.T1: Palette + asset-spec records** — covers: FR-5
+  - [x] **P1.T1.1: Cave palette entries for crystal/stalactite/glow set**
+  - [x] **P1.T1.2: Sunset palette entries for butte/tuft/warm set**
+  - [x] **P1.T1.3: Asset-spec entries for all new prop textures**
+- [x] **P1.T2: Cave generators** — covers: FR-5
+  - [x] **P1.T2.1: Crystals via pixel-DSL (chunky, glowing)**
+  - [x] **P1.T2.2: Stalactites (rounded, no sharp edges)**
+  - [x] **P1.T2.3: Extra cave props to reach rich set (e.g. glow-shrooms / moss)**
+- [x] **P1.T3: Sunset generators** — covers: FR-5
+  - [x] **P1.T3.1: Rounded buttes via pixel-DSL**
+  - [x] **P1.T3.2: Grass tufts (chunky, high-contrast)**
+  - [x] **P1.T3.3: Extra sunset props to reach rich set (e.g. flowers / pebbles)**
+- [x] **P1.T4: Snapshot + spec completeness** — covers: AC-5
+  - [x] **P1.T4.1: Snapshot-pin all new textures**
+  - [x] **P1.T4.2: Spec completeness test covers new entries**
 
 <!--
 The primary appends after acceptance:
 **Result:** verified
-**Checkpoint:** <short-sha>
+**Checkpoint:** 1b3df58
 **Evidence:** conductor/tracks/20261028-area-personality/verification/phase-1.md
 -->
 
