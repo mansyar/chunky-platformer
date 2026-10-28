@@ -46,16 +46,20 @@ The primary appends after acceptance:
 - **Covers:** FR-3, NFR-2, NFR-3, NFR-4, AC-5
 - **Touches:** `src/input/quit_hold.gd`, `src/systems/audio_manager.gd` (tick/chime wiring only), `tests/test_quit_hold*.gd`, `.conductor/evidence/*` (screenshot, gitignored)
 - **Verification:** `gd-tools test --coverage --min 80` + lint/format + live checks (session ready, ring screenshot captured, smoke run started and stopped)
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P2.T1: Progress ring + audio feedback** — covers: FR-3
-  - [ ] **P2.T1.1: Gradual ring fill at touch point (screen-safe, no flashes); silent on reset**
-  - [ ] **P2.T1.2: Soft ticks during hold + door-chime on completion via existing synth set**
-- [ ] **P2.T2: Resize + edge hardening** — covers: FR-1, FR-3
-  - [ ] **P2.T2.1: Mid-hold viewport resize recomputes zone; holder-outside → silent reset**
-  - [ ] **P2.T2.2: Second-finger gameplay touch neither resets nor fires the timer (pinned by test)**
-- [ ] **P2.T3: Live-editor proof** — covers: AC-5
-  - [ ] **P2.T3.1: Session ready, scene hierarchy sane, ring mid-hold screenshot, smoke run stopped**
+**Result:** verified
+**Checkpoint:** c22cef1
+**Evidence:** conductor/tracks/20261028-parent-gate-quit/verification/phase-2.md
+
+- [x] **P2.T1: Progress ring + audio feedback** — covers: FR-3
+  - [x] **P2.T1.1: Gradual ring fill at touch point (screen-safe, no flashes); silent on reset**
+  - [x] **P2.T1.2: Soft ticks during hold + door-chime on completion via existing synth set**
+- [x] **P2.T2: Resize + edge hardening** — covers: FR-1, FR-3
+  - [x] **P2.T2.1: Mid-hold viewport resize recomputes zone; holder-outside → silent reset**
+  - [x] **P2.T2.2: Second-finger gameplay touch neither resets nor fires the timer (pinned by test)**
+- [x] **P2.T3: Live-editor proof** — covers: AC-5
+  - [x] **P2.T3.1: Session ready, scene hierarchy sane, ring mid-hold screenshot, smoke run stopped**
 
 <!--
 Review fixes are appended by `conductor-review` as:
