@@ -92,10 +92,17 @@ full gate exit 0 (383/383, 95.1%/94.0%), lint + format clean; live pass green.
 - **Covers:** F1, F2
 - **Touches:** `conductor/tech-stack.md`, `tests/test_game_transition.gd`
 - **Verification:** `gd-tools test --coverage --min 80` plus `gd-tools lint` and `gd-tools format --check`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **R1.T1: Resolve F1 (tech-stack schema sketch)** — covers: F1
-- [ ] **R1.T2: Resolve F2 (cave-reboot taken assertions)** — covers: F2
+- [x] **R1.T1: Resolve F1 (tech-stack schema sketch)** — covers: F1
+- [x] **R1.T2: Resolve F2 (cave-reboot taken assertions)** — covers: F2
+
+**Result:** verified — F1 (tech-stack V2 sketch) fixed in `40dc178`, F2
+(taken-flags assertions) fixed in `793b530`; full gate exit 0 (383/383,
+95.1%/94.0%), lint + format clean; Primary verification recorded.
+**Checkpoint:** `1acaa6b`
+**Evidence:** conductor/tracks/20261028-resume-mid-adventure/verification/phase-R1.md
+(with Primary verification section)
 
 <!--
 Review fixes are appended by `conductor-review` as:

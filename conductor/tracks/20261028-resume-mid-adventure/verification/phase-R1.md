@@ -22,3 +22,17 @@
 - `gd-tools lint` -> exit 0, no issues (71 files)
 - `gd-tools format --check` -> exit 0, all 71 files formatted (one `gd-tools format` write pass applied to the touched test file only; `git status` confirms only the two Touches files modified)
 - No manual exceptions.
+
+## Primary verification
+
+- Touches diff vs `55681a7`: exactly `conductor/tech-stack.md` (+8/-3 doc lines),
+  `tests/test_game_transition.gd` (+17 test/assert lines), and the permitted new
+  evidence file. ACCEPT — in scope, no src/product/spec changes.
+- Independent rerun: `gd-tools test --coverage --min 80` exit 0 (383/383 pass,
+  12 snapshots matched, 95.1% lines / 94.0% branches); `gd-tools lint` exit 0;
+  `gd-tools format --check` exit 0 (71 files).
+- F1: tech-stack sketch now V2 with migration line; no keys/doors/position
+  promise reintroduced — matches the approved AC-6 wording. FIXED.
+- F2: cave-reboot test asserts `taken["cave"]` survives to disk AND is applied
+  per-gem in the rebuilt builder via `_is_collected`. FIXED.
+- Verdict: Phase R1 VERIFIED. Round-2 re-review gate satisfied (both Lows fixed).
