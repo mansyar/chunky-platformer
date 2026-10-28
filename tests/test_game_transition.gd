@@ -108,6 +108,16 @@ func _boot() -> Game:
 	return game
 
 
+func _is_collected(area: AreaBuilder, gem_id: int) -> bool:
+	# Mirrors the meadow relaunch check: reach the live gems the same way the
+	# gem-budget suite does and report whether the flagged one stays collected.
+	for node in area.find_children("*", "Gem", true, false):
+		var gem := node as Gem
+		if gem != null and gem.gem_id == gem_id:
+			return gem.is_collected()
+	return false
+
+
 func test_boot_restores_saved_cave_at_spawn_with_collections() -> void:
 	SaveGame.clear()
 	var wallet := Wallet.new()
@@ -146,6 +156,13 @@ func test_resumed_area_starts_with_fresh_keys() -> void:
 	assert_eq(_area(game).area_name(), "cave", "boot builds the saved cave.")
 	assert_eq(_area(game).goal_state.keys_taken(), 0, "the resumed cave wants keys again.")
 	assert_eq(_area(game).key_counter.count(), 0, "and the badge starts empty.")
+	assert_eq(
+		SaveGame.load_game()["taken"]["cave"], flags, "the cave gem-taken flags survive the reboot."
+	)
+	for i: int in range(AreaLayout.GEMS_PER_AREA):
+		assert_eq(
+			_is_collected(_area(game), i), i < 2, "gem %d keeps its taken state after reboot." % i
+		)
 
 
 # --- persist index on swap + finale (Phase 2: FR-5, FR-6; AC-4) ----------------
