@@ -26,6 +26,10 @@ const KEYS_PER_AREA := 3  # one per KEY_TIERS entry
 ## >=2 bounce (see test_every_gem_falls_into_a_reachable_tier).
 const GEMS_PER_AREA := 10
 
+## Tile edge in pixels, shared with the builder: prop seats are measured in
+## pixels against span rows, so validation speaks the same units as painting.
+const TILE := 16.0
+
 var area_name := ""
 var palette := ""
 var cols := 0
@@ -103,7 +107,64 @@ func validate() -> PackedStringArray:
 				problems.append("expected one key per tier, %s has %d" % [tier, at_tier])
 	if not gem_spots.is_empty() and gem_spots.size() != GEMS_PER_AREA:
 		problems.append("expected %d gem spots, found %d" % [GEMS_PER_AREA, gem_spots.size()])
+	problems.append_array(_validate_props())
 	return problems
+
+
+## Props are hand-placed deco: inside bounds, on a known seat, and from the
+## area's own vocabulary so each room keeps its identity (the meadow keeps
+## none). Seating mirrors the builder: standing props rest their base on
+## terrain, stalactites may hook under the bridge platform.
+func _validate_props() -> PackedStringArray:
+	var failures := PackedStringArray()
+	var vocab: Array[String] = []
+	if area_name == "cave":
+		vocab = ["deco_crystal", "deco_stalactite", "deco_glowshroom", "deco_moss"]
+	elif area_name == "sunset":
+		vocab = ["deco_butte", "deco_sunset_tuft", "deco_sunbloom", "deco_pebble"]
+	if area_name == "meadow" and not props.is_empty():
+		failures.append("meadow must keep zero props")
+	for prop: Dictionary in props:
+		var asset := str(prop.get("asset", ""))
+		var at: Vector2 = prop.get("at", Vector2.INF)
+		if not vocab.has(asset):
+			failures.append("prop '%s' is outside the %s vocabulary" % [asset, area_name])
+		if at == Vector2.INF:
+			failures.append("prop '%s' has no seat" % asset)
+			continue
+		if at.x - 8.0 < 0.0 or at.x + 8.0 > float(cols) * TILE:
+			failures.append("prop '%s' at %s leaves the room sideways" % [asset, at])
+		if at.y - 8.0 < 0.0 or at.y + 8.0 > float(rows - 1) * TILE:
+			failures.append("prop '%s' at %s leaves the room vertically" % [asset, at])
+		if not _prop_seated(at):
+			failures.append("prop '%s' at %s floats off its surface" % [asset, at])
+	if (area_name == "cave" or area_name == "sunset") and not props.is_empty():
+		var seen: Array[String] = []
+		for prop: Dictionary in props:
+			if not seen.has(str(prop["asset"])):
+				seen.append(str(prop["asset"]))
+		if seen.size() < 4:
+			failures.append("%s needs 4+ prop types, found %d" % [area_name, seen.size()])
+	return failures
+
+
+## True when a prop base rests on terrain (within 2px) or a stalactite top
+## hooks under a platform — the same seat the tests pin, so validate() and
+## the suite can never disagree about what "placed" means.
+func _prop_seated(at: Vector2) -> bool:
+	var surface := float(ground_row) * TILE
+	for span: Dictionary in spans:
+		if at.x >= float(int(span["from"])) * TILE and at.x < float(int(span["to"])) * TILE:
+			surface = minf(surface, float(span["top_row"]) * TILE)
+	if absf(at.y + 8.0 - surface) <= 2.0:
+		return true
+	for platform: Dictionary in platforms:
+		var pat: Vector2 = platform["at"]
+		var half: float = float(platform["width"]) / 2.0
+		if at.x >= pat.x - half and at.x <= pat.x + half:
+			if absf(at.y - 8.0 - pat.y) <= 2.0:
+				return true
+	return false
 
 
 ## The meadow: the Movement track's playground, written down rather than coded.
@@ -215,7 +276,21 @@ static func cave() -> AreaLayout:
 		{"tier": "bounce", "at": Vector2(88, 304)},  # trampolined above the left plateau
 	]
 	l.door_at = Vector2(596, 392)
-	l.props = []
+	# Cave personality: glowing crystals + hanging stalactites + glow-shrooms
+	# on teal moss. Standing props rest their 16px base on terrain (y = surface
+	# - 8); the two stalactites hook under the bridge (top = platform y).
+	# Every seat keeps a 24px+ halo to gems/keys/pads/deco (see
+	# test_props_keep_gameplay_readable) so glow never reads as a collectible.
+	l.props = [
+		{"asset": "deco_crystal", "at": Vector2(8, 408)},  # left plateau, clear of the machine
+		{"asset": "deco_moss", "at": Vector2(136, 408)},  # left plateau, between pad and gems
+		{"asset": "deco_glowshroom", "at": Vector2(200, 472)},  # stair foot, clear of spawn + key
+		{"asset": "deco_stalactite", "at": Vector2(248, 408)},  # hangs under the bridge (top 400)
+		{"asset": "deco_stalactite", "at": Vector2(336, 408)},  # hangs under the bridge (top 400)
+		{"asset": "deco_crystal", "at": Vector2(408, 504)},  # valley floor, between walk gems
+		{"asset": "deco_glowshroom", "at": Vector2(520, 408)},  # right shelf, clear of jump gem
+		{"asset": "deco_moss", "at": Vector2(560, 408)},  # right shelf, clear of door + rock
+	]
 	l.robot_spawn = Vector2(240, 498)
 	l.machine_at = Vector2(40, 392)  # left plateau, clear of pad + bounce arc
 	return l
@@ -277,7 +352,20 @@ static func sunset() -> AreaLayout:
 		{"tier": "bounce", "at": Vector2(504, 396)},  # trampolined up the valley arc
 	]
 	l.door_at = Vector2(600, 424)
-	l.props = []
+	# Sunset personality: rounded buttes + warm tufts + sunblooms + pale
+	# pebbles. Every 16px prop sits base-on-terrain (y = surface - 8) with a
+	# 24px+ halo to gems/keys/pads/deco (see test_props_keep_gameplay_readable)
+	# so warm shapes never read as collectibles.
+	l.props = [
+		{"asset": "deco_pebble", "at": Vector2(8, 472)},  # left shoulder, clear of walk gem
+		{"asset": "deco_butte", "at": Vector2(360, 376)},  # tallest plateau, between gems
+		{"asset": "deco_sunset_tuft", "at": Vector2(376, 408)},  # upper step, clear of rock
+		{"asset": "deco_sunbloom", "at": Vector2(408, 440)},  # mid step, clear of valley
+		{"asset": "deco_sunset_tuft", "at": Vector2(440, 472)},  # lower step, open shoulder
+		{"asset": "deco_pebble", "at": Vector2(472, 504)},  # valley floor, clear of trampoline
+		{"asset": "deco_butte", "at": Vector2(568, 472)},  # right approach, clear of jump gem
+		{"asset": "deco_sunbloom", "at": Vector2(632, 440)},  # right shoulder, clear of door
+	]
 	l.robot_spawn = Vector2(80, 466)
 	l.machine_at = Vector2(120, 456)  # left shoulder, right of spawn + walk key
 	return l
