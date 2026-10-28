@@ -54,12 +54,60 @@ func test_robot_palette_defines_required_colors() -> void:
 		assert_has(Palettes.PALETTE_ROBOT, key, "robot palette defines '%s'." % key)
 
 
-func test_spec_defines_eight_tiles() -> void:
+func test_spec_defines_sixteen_tiles() -> void:
 	var tile_names := []
 	for entry: Dictionary in AssetSpec.SPEC:
 		if entry.get("kind", "") in TILE_KINDS:
 			tile_names.append(entry.get("name", ""))
-	assert_eq(tile_names.size(), 8, "spec defines exactly 8 world tiles/decorations.")
+	assert_eq(
+		tile_names.size(),
+		16,
+		"spec defines exactly 16 world tiles/decorations (8 base + 8 area-personality)."
+	)
+
+
+func test_spec_defines_area_personality_deco_sets() -> void:
+	# Rich set = 4+ prop types per area. Cave: crystals + stalactites +
+	# glow-shrooms + moss. Sunset: buttes + tufts + sunblooms + pebbles.
+	var deco := {}
+	for entry: Dictionary in AssetSpec.SPEC:
+		if entry.get("kind", "") == "deco":
+			deco[entry.get("name", "")] = entry
+	for required: String in [
+		"deco_crystal",
+		"deco_stalactite",
+		"deco_glowshroom",
+		"deco_moss",
+		"deco_butte",
+		"deco_sunset_tuft",
+		"deco_sunbloom",
+		"deco_pebble",
+	]:
+		assert_has(deco, required, "spec defines the '%s' personality deco." % required)
+		assert_eq(
+			deco[required].get("size", Vector2i.ZERO),
+			Vector2i(16, 16),
+			"'%s' is a 16px tile." % required
+		)
+		assert_eq(
+			deco[required].get("palette", ""), "area", "'%s' recolors per area palette." % required
+		)
+
+
+func test_personality_palette_keys() -> void:
+	var cave: Dictionary = Palettes.AREA_PALETTES["cave"]
+	for key: String in ["crystal", "crystal_dark", "glow", "moss"]:
+		assert_has(cave, key, "cave palette defines '%s'." % key)
+	var sunset: Dictionary = Palettes.AREA_PALETTES["sunset"]
+	for key: String in ["butte", "butte_dark", "bloom", "pebble"]:
+		assert_has(sunset, key, "sunset palette defines '%s'." % key)
+
+
+func test_meadow_palette_is_untouched() -> void:
+	# The meadow is the byte-identical baseline: its palette keeps exactly
+	# the 6 base colors, no personality keys.
+	var meadow: Dictionary = Palettes.AREA_PALETTES["meadow"]
+	assert_eq(meadow.keys().size(), 6, "meadow palette keeps exactly its 6 base colors.")
 
 
 func test_spec_defines_eight_robot_frames() -> void:

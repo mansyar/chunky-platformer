@@ -32,6 +32,13 @@ const AREA_PALETTES := {
 		"ground_dark": Color("47436b"),
 		"grass": Color("9b8bb4"),
 		"accent": Color("b983ff"),
+		# Cave deco set (area-personality): glowing crystals + stalactites +
+		# glow-shrooms on teal moss. Bright cool tones so props glow against
+		# the dark cave ground.
+		"crystal": Color("7ef0ff"),
+		"crystal_dark": Color("3fa8c9"),
+		"glow": Color("fff3a3"),
+		"moss": Color("5fe8b5"),
 	},
 	"sunset":
 	{
@@ -41,5 +48,12 @@ const AREA_PALETTES := {
 		"ground_dark": Color("7c4a33"),
 		"grass": Color("e8875f"),
 		"accent": Color("ff5d8f"),
+		# Sunset deco set (area-personality): rounded buttes + warm tufts +
+		# sunblooms and pale pebbles. Hot terracotta + sunny yellow so props
+		# read warm against the orange ground.
+		"butte": Color("d96f4e"),
+		"butte_dark": Color("8f3f2e"),
+		"bloom": Color("ffd93d"),
+		"pebble": Color("ffe3c2"),
 	},
 }
