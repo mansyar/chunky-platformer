@@ -78,15 +78,19 @@ The primary appends after acceptance:
 - **Covers:** FR-3, FR-4, FR-5, AC-3, AC-4, AC-5, NFR-4
 - **Touches:** `src/tuning/tuning.gd`, `src/**/*.gd` (tiny fixes only), `tests/**/*.gd`, `conductor/tracks/20261028-4yo-playtest-tuning/session/*.md`
 - **Verification:** `gd-tools test --coverage --min 80`, `gd-tools lint`, `gd-tools format --check` all green + findings-disposition table complete
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P3.T1: Apply tuning / tiny fixes** — covers: FR-3
-  - [ ] **P3.T1.1: Tuning-value changes with before/after rationale per finding**
-  - [ ] **P3.T1.2: Tiny safe fixes only — anything bigger goes to P3.T2, no scope growth**
-- [ ] **P3.T2: File follow-ups** — covers: FR-4
-  - [ ] **P3.T2.1: Every non-fixed finding gets a proposed follow-up track entry in notes**
-- [ ] **P3.T3: Final verification** — covers: FR-5
-  - [ ] **P3.T3.1: Full suite + coverage gate + lint + format green, results logged**
+**Result:** verified
+**Checkpoint:** f8e91a8
+**Evidence:** conductor/tracks/20261028-4yo-playtest-tuning/verification/phase-3.md
+
+- [x] **P3.T1: Apply tuning / tiny fixes** — covers: FR-3
+  - [x] **P3.T1.1: Tuning-value changes with before/after rationale per finding**
+  - [x] **P3.T1.2: Tiny safe fixes only — anything bigger goes to P3.T2, no scope growth**
+- [x] **P3.T2: File follow-ups** — covers: FR-4
+  - [x] **P3.T2.1: Every non-fixed finding gets a proposed follow-up track entry in notes**
+- [x] **P3.T3: Final verification** — covers: FR-5
+  - [x] **P3.T3.1: Full suite + coverage gate + lint + format green, results logged**
 
 <!--
 The primary appends after acceptance:
