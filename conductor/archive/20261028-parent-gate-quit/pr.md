@@ -53,7 +53,7 @@ in 0.03s). Recorded in `integrated.md`, not silenced.
 
 ## Media
 
-![Hold ring mid-fill at the top-right corner](.conductor/media/20261028-parent-gate-quit/phase-2-hold-ring.png)
+![Hold ring mid-fill at the top-right corner](https://github.com/user-attachments/assets/dd70f63f-c7fc-4f9a-aee1-07f7b41537f6)
 Captured live from the running game at Phase 2 checkpoint `c22cef1` (source
 tree unchanged since; camera zoomed to 0.5 for framing, restored after).
 
@@ -87,3 +87,4 @@ git revert --no-edit <squash-commit>
 
 Purely additive (853 insertions, zero deletions); no migration, no feature
 flag, no save-format change. Reverting restores the no-quit-path behavior.
+
