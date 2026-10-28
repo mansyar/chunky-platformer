@@ -50,15 +50,17 @@ func _ready() -> void:
 	transition.name = "Transition"
 	add_child(transition)
 	transition.faded_out.connect(_swap_area)
-	_build_area(0)
+	_build_area(area_index)
 	wallet.changed.connect(_save)
 	wardrobe.changed.connect(_save)
 
 
-## Load-at-boot: refill the wallet, re-own the wardrobe in save order, and
-## pick up the gem-taken flags. A corrupt save boots fresh (see SaveGame).
+## Load-at-boot: refill the wallet, re-own the wardrobe in save order, pick
+## up the gem-taken flags, and resume the saved area (already clamped to a
+## valid index by SaveGame). A corrupt save boots fresh (see SaveGame).
 func _restore_save() -> void:
 	var state := SaveGame.load_game()
+	area_index = int(state.get("area_index", 0))
 	var balance := int(state.get("wallet", 0))
 	if balance > 0:
 		wallet.add(balance)
@@ -73,13 +75,15 @@ func _restore_save() -> void:
 
 ## Progress autosave (FR-9): every wallet/wardrobe change and every area
 ## swap rewrites the file. Live gem flags are pulled from the builder first
-## so a force-quit keeps the current area's collects too.
+## so a force-quit keeps the current area's collects too. The committed area
+## index rides along so the next boot resumes here; the finale loop home
+## rebuilds area 0 first, so it commits the meadow.
 func _save(_changed: Variant = null) -> void:
 	if wallet == null or wardrobe == null:
 		return
 	if builder != null:
 		_taken[builder.area_name()] = builder.taken_flags()
-	SaveGame.save_game(wallet, wardrobe, _taken)
+	SaveGame.save_game(wallet, wardrobe, _taken, SaveGame.SAVE_PATH, area_index)
 
 
 func _process(delta: float) -> void:

@@ -62,9 +62,12 @@ One full area takes a 4-year-old roughly 5–10 minutes.
   door once all three are taken. No menus, no reading required.
 - **Progression:** 3 handcrafted areas with distinct code-generated palettes
   and decoration shapes (e.g. meadow → cave → sunset hills). After the last
-  area's door, a finale celebration loops home to a fresh meadow; the wallet,
-  wardrobe, and collected-gem state persist while keys reset per area. Launching always starts
-  in the meadow. Every area is walkable end to end — no height change larger
+  area's door, a finale celebration loops home to a fresh meadow and saves it,
+  so the next launch starts there; the wallet, wardrobe, and collected-gem
+  state persist while each area's 3 keys start fresh. Launching resumes the
+  saved area at its safe starting spot — silently, with no menus or reading,
+  so the child picks up mid-adventure right where they left off (the very
+  first launch starts in the meadow). Every area is walkable end to end — no
   than two tiles anywhere a child must walk.
 
 ## Controls
@@ -81,9 +84,12 @@ celebration) plus a gentle ambient music loop. No external audio files.
 ## Persistence
 
 Full progress saved to user://save_game.json (versioned): wallet balance,
-owned/worn cosmetics, and per-area gem-taken flags, alongside keys/doors
-progress. The child resumes mid-adventure across sessions; a corrupt or
-missing file boots fresh with no crash and no error text.
+owned/worn cosmetics, per-area gem-taken flags, and the last visited area.
+Keys and doors are never saved — every built area starts with its 3 keys
+fresh. The child resumes mid-adventure across sessions: launching reopens the
+saved area at its safe starting spot, silently, with nothing to read or
+choose; a corrupt or missing file boots a fresh meadow with no crash and no
+error text.
 
 ## Non-Goals (v1)
 
