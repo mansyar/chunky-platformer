@@ -85,3 +85,25 @@ as Phase 1 — left alone.)
 - Phase is docs-only: zero tuning, gameplay, art, audio, or test changes.
 - Phase base and code tree are identical (`e8ac7cd`); only this evidence file
   is added.
+
+## Primary verification
+
+Independent check by the primary on the same tree:
+
+- `git status --porcelain`: clean except the three known regenerable Godot
+  `.import` sidecars under `conductor/archive/.../screenshots/` (live-editor
+  cache; repo tracks zero `.import` files; left alone per evidence).
+- `git diff --name-only e8ac7cd..HEAD`: exactly this file, inside `Touches`.
+  Commit range holds exactly the 1 reported commit (`f195130`) — no
+  squash-guard violation (no merge, user, or unreported commits).
+- Full gate re-run by the primary on the final tree:
+  - First attempt timed out at 300 s with no output (infra hang — orphaned
+    workers/lock contention after the subagent's run; not a test failure).
+  - Retry: `gd-tools test --coverage --min 80` → exit 0, **404/404**,
+    94.7% lines / 94.0% branches (gate 80), 12/12 snapshots matched, 87.71 s.
+    The known audio wall-clock flake did not trip.
+  - `gd-tools lint` → exit 0. `gd-tools format --check` → exit 0, 73/73.
+- FR-3 (explicit no-change decision, evidence-backed) / FR-4 (F5 proposed
+  follow-up recorded) / FR-5 (green gate) / AC-3 / AC-4 / AC-5 / NFR-4 all met
+  per the tables above.
+- Result: **verified**. Primary checkpoint follows the squash.
