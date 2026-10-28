@@ -49,16 +49,20 @@ The primary appends after acceptance:
 - **Covers:** FR-1, FR-2, AC-1, AC-2, NFR-1, NFR-2
 - **Touches:** `conductor/tracks/20261028-4yo-playtest-tuning/session/notes.md`
 - **Verification:** Notes present and agent-checked against the template checklist (every section filled, verdicts explicit); zero code changes in this phase
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P2.T1: User runs the session** — covers: FR-1
-  - [ ] **P2.T1.1: Run silent-observation session per protocol (≤15 min, Area 1, touch tablet)**
-  - [ ] **P2.T1.2: Report back timeline, stalls/rescues, engagement, and outcome**
-- [ ] **P2.T2: Record structured notes** — covers: FR-2
-  - [ ] **P2.T2.1: Fill every template section from the user's report — no invented data**
-  - [ ] **P2.T2.2: Per-criterion verdicts (unaided completion, zero stuck, no-instruction touch)**
-- [ ] **P2.T3: Extract findings list** — covers: FR-2
-  - [ ] **P2.T3.1: Numbered findings, each with severity and in-track vs follow-up disposition**
+**Result:** verified
+**Checkpoint:** ce22a64
+**Evidence:** conductor/tracks/20261028-4yo-playtest-tuning/verification/phase-2.md
+
+- [x] **P2.T1: User runs the session** — covers: FR-1
+  - [x] **P2.T1.1: Run silent-observation session per protocol (≤15 min, Area 1, touch tablet)**
+  - [x] **P2.T1.2: Report back timeline, stalls/rescues, engagement, and outcome**
+- [x] **P2.T2: Record structured notes** — covers: FR-2
+  - [x] **P2.T2.1: Fill every template section from the user's report — no invented data**
+  - [x] **P2.T2.2: Per-criterion verdicts (unaided completion, zero stuck, no-instruction touch)**
+- [x] **P2.T3: Extract findings list** — covers: FR-2
+  - [x] **P2.T3.1: Numbered findings, each with severity and in-track vs follow-up disposition**
 
 <!--
 The primary appends after acceptance:
