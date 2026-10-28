@@ -46,20 +46,27 @@ The primary appends after acceptance:
 - **Covers:** FR-1, FR-2, FR-3, FR-4, FR-6, FR-7, NFR-1, NFR-5, AC-1, AC-2, AC-3, AC-4, AC-6, AC-7
 - **Touches:** `src/levels/area_layout.gd`, `src/levels/area_builder.gd`, `tests/test_area_*.gd`, `tests/test_playthrough.gd`, `tests/test_goal*.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** in_progress
+- **Status:** verified
 
-- [ ] **P2.T1: Cave placement** — covers: FR-1
-  - [ ] **P2.T1.1: Hand-place cave props coordinates in AreaLayout**
-  - [ ] **P2.T1.2: Validate seating, bounds, determinism**
-- [ ] **P2.T2: Sunset placement** — covers: FR-2
-  - [ ] **P2.T2.1: Hand-place sunset props coordinates in AreaLayout**
-  - [ ] **P2.T2.2: Validate seating, bounds, determinism**
-- [ ] **P2.T3: Builder wiring (bg layer)** — covers: FR-3, FR-4
-  - [ ] **P2.T3.1: Build props behind gameplay with correct draw order, no collision**
-  - [ ] **P2.T3.2: Meadow build unchanged (empty props, byte-identical)**
-- [ ] **P2.T4: Readability + live evidence** — covers: FR-6, AC-6
-  - [ ] **P2.T4.1: Reachability + key-tier + hint-occlusion checks green**
-  - [ ] **P2.T4.2: Editor screenshots of cave/sunset + smoke run (stopped afterwards)**
+- [x] **P2.T1: Cave placement** — covers: FR-1
+  - [x] **P2.T1.1: Hand-place cave props coordinates in AreaLayout**
+  - [x] **P2.T1.2: Validate seating, bounds, determinism**
+- [x] **P2.T2: Sunset placement** — covers: FR-2
+  - [x] **P2.T2.1: Hand-place sunset props coordinates in AreaLayout**
+  - [x] **P2.T2.2: Validate seating, bounds, determinism**
+- [x] **P2.T3: Builder wiring (bg layer)** — covers: FR-3, FR-4
+  - [x] **P2.T3.1: Build props behind gameplay with correct draw order, no collision**
+  - [x] **P2.T3.2: Meadow build unchanged (empty props, byte-identical)**
+- [x] **P2.T4: Readability + live evidence** — covers: FR-6, AC-6
+  - [x] **P2.T4.1: Reachability + key-tier + hint-occlusion checks green**
+  - [x] **P2.T4.2: Editor screenshots of cave/sunset + smoke run (stopped afterwards)**
+
+<!--
+The primary appends after acceptance:
+**Result:** verified
+**Checkpoint:** 804726a
+**Evidence:** conductor/tracks/20261028-area-personality/verification/phase-2.md
+-->
 
 <!--
 Review fixes are appended by `conductor-review` as:
