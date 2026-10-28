@@ -14,7 +14,7 @@
 - **Covers:** FR-5, NFR-2, NFR-3, NFR-4, AC-5
 - **Touches:** `src/factory/asset_factory.gd`, `src/factory/asset_spec.gd`, `src/factory/palettes.gd`, `tests/test_asset_*.gd`
 - **Verification:** `gd-tools test --coverage --min 80`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P1.T1: Palette + asset-spec records** — covers: FR-5
   - [ ] **P1.T1.1: Cave palette entries for crystal/stalactite/glow set**
