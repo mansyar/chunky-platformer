@@ -18,7 +18,7 @@
 - **Covers:** FR-1 (setup), FR-5 (baseline), AC-1 (setup), NFR-3
 - **Touches:** `conductor/tracks/20261028-4yo-playtest-tuning/session/*.md`
 - **Verification:** `gd-tools test --coverage --min 80` green + adult live-boot attested in `session/baseline.md`
-- **Status:** pending
+- **Status:** in_progress
 
 - [ ] **P1.T1: Write session protocol** — covers: FR-1
   - [ ] **P1.T1.1: Setup checklist (device, editor run, Area 1 fresh save, 15-min timer)**
